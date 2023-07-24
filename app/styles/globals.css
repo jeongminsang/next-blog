@@ -85,11 +85,11 @@ body {
   overflow-x: hidden;
   /* display: flex;
   justify-content: center; */
-  max-width: 700px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
-body {
+/* body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -97,7 +97,22 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+} */
+
+body[data-theme="dark"] {
+  background: rgb(18, 18, 18);
+  --hv-cr: rgb(58, 58, 58);
+  color: white;
+  transition: background-color 0.2s ease;
 }
+
+body[data-theme="light"] {
+  background: #ffffff;
+  --hv-cr: #d4d4d4;
+  color: black;
+  transition: background-color 0.2s ease;
+}
+
 h1,
 h2 {
   margin-top: 26px;
