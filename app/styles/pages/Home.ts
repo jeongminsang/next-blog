@@ -19,6 +19,7 @@ export const SubTitle = styled.h4`
   margin-bottom: 10px;
   padding-left: 10px;
   padding-right: 10px;
+  font-weight: 100;
 `;
 
 export const PostTitle = styled.h3`
@@ -43,7 +44,7 @@ export const PostBody = styled.li`
   transition: transform 0.2s ease;
   &:hover {
     transform: translateY(-5px);
-    background-color: #ff7f50;
+    background-color: var(--hv-cr);
     transition: transform 0.2s ease;
   }
 `;

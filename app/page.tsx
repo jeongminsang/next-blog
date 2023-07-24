@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <MainContainer>
       <Title>Minsang's Blog</Title>
-      <SubTitle>공부하고 경험한 내용을 이곳에 기록합니다.</SubTitle>
+      <SubTitle>👨‍💻공부하고 경험한 내용을 이곳에 기록합니다.</SubTitle>
       <PostTitle>All Posts({posts.length})</PostTitle>
       <PostList>
         {posts.map((post: any, i: number) => (
