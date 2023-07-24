@@ -1,7 +1,12 @@
 
 import Link from "next/link"
 import { readdirSync } from 'fs';
-import { getPostDetailData } from "../libs/api";
+import { getPostDetailData } from '../libs/api';
+import 'dayjs/locale/ko';
+import dayjs from 'dayjs';
+import readingTime from 'reading-time';
+import PostDetailContent from '../components/PostDetailContents';
+dayjs.locale('ko');
 
 interface Params {
   params: {
@@ -19,6 +24,7 @@ export const generateMetadata = async ({ params }: Params) => {
   return {
     title: meta.title,
     description: meta.description,
+    date: meta.date,
   }
 }
 
@@ -29,8 +35,11 @@ const DetailDataPage = async ({ params }: Params) => {
     <>
       <div>
         <title title={meta.title} />
+        <div>{meta.title}</div>
+        <div>{dayjs(meta.date).locale("ko").format("YYYY년 M월 D일")}</div>
+        <div>{Math.ceil(readingTime(content).minutes)}분</div>
         <div>
-          <div dangerouslySetInnerHTML={{ __html: content }} />
+          <PostDetailContent content={content} />
         </div>
         <button>
           <Link as={`/`} href={`/`}>
