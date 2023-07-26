@@ -16,10 +16,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const setThemeMode = `
+    document.body.dataset.theme = window.localStorage.getItem('theme')
+`
   return (
     <html lang="en">
       <StyledComponentsRegistry>
         <body className={inter.className}>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: setThemeMode,
+            }}
+          ></script>
           <Header />
           {children}
         </body>
