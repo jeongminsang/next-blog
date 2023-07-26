@@ -1,11 +1,11 @@
 
-import Link from "next/link"
 import { readdirSync } from 'fs';
 import { getPostDetailData } from '../libs/api';
 import 'dayjs/locale/ko';
 import dayjs from 'dayjs';
 import readingTime from 'reading-time';
 import PostDetailContent from '../components/PostDetailContents';
+import Heading from '../styles/components/Heading';
 dayjs.locale('ko');
 
 interface Params {
@@ -29,7 +29,7 @@ export const generateMetadata = async ({ params }: Params) => {
 }
 
 const DetailDataPage = async ({ params }: Params) => {
-  const { meta, content } = await getPostDetailData(params.postId);
+  const { meta, content, markdowncontent } = await getPostDetailData(params.postId);
 
   return (
     <>
@@ -40,12 +40,8 @@ const DetailDataPage = async ({ params }: Params) => {
         <div>{Math.ceil(readingTime(content).minutes)}분</div>
         <div>
           <PostDetailContent content={content} />
+          <Heading content={markdowncontent} />
         </div>
-        <button>
-          <Link as={`/`} href={`/`}>
-            <span>뒤로가기</span>
-          </Link>
-        </button>
       </div>
     </>
   )
