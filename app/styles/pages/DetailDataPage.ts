@@ -1,13 +1,20 @@
 "use client";
 
 import styled from "styled-components";
-import TOC from "../components/TOC";
 
 export const MainContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+`;
+
+export const PostContainer = styled.div`
+  display: flex;
   flex-direction: row;
   justify-content: center;
-  max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
 `;
 
@@ -76,4 +83,11 @@ export const TOCAside = styled.aside`
   @media screen and (max-width: 1200px) {
     display: none;
   }
+`;
+
+export const GiscusContainer = styled.div`
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px;
 `;

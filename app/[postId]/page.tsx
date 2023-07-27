@@ -6,7 +6,8 @@ import dayjs from 'dayjs';
 import readingTime from 'reading-time';
 import PostDetailContent from '../components/PostDetailContents';
 import TOC from '../styles/components/TOC';
-import { MainContainer, PostSection, PostTitle, PostInfo, TagAside, TOCAside } from "../styles/pages/DetailDataPage"
+import { MainContainer, PostContainer, PostSection, PostTitle, PostInfo, TagAside, TOCAside, GiscusContainer } from "../styles/pages/DetailDataPage"
+import Giscus from '../components/Giscus';
 dayjs.locale('ko');
 
 interface Params {
@@ -34,17 +35,20 @@ const DetailDataPage = async ({ params }: Params) => {
 
   return (
     <MainContainer>
-      <TagAside></TagAside>
-      <PostSection>
-        <title title={meta.title} />
-        <PostTitle>{meta.title}</PostTitle>
-        <PostInfo>📅 {dayjs(meta.date).locale("ko").format("YYYY년 M월 D일")}</PostInfo>
-        <PostInfo>⌛ 약 {Math.ceil(readingTime(content).minutes)}분</PostInfo>
-        <PostDetailContent content={content} />
-      </PostSection>
-      <TOCAside>
-        <TOC content={markdowncontent} />
-      </TOCAside>
+      <PostContainer>
+        <TagAside></TagAside>
+        <PostSection>
+          <title title={meta.title} />
+          <PostTitle>{meta.title}</PostTitle>
+          <PostInfo>📅 {dayjs(meta.date).locale("ko").format("YYYY년 M월 D일")}</PostInfo>
+          <PostInfo>⌛ 약 {Math.ceil(readingTime(content).minutes)}분</PostInfo>
+          <PostDetailContent content={content} />
+        </PostSection>
+        <TOCAside>
+          <TOC content={markdowncontent} />
+        </TOCAside>
+      </PostContainer>
+      <GiscusContainer><Giscus /></GiscusContainer>
     </MainContainer>
   )
 }
