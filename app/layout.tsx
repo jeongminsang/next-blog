@@ -17,6 +17,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const setThemeMode = `
+    localStorage.theme = 'dark'
     document.body.dataset.theme = window.localStorage.getItem('theme')
 `
   return (
