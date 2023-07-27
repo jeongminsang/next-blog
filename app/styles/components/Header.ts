@@ -8,8 +8,12 @@ export const MainContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  width: 800px;
   height: 70px;
+  margin: 0 auto;
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 export const HeaderTitle = styled.h4`
