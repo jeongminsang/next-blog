@@ -5,7 +5,8 @@ import 'dayjs/locale/ko';
 import dayjs from 'dayjs';
 import readingTime from 'reading-time';
 import PostDetailContent from '../components/PostDetailContents';
-import Heading from '../styles/components/Heading';
+import TOC from '../styles/components/TOC';
+import { MainContainer, PostSection, PostTitle, PostInfo, TagAside, TOCAside } from "../styles/pages/DetailDataPage"
 dayjs.locale('ko');
 
 interface Params {
@@ -32,18 +33,19 @@ const DetailDataPage = async ({ params }: Params) => {
   const { meta, content, markdowncontent } = await getPostDetailData(params.postId);
 
   return (
-    <>
-      <div>
+    <MainContainer>
+      <TagAside></TagAside>
+      <PostSection>
         <title title={meta.title} />
-        <div>{meta.title}</div>
-        <div>{dayjs(meta.date).locale("ko").format("YYYY년 M월 D일")}</div>
-        <div>{Math.ceil(readingTime(content).minutes)}분</div>
-        <div>
-          <PostDetailContent content={content} />
-          <Heading content={markdowncontent} />
-        </div>
-      </div>
-    </>
+        <PostTitle>{meta.title}</PostTitle>
+        <PostInfo>📅 {dayjs(meta.date).locale("ko").format("YYYY년 M월 D일")}</PostInfo>
+        <PostInfo>⌛ 약 {Math.ceil(readingTime(content).minutes)}분</PostInfo>
+        <PostDetailContent content={content} />
+      </PostSection>
+      <TOCAside>
+        <TOC content={markdowncontent} />
+      </TOCAside>
+    </MainContainer>
   )
 }
 
