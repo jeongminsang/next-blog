@@ -8,18 +8,49 @@ export const MainContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  width: 800px;
   height: 70px;
+  margin: 0 auto;
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
-export const HeaderIcons = styled.div`
+export const HeaderTitle = styled.h4`
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--hv-cr);
+    transition: background-color 0.2s ease;
+  }
+`;
+
+export const BlackThemeIcons = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   padding-left: 10px;
   margin: 10px;
+  display: var(--dis--light);
+`;
+
+export const LightThemeIcons = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 10px;
+  margin: 10px;
+  display: var(--dis--black);
 `;
 
 export const CustomImage = styled(Image)`
   margin: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--hv-cr);
+    transition: background-color 0.2s ease;
+  }
 `;

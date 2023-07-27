@@ -82,11 +82,14 @@
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   /* display: flex;
   justify-content: center; */
-  max-width: 800px;
+  /* max-width: 800px; */
   margin: 0 auto;
+}
+body::-webkit-scrollbar {
+  display: none;
 }
 
 /* body {
@@ -100,10 +103,12 @@ body {
 } */
 
 body[data-theme="dark"] {
-  background: rgb(18, 18, 18);
+  background: rgb(29, 29, 29);
   --hv-cr: rgb(58, 58, 58);
   color: white;
   transition: background-color 0.2s ease;
+  --dis--black: none;
+  --dis--light: flex;
 }
 
 body[data-theme="light"] {
@@ -111,6 +116,8 @@ body[data-theme="light"] {
   --hv-cr: #d4d4d4;
   color: black;
   transition: background-color 0.2s ease;
+  --dis--black: flex;
+  --dis--light: none;
 }
 
 h1,
@@ -139,8 +146,9 @@ p {
 }
 
 code {
-  margin-top: 14px;
-  margin-bottom: 14px;
+  margin: 14px;
+  background: rgb(180, 156, 156);
+  border-radius: 10px;
 }
 
 a {

@@ -17,5 +17,9 @@ export const getPostDetailData = async (postId: number) => {
   const post = readFileSync(`app/content/blog/${postId}.mdx`, "utf-8");
   const { data, content } = matter(post);
 
-  return { meta: data, content: await markdownToHtml(content) };
+  return {
+    meta: data,
+    content: await markdownToHtml(content),
+    markdowncontent: content,
+  };
 };
