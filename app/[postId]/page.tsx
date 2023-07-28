@@ -8,6 +8,7 @@ import PostDetailContent from '../components/PostDetailContents';
 import TOC from '../styles/components/TOC';
 import { MainContainer, PostContainer, PostSection, PostTitle, PostInfo, TagAside, TOCAside, GiscusContainer } from "../styles/pages/DetailDataPage"
 import Giscus from '../components/Giscus';
+import ReadingProgressBar from '../components/ReadingProgressBar';
 dayjs.locale('ko');
 
 interface Params {
@@ -35,6 +36,7 @@ const DetailDataPage = async ({ params }: Params) => {
 
   return (
     <MainContainer>
+      <ReadingProgressBar />
       <PostContainer>
         <TagAside></TagAside>
         <PostSection>
