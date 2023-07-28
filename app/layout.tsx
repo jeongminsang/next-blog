@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import StyledComponentsRegistry from './registry'
 import Header from './components/Header'
+import Footer from './components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,7 +18,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const setThemeMode = `
-    localStorage.theme = 'dark'
+    if(!window.localStorage.getItem('theme')){
+      localStorage.theme = 'dark'
+    }
     document.body.dataset.theme = window.localStorage.getItem('theme')
 `
   return (
@@ -31,6 +34,7 @@ export default function RootLayout({
           ></script>
           <Header />
           {children}
+          <Footer />
         </body>
       </StyledComponentsRegistry>
     </html>

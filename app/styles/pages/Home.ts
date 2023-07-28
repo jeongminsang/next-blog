@@ -5,7 +5,8 @@ import styled from "styled-components";
 export const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 800px;
+  max-width: 800px;
+  width: 100%;
   margin: 0 auto;
 `;
 
@@ -34,6 +35,7 @@ export const PostTitle = styled.h3`
 export const PostList = styled.ul`
   display: flex;
   flex-direction: column;
+  height: 580px;
 `;
 
 export const PostBody = styled.li`
@@ -48,5 +50,10 @@ export const PostBody = styled.li`
     transform: translateY(-5px);
     background-color: var(--hv-cr);
     transition: transform 0.2s ease;
+  }
+  @media screen and (max-width: 800px) {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin: 10px;
   }
 `;
