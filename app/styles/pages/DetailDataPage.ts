@@ -51,6 +51,8 @@ export const PostContents = styled.div`
   margin: 0 auto;
   img {
     width: 100%;
+    max-height: 500px;
+    object-fit: contain;
   }
 `;
 
