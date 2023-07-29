@@ -1,159 +1,171 @@
 ---
 postId: 1
-title: NextJS에서 MSW를 사용해보자
-slug: "spf13-vim-3-0-release-and-new-website"
-date: "2023-05-23"
-coverImage: "/images/back01.jpeg"
-description: 일단 세팅을 해보았다.
+title: NextJS에선 React-Query를 어떻게 사용하는게 맞을까?
+date: "2023-06-09"
+description: 차이를 비교해보았다.
 ---
 
-# MSW란?
-
-Mock Service Worker의 약자로 Service Worker API를 사용하여 실제 요청을 가로채는 API mocking 라이브러리
+![](https://velog.velcdn.com/images/minsang9735/post/0d774d42-2586-4674-9758-1d8eccb26b95/image.png)
 
 ---
 
-## 왜 사용하냐?
+# NextJS + React-query?
 
-보통 프로젝트를 진행할 때, 백엔드가 API를 만들면 그 API를 통해 프론트엔드가 인터페이스를 만든다. 만약 같이 시기에 프로젝트를 시작했다면? 프론트엔드는 백엔드가 API를 만들어주기 전까지 손가락만 빨면서 기다려야한다.
-~~그럴땐 가서 백엔드 멱살을 잡으면 된다~~
+SSR이 많은 인기를 끌면서 NextJS를 많이 사용하게 되었다. 그렇다면 NextJS와 React-query를 같이 사용한다면 어떨까?
 
-이럴때 프론트의 손가락 빠는 시간을 줄여주는 놈이 바로 MSW이다.
-API요청을 보낼때 MSW가 가로채서 내가 원하는 데이터를 가져다 주고 브라우저한텐 모르게하는 방식이다.
-언뜻 생각하면 교차-출처 리소스 공유(Cross-origin resource sharing, CORS)를 허용하기 위해 사용하는 Proxy의 동작 방식과 유사하다.
-![](https://velog.velcdn.com/images/minsang9735/post/8da16515-8710-4aba-821c-ed85f37dd1fd/image.png)
-
-### JsonServer와의 차이점
-
-전에 JsonServer 라는 REST API Mock server 툴을 사용해 본 경험이 있다.
-MSW가 브라우저에서 API요청을 가로채서 데이터를 바꿔치기하고 돌려주는 방식이라면, JsonServer는 로컬에 Json파일을 그대로 localhost 서버를 띄운다. ( postman 접근 가능 )
-둘중에 편한 방식이라면 빠르고 postman으로 테스트도 쉬운 JsonServer를 선택했겠지만
-내가 경험했을 때 중첩 배열에 접근하여 데이터를 조작하는 부분에 있어서 단점인점과 그 외의 단점도 많이 갖고 있는 JsonServer이기에 ( [깃헙 이슈가 굉장히 많다](https://github.com/typicode/json-server/issues) ) 현업에서는 MSW를 많이 사용한다고 한다.
+- React-query는 Next에서 pre-fetching이 가능하다. 이로인해 성능 향상에 도움을 준다.
+  📌pre-fetching이란? 페이지가 렌더링되기 전에 미리 데이터를 가져오는 것을 말한다. ( 데이터 캐싱 작업도 pre-fetching에 포함된다 )
+- 데이터 요청 코드를 쉽게 관리가 가능하다.
+- 동적 데이터를 관리하는 비동기 로직을 쉽게 다룰 수 있다.
+  ![](https://velog.velcdn.com/images/minsang9735/post/255c1e96-03c3-43d4-ab40-0e280c83eda2/image.png)
+  ~~NextJS + React-query 쓰세요 두번쓰세요~~
 
 ---
 
-## NextJS에서의 MSW?
+# 어떻게 사용하지?
 
-MSW에 대한 레퍼런스는 굉장히 많다. 개인적으로 [코딩악마 유툽](https://youtu.be/iQGRPXs_1Qc)에서 한번 봤는데 한번에 이해가 되었다.
-근데 NextJS + MSW 는 상대적을 많이 없다.
-~~NextJS 유행한지 얼마 안됐는데 그럴만 하다~~
-그냥 리액트로는 테스트 해봤을 때 별 문제가 없어서 신경을 안썼는데 NextJS에서는 뭐가 자꾸 에러나길래 포스팅을 시작했다.
+NextJS에서 React-query를 사용하는 방식에는 두가지 방식이 있다.
 
----
+- 서버에서 데이터를 미리 가져와 클라이언트에 전달하는 방식인 initialData
+- 서버에서 캐시를 dehydrate 후 클라이언트에서 hydrate를 하는 방식인 Hydration
 
-## 설치 및 파일 추가
+## initialData
 
-> npm install msw --save-dev
-> 또는
-> yarn add msw --dev
+직관적인 방법으로 작업하는 부분에서 SSR이 비교적 적은 경우에 사용된다.
+react-query 의 기본값으로 SSR의 데이터를 넣어주는 것으로 데이터를 사용하는 간단한 방법이다.
 
-src/mock/handlers.ts // 요청을 모킹하는 핸들러 작성
+```tsx
+export async function getStaticProps() {
+  const posts = await getPosts();
+  return { props: { posts } };
+}
 
-```javascript
-import { rest } from "msw";
-
-export const handlers = [
-  rest.get("https://jsonplaceholder.typicode.com/todos", (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(["먹기", "자기", "놀기"]));
-  }),
-];
-```
-
-파일 생성 후에 사기칠 데이터를 만든다. URL은 아무 주소 갖다 넣어도 상관없다. 나중에 호출할 때 쓰이는 요청 URL이랑 동일하기만 하면 된다.
-~~난 내일 먹고 자고 놀거다.~~
-
-src/mocks/browser.ts // 브라우저 환경 설정
-
-```javascript
-import { setupWorker } from "msw";
-import { handlers } from "./handlers";
-
-export const worker = setupWorker(...handlers);
-```
-
-src/mocks/server.ts // node 환경 설정
-
-```javascript
-import { setupServer } from "msw/node";
-import { handlers } from "./handlers";
-
-export const server = setupServer(...handlers);
-```
-
-src/pages/\_app.tsx // MSW 동작 방식 설정
-
-```javascript
-import "@/styles/globals.scss";
-import type { AppProps } from "next/app";
-
-export default function App({ Component, pageProps }: AppProps) {
-  if (process.env.NODE_ENV === "development") {
-    if (typeof window === "undefined") {
-      (async () => {
-        const { server } = await import("../mocks/server");
-        server.listen();
-      })();
-    } else {
-      (async () => {
-        const { worker } = await import("../mocks/browser");
-        worker.start();
-      })();
-    }
-  }
-  return <Component {...pageProps} />;
+function Posts(props) {
+  const { data } = useQuery({
+    queryKey: ["posts"],
+    queryFn: getPosts,
+    initialData: props.posts,
+  });
 }
 ```
 
-여기서 리액트 MSW 방식과의 차이점이 있다
-CRA의 경우 src/mocks/browser 파일의 worker를 불러와 worker.start() 만 실행하면 된다.
-CNA(NextJS)의 경우 server side가 먼저 실행된 후 브라우저 환경인 client side가 실행되기 때문에 node 환경에 대해서 추가적으로 설정을 진행해줘야 한다. ~~안그럼 에러뜸 ㅅㄱ~~
-그래서 위에서 src/mocks/server를 추가해줬다.
-
-.env // 개발 환경에서만 동작하게끔 설정해주기
-
-```
-NODE_ENV=development
+```tsx
+export const getPosts = () => axios.get("https://api.test.com/posts");
 ```
 
-이제 설정은 끝났다.
-아래 명령어로 서비스 워커를 생성하자
+NextJS의 getStaticProps 또는 getServerSideProps 두 방법 중 하나로 가져온 데이터를 useQuery initialData옵션에 전달한다.
+getServerSideProps의 경우, 위와 같이 export 설정을 해두면 nextJS는 매 요청마다 여기서 요청한 데이터를 props로 넘겨주며 페이지를 새로 pre-render한다.
+getStaticProps의 경우, 위와 같이 export 설정을 해두면 nextJS는 빌드 타임에 여기서 반환된 데이터를 props로 넘겨주며 페이지를 새로 pre-render한다.
 
-> npx msw init public/ — save
+initialData 방식은 기본적으로 prefetching 을 하지 않기에 데이터가 캐싱되지 않는다.
 
-MSW는 브라우저에서 서비스 워커를 통해서 작동하기 때문에 서비스 워커 등록을 위한 기본적인 코드가 필요하다. 다행히도 서비스 워커에 대해서 잘 몰라도 MSW에서 제공하는 CLI 도구를 사용하면 이 코드를 쉽게 만들어 낼 수 있다.
+데이터가 캐시되지 않으므로 필요하면 다시 가져와야 한다. 이로 인해 로딩 시간이 느려지고 서버 요청이 증가한다.
 
-그러면
-public/mockServiceWorker.js 가 생성된다.
+## Hydration
 
-이제 요청을 보낼 코드를 입력한다.
+SSR이 중요하고 다양한 곳에서 사용되는 프로젝트의 경우 많이 사용되는 방법으로, 한번 설정해두면 간편하게 SSR을 사용할 수 있는 방법이다.
+서버에서 여러 쿼리를 미리 가져온 다음 해당 쿼리를 queryClient 로 dehydrating 한다.
 
-```javascript
-const getTest = () => {
-  axios
-    .get("https://jsonplaceholder.typicode.com/todos")
-    .then((res) => {
-      const { data } = res;
-      console.log(data);
-    })
-    .catch((error) => console.log(error));
-};
+```tsx
+// _app.jsx
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+
+export default function MyApp({ Component, pageProps }) {
+  const [queryClient] = React.useState(() => new QueryClient());
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Hydrate state={pageProps.dehydratedState}>
+        <Component {...pageProps} />
+      </Hydrate>
+    </QueryClientProvider>
+  );
+}
 ```
 
-여기서 URL은 아까 위에서 설명했듯이, 사기칠 URL과 동일한 주소로 입력한다.
-그러면 이 URL로 요청을 보낼 때마다 MSW가 가로채서 내가 원하는 데이터를 뱉어줄거다.
+```tsx
+// pages/posts.jsx
+import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 
-이제 프로젝트 실행해서 테스트하면 된다.
+export async function getStaticProps() {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(["posts"], getPosts);
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
+
+function Posts() {
+  const { data } = useQuery({ queryKey: ["posts"], queryFn: getPosts });
+  const { data: otherData } = useQuery({
+    queryKey: ["posts-2"],
+    queryFn: getPosts,
+  });
+}
+```
+
+initialData 방식과는 다르게 app.tsx 에 별도로 설정이 필요하다.
+QueryClientProvider로 <Component {...pageProps} />을 감싸줬던 부분 사이에 추가적으로
+
+```tsx
+<Hydrate state={pageProps.dehydratedState}>
+```
+
+를 추가적으로 감싸준다.
+이는, 서버에서 렌더링된 상태를 클라이언트로 전달하고, 클라이언트에서 다시 렌더링하도록 하기 위함이다.
+
+이후 post.tsx에서 QueryClient를 import해서 가져오고 QueryClient의 prefetchQuery 메소드를 이용하여 'posts' 데이터를 캐싱한다.
+
+그리고 마지막으로 dehydrate를 이용해 캐시 데이터를 지우고 dehydratedState props를 전달한다.
+
+Hydration 방식은 기본적으로 prefetching 으로 데이터를 캐싱이 가능하다.
+서버 데이터를 그대로 쓰는 것이 아닌 캐싱한 데이터를 불러오기 때문에 initialData 방식에 비해 데이터 조회가 느릴 수 있다.
 
 ---
 
-## 프로젝트 실행 및 테스트
+# 어디에 적합할까?
 
-![](https://velog.velcdn.com/images/minsang9735/post/8331c217-6a8e-4ab9-a782-17389e9cb6e0/image.png)
-성공이다.
-솔직히 빨간 글자라서 에러뜬줄 알고 뭐가 잘못된건지 계속 뒤져봤음
-근데 알고보니 disabled가 아니고 enabled 이더라...
-![](https://velog.velcdn.com/images/minsang9735/post/6afcc74c-ab00-4a19-85b9-9c652e4f3997/image.png)
-가로채기 성공해서 아까 내가 넣어줬던 데이터를 뱉어준다.
-원래 주소로는 요청이 가긴 하는데 X-Powered-By: msw 이므로 msw API 응답임을 다시한번 확인 가능하다.
-![](https://velog.velcdn.com/images/minsang9735/post/73137940-85bd-4680-8c4b-a098efc876aa/image.png)
-![](https://velog.velcdn.com/images/minsang9735/post/8d77a8c1-02e6-4407-af07-f88d513d67bf/image.png)
+NextJS에서는 getStaticProps 또는 getServerSideProps에서 props 객체를 페이지로 전달한 후에 리액트 쿼리의 initialData 옵션을 이용해서 SSR을 구현할 수 있다.
+
+이렇게 하는 방식이 잘못된 것은 아니지만 권장하지 않는다.
+
+이유는 깊이 있는 컴포넌트 단에서 서버 사이드 렌더링한 데이터가 필요할 경우 해당 컴포넌트까지 props로 전달을 해줘야하는 불편함이 있다. ( propsdriling이 발생할 수 있다. )
+
+반면에 Hydration 방식은 서버 사이드 렌더링시 사용했던 query key(식별자)를 이용하면 데이터를 불러올 수 있다. 공식 문서에서도 InitialData 옵션으로 설정하는 방법보다는 Hydration 방식을 권장하고 있다.
+
+## 정리 및 비교
+
+### 정리
+
+SSR에서 React Query를 사용하려면 initialData와 Hydration 중 하나를 선택해야 한다.
+
+- initialData은 서버에서만 데이터를 조회하기 때문에 클라이언트에서 데이터를 조회할 수 없다.
+- initialData은 클라이언트에서 데이터를 캐시할 수 없기 때문에 데이터를 조회할 때마다 서버에 요청해야 한다.
+- Hydration은 클라이언트에서 캐싱된 데이터를 조회하기 때문에 클라이언트에서 데이터를 조회할 수 있다.
+- Hydration은 클라이언트에서 데이터를 캐시할 수 있기 때문에 데이터를 조회할 때마다 서버에 요청할 필요가 없다.
+
+### 비교
+
+initialData는?
+
+- 데이터 요구 사항이 간단한 경우
+- 데이터가 자주 업데이트되지 않고 요청 시마다 다시 가져올 수 있는 경우
+- 캐싱의 우선 순위가 높지 않고 단순성과 사용 편의성에 중점을 둔 경우
+
+SSR이 비교적 적은 경우에 사용된다.
+
+Hydration는?
+
+- 복잡한 데이터 요구 사항이 있는 경우
+- 데이터가 자주 업데이트되고 캐싱이 우선 순위가 높은 경우
+- 성능이 중요하고 네트워크 요청을 줄이는 것이 중요한 경우
+
+SSR이 비교적 많은 경우에 사용된다.
