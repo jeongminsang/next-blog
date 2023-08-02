@@ -9,6 +9,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://minsang-blog.vercel.app/'),
+  title: 'Minsang.dev',
   generator: 'Next.js',
   applicationName: 'Minsang.dev',
   keywords: ['Next.js', 'React', 'TypeScript'],
