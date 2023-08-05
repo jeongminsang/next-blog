@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 
 const Header = () => {
   const router = useRouter()
-  const themeModeHandle = (e: any) => {
+  const themeModeHandle = (e: React.MouseEvent<HTMLImageElement>) => {
     e.preventDefault();
     const newTheme = localStorage.theme === 'dark' ? 'light' : 'dark';
     localStorage.theme = newTheme;
