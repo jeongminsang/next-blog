@@ -5,7 +5,7 @@ import 'dayjs/locale/ko';
 import dayjs from 'dayjs';
 import readingTime from 'reading-time';
 import PostDetailContent from '../components/PostDetailContents';
-import TOC from '../styles/components/TOC';
+import TOC from '../components/TOC';
 import { MainContainer, PostContainer, PostSection, PostTitle, PostInfo, TagAside, TOCAside, GiscusContainer } from "../styles/pages/DetailDataPage"
 import Giscus from '../components/Giscus';
 import ReadingProgressBar from '../components/ReadingProgressBar';
