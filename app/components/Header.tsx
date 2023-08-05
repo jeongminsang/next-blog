@@ -1,9 +1,11 @@
 "use client";
 
 import { MainContainer, HeaderTitle, CustomImage, BlackThemeIcons, LightThemeIcons } from '../styles/components/Header';
+import { useRouter } from 'next/navigation'
 
 const Header = () => {
-  const themeModeHandle = (e: any) => {
+  const router = useRouter()
+  const themeModeHandle = (e: React.MouseEvent<HTMLImageElement>) => {
     e.preventDefault();
     const newTheme = localStorage.theme === 'dark' ? 'light' : 'dark';
     localStorage.theme = newTheme;
@@ -11,7 +13,7 @@ const Header = () => {
   };
 
   const goHomeHandle = () => {
-    window.location.href = "/";
+    router.push('/');
   }
 
   const goGitHubHandle = () => {

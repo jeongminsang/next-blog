@@ -2,7 +2,7 @@
 
 import CustomLink from "./CustomLink";
 
-const TOC = ({ content }: any) => {
+const TOC = ({ content }: { content: string }) => {
   const getHeadings = (source: string) => {
     const regex = /^(#|##|###) (.*$)/gim;
     if (source.match(regex)) {
@@ -16,11 +16,10 @@ const TOC = ({ content }: any) => {
   };
 
   const HeadingArr = getHeadings(content);
-  console.log(getHeadings(content))
   return (
     <div>
-      {HeadingArr?.map((heading) => (
-        <div>
+      {HeadingArr?.map((heading, index) => (
+        <div key={index}>
           <CustomLink href={'#' + heading.link}>{heading.text}</CustomLink>
         </div>
       ))}

@@ -12,7 +12,7 @@ export default function Home() {
       <SubTitle>👨‍💻공부하고 경험한 내용을 이곳에 기록합니다.</SubTitle>
       <PostTitle>All Posts({posts.length})</PostTitle>
       <PostList>
-        {posts.map((post: any, i: number) => (
+        {posts.map((post, i) => (
           <PostBody key={i}>
             <Link as={`/${post.postId}`} href={`/${post.postId}`}>
               <div>{post.title}</div>
