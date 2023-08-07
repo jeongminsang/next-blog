@@ -1,6 +1,7 @@
 "use client";
 
 import CustomLink from "./CustomLink";
+import styled from "styled-components";
 
 const TOC = ({ content }: { content: string }) => {
   const getHeadings = (source: string) => {
@@ -18,6 +19,7 @@ const TOC = ({ content }: { content: string }) => {
   const HeadingArr = getHeadings(content);
   return (
     <div>
+      <TocHeader>목차</TocHeader>
       {HeadingArr?.map((heading, index) => (
         <div key={index}>
           <CustomLink href={'#' + heading.link}>{heading.text}</CustomLink>
@@ -28,3 +30,8 @@ const TOC = ({ content }: { content: string }) => {
 
 }
 export default TOC;
+
+const TocHeader = styled.div`
+  padding-bottom: 5px;
+  border-bottom: 1px solid grey;
+`;
