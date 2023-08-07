@@ -1,0 +1,601 @@
+---
+title: NextJS로 블로그를 만들어보자
+date: "2023-08-07"
+description: 갑자기 만들고 싶어졌다.
+---
+
+![](https://velog.velcdn.com/images/minsang9735/post/cf5e6526-ee4f-453f-97d9-8eeec5983471/image.png)
+
+# 왜 만듬?
+
+나는 velog로 블로그를 운영하고 있다. 사실 그걸로도 충분하다. 그런데 계속 사용하면서도 '이건 어떻게 만들까' 란 생각이 항상 들었었다. 그리고 NextJS에 대해서 공부도 할겸 이번기회에 NextJS로 블로그를 만들어 보았다. ~~그리고 개발자한테 개인블로그 있으면 좋자나~~
+기본적인 블로그 기능만 먼저 만들어보고, 추후에 기능을 계속 추가해서 블로그 이전을 하는 것까지가 목표이다.
+
+---
+
+# 구상을 해보자
+
+### 근데 왜 NextJS임?
+
+공부 목적과 SSG를 통한 빠른 페이지 로드 장점이 있으니 nextjs로 구현할 생각이다.
+
+- 게시글은 .md 으로 넣고
+- remark(마크다운 Parser)로 md 데이터 가져오고
+- getStaticProps를 활용하여 빠른 페이지 로드
+
+이정도만 해서 블로그를 만들고 추후에 코드블럭 하이라이트, 다크모드, TOC배너, SEO, 이미지최적화 등 다양한 기능을 추가해 보겠다.
+
+---
+
+# 구현하자
+
+## 블로그 리스트
+
+먼저, 마크다운의 Title 만 뽑아서 블로그의 리스트를 출력할 것이다. 후에, 링크를 걸어서 해당 블로그 글로 이동할 수 있도록 할 것이다.
+
+```ts
+import { readdirSync, readFileSync } from "fs";
+import matter from "gray-matter";
+import { join } from "path";
+
+const postsDirectory = join(process.cwd(), "app/content/blog");
+
+export const getAllPostData = () => {
+  const posts = readdirSync(postsDirectory).map((file) => {
+    const post = readFileSync(`${postsDirectory}/${file}`, "utf-8");
+    return matter(post).data;
+  });
+  return posts;
+};
+```
+
+node.js 내장 모듈인 파일시스템에서 readdirSync를 사용해 postsDirectory에 있는 마크다운 모든 파일의 이름을 가져와 배열로 변환한다.
+readFileSync는 파일의 데이터를 가져온다. 그후 matter()함수를 사용하여 각 파일의 내용을 파싱한다.
+
+```tsx
+import { getAllPostData } from "./libs/api";
+import Link from "next/link";
+import {
+  MainContainer,
+  Title,
+  SubTitle,
+  PostTitle,
+  PostList,
+  PostBody,
+} from "./styles/pages/Home";
+
+export default function Home() {
+  const posts = getAllPostData();
+  return (
+    <MainContainer>
+      <Title>Minsang's Blog</Title>
+      <SubTitle>👨‍💻공부하고 경험한 내용을 이곳에 기록합니다.</SubTitle>
+      <PostTitle>All Posts({posts.length})</PostTitle>
+      <PostList>
+        {posts.map((post: any, i: number) => (
+          <PostBody key={i}>
+            <Link as={`/${post.postId}`} href={`/${post.postId}`}>
+              <div>{post.title}</div>
+              <div>{post.description}</div>
+              <div>{post.date}</div>
+            </Link>
+          </PostBody>
+        ))}
+      </PostList>
+    </MainContainer>
+  );
+}
+```
+
+그후 위에서 작성한 api.ts 에서 getAllPostData를 호출한다. 방식은 SSG이다. Next.JS 12 버전에서는 getStaticProps 함수를 별도로 설정한 후에 사용하였지만 [NextJS 13 버전의 app router 에서는 getStaticProps를 지원하지 않는다.](https://nextjs.org/docs/app/building-your-application/upgrading/app-router-migration#static-site-generation-getstaticprops)
+단, 정적 데이터를 미리 렌더링하고 싶다면 반드시 Server components 에서 사용해야만 한다.
+NextJS 13 App Router 에서부터 Server components와 Client components의 구분이 좀 더 쉬워졌기에 fetching 방식도 간편해진 것 같다.
+
+### CSS-in-JS 라이브러리 사용시 에러, 초기 설정 방법
+
+리스트를 출력하고 styled-components로 스타일을 먹이려는데 에러가 발생했다.
+NextJS에서는 CSS-in-JS 라이브러리 사용 시 별도의 설정이 필요하단다. 이것도 서버 사이드 렌더링 때문에 발생하는 에러이다.
+이는 서버에서 렌더링된 HTML에 CSS 규칙을 삽입하기 위함이다. 이렇게 하면, 클라이언트에서 Hydrate될 때, 스타일이 깜빡거리거나 변경되는 것을 방지할 수 있다.
+NextJS 공식 문서에서는 해당 방식으로 설정하는 것을 권장하고 있다.
+
+[nextjs 13 App Router styled-components 설정 방법](https://nextjs.org/docs/app/building-your-application/styling/css-in-js#styled-components)
+
+하지만, 이 모든 작업이 서버에서 작동하는것은 아니다. 코드를 보면 'use client'가 있다.
+즉, 서버가 아닌 클라이언트에서 css 를 삽입하는 것이다.
+
+![](https://velog.velcdn.com/images/minsang9735/post/ecd6126f-0da7-444a-b4f7-89eceeed4327/image.png)
+
+styled-components 적용을 마치고 블로그 리스트를 완성했다.
+
+## 블로그 상세 페이지
+
+이제 리스트를 클릭하면 상세 블로그 페이지로 이동할 수 있도록하겠다.
+
+먼저 api.ts 에 상세 데이터를 가져올 함수를 추가한다.
+
+```ts
+import { readdirSync, readFileSync } from "fs";
+import matter from "gray-matter";
+import { join } from "path";
+import markdownToHtml from "../libs/markdownToHtml";
+
+const postsDirectory = join(process.cwd(), "app/content/blog");
+
+export const getAllPostData = () => {
+  const posts = readdirSync(postsDirectory).map((file) => {
+    const post = readFileSync(`${postsDirectory}/${file}`, "utf-8");
+    return matter(post).data;
+  });
+  return posts;
+};
+
+export const getPostDetailData = async (postId: number) => {
+  const post = readFileSync(`app/content/blog/${postId}.mdx`, "utf-8");
+  const { data, content } = matter(post);
+
+  return {
+    meta: data,
+    content: await markdownToHtml(content),
+  };
+};
+```
+
+```ts
+import { remark } from "remark";
+import html from "remark-html";
+
+export default async function markdownToHtml(markdown: string) {
+  const res = await remark().use(html).process(markdown);
+
+  return res.toString();
+}
+```
+
+remark, remark-html을 사용하여 마크다운을 파싱하고 HMTL로 변환하여 데이터를 가져온다
+
+![](https://velog.velcdn.com/images/minsang9735/post/4db24246-0a1e-41ec-8195-8dda8d60406c/image.png)
+그 후, 앱 폴더 아래에 동적 라우팅을 설정해준다.
+
+```tsx
+import { readdirSync } from "fs";
+import { getPostDetailData } from "../libs/api";
+import { MainContainer, PostTitle } from "../styles/pages/DetailDataPage";
+
+interface Params {
+  params: {
+    postId: number;
+  };
+}
+
+const DetailDataPage = async ({ params }: Params) => {
+  const { meta, content } = await getPostDetailData(params.postId);
+  return (
+    <MainContainer>
+      <title title={meta.title} />
+      <PostTitle>{meta.title}</PostTitle>
+      <div dangerouslySetInnerHTML={{ __html: content }} />
+    </MainContainer>
+  );
+};
+
+export default DetailDataPage;
+```
+
+params 로 받은 postid를 통해 해당 마크다운 데이터를 가져온다.
+이후 dangerouslySetInnerHTML를 사용하여 가져온 마크다운 데이터를 삽입한다.
+dangerouslySetInnerHTML는 외부에서 가져온 HTML이나 마크다운 등을 동적으로 렌더링해야 할 때 사용되며, HTML 내용을 JSX로 변환하지 않고 그대로 렌더링할 수 있는 특징이 있다.
+
+추가적으로, dangerouslySetInnerHTML은 브라우저 DOM에서 innerHTML을 사용하기 위한 React의 대체 방법이며 사이트 간 스크립팅 공격을 예방하기 위해 [리액트 공식 문서](https://ko.legacy.reactjs.org/docs/dom-elements.html#dangerouslysetinnerhtml)에서 사용을 권장하고 있다.
+![](https://velog.velcdn.com/images/minsang9735/post/15cd6a2a-74b3-4ad4-9664-baaaf79f1a16/image.png)
+
+마크다운 데이터를 출력하는것은 순조롭게 진행되었다. 이제 추가적으로 기능을 추가하면서 정말 블로그에 가깝게 튜닝을 할 것이다.
+
+## 배포
+
+vercel로 간단하게 정적 사이트 배포가 가능하다.
+![](https://velog.velcdn.com/images/minsang9735/post/c8cc18e9-f345-4afb-9c2b-d424258d7dc7/image.png)
+깃허브로 소셜 로그인을 한 후에 배포하고 싶은 브랜치를 선택한다.
+
+![](https://velog.velcdn.com/images/minsang9735/post/a03917eb-3fb0-440d-80a2-6c62e3340737/image.png)
+
+배포가 완료되었고 도메인 변경도 가능하다.
+
+## 코드블럭 하이라이트
+
+블로그를 보면 코드가 블럭 안에 깔끔하게 정리되어있다. 색상도 커스텀이 가능하게끔 hilight.js 를 사용하여 구현해보겠다.
+
+```tsx
+"use client";
+
+import React, { useEffect } from "react";
+import hljs from "highlight.js";
+import "highlight.js/styles/github-dark.css";
+import { PostContents } from "../styles/pages/DetailDataPage";
+
+const PostDetailContent = ({ content }: any) => {
+  useEffect(() => {
+    hljs.highlightAll();
+  }, []);
+
+  return (
+    <PostContents dangerouslySetInnerHTML={{ __html: content }}></PostContents>
+  );
+};
+
+export default PostDetailContent;
+```
+
+```tsx
+import { readdirSync } from "fs";
+import { getPostDetailData } from "../libs/api";
+import PostDetailContent from "../components/PostDetailContents";
+import { MainContainer, PostTitle } from "../styles/pages/DetailDataPage";
+
+interface Params {
+  params: {
+    postId: number;
+  };
+}
+
+const DetailDataPage = async ({ params }: Params) => {
+  const { meta, content } = await getPostDetailData(params.postId);
+  return (
+    <MainContainer>
+      <title title={meta.title} />
+      <PostTitle>{meta.title}</PostTitle>
+      <PostDetailContent content={content} />
+    </MainContainer>
+  );
+};
+
+export default DetailDataPage;
+```
+
+dangerouslySetInnerHTML을 통해 마크다운 데이터를 html에 삽입할 때 코드 부분에만 하이라이트 처리를 해준다.
+![](https://velog.velcdn.com/images/minsang9735/post/242ccbce-4682-4e18-bd36-9f9bebcf3980/image.png)
+
+## TOC
+
+TOC( Table of Contents ) 블로그 옆에 딸려있는 네비게이션 위젯이다.
+![](https://velog.velcdn.com/images/minsang9735/post/61b51e97-f098-4702-83bf-f8fb2ff691dd/image.png)
+
+### 어떻게 구현하지?
+
+일단 배너를 눌렀을 때 해당 위치로 이동을 해야 하니 # 으로 생성된 헤더에 각각 id값을 부여하고 배너의 값과 같으면 해당 위치로 이동하게 끔 구현을 할 수 있다.
+
+### TOC에 현재 위치도 보여줘야 하는데?
+
+intercection observer 를 통해 현재 스크롤 위치가 해당 헤더의 id 값을 가리킨다면, TOC에 하이라이트 처리가 되게끔 구현이 가능하다.
+
+### 헤더에 id가 없는데용?
+
+헤더 값의 id가 뭔지 log를 찍어봤는데 자꾸 undefined가 뜨길래 살펴봤더니
+![](https://velog.velcdn.com/images/minsang9735/post/bf16195c-6054-4702-ad0f-97a118dcd658/image.png)
+헤더에 id 값이 없었다.
+
+보통, 마크다운을 파싱해서 HTML로 변환할 때 id 값을 부여하는데
+내가 이전에 사용한 방식은 id를 부여하는 단계가 없었다!
+
+그래서 markdownToHtml 파일을 리팩토링하였다.
+
+```ts
+import { remark } from "remark";
+import html from "remark-html";
+
+export default async function markdownToHtml(markdown: string) {
+  const res = await remark().use(html).process(markdown);
+
+  return res.toString();
+}
+```
+
+```ts
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeSlug from "rehype-slug";
+
+export default async function markdownToHtml(markdown: string) {
+  const res = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeSlug)
+    .use(rehypeStringify)
+    .process(markdown);
+
+  return res.toString();
+}
+```
+
+remark와 rehype을 사용하기 위해 remark대신 unified로 변환을 하고
+remarkParse - 마크다운을 파싱
+remarkRehype - 파싱된 마크다운을 Rehype로 변환
+rehypeSlug - 헤더에 고유 id 값을 부여
+rehypeStringify - HTML로 변환
+
+![](https://velog.velcdn.com/images/minsang9735/post/8b751baa-bccc-4d6e-88aa-485dcd984ed5/image.png)
+id 값이 헤더의 값에 맞춰서 자동으로 부여되었다.
+
+마크다운 파싱과정에 id값을 부여하는 세팅을 했으니 이제 TOC 동작설정을 해야한다.
+
+```tsx
+"use client";
+
+import CustomLink from "./CustomLink";
+import styled from "styled-components";
+
+const TOC = ({ content }: { content: string }) => {
+  const getHeadings = (source: string) => {
+    const regex = /^(#|##|###) (.*$)/gim;
+    if (source.match(regex)) {
+      return source.match(regex)?.map((heading: string) => ({
+        text: heading.replace("#", "").replace("#", ">").replace("#", ">"),
+        link: heading
+          .replace("# ", "")
+          .replace("#", "")
+          .replace("#", "")
+          .replace(/ /g, "-")
+          .toLowerCase()
+          .replace("?", ""),
+        indent: heading.match(/#/g)?.length,
+      }));
+    }
+    return [];
+  };
+
+  const HeadingArr = getHeadings(content);
+  return (
+    <div>
+      <TocHeader>목차</TocHeader>
+      {HeadingArr?.map((heading, index) => (
+        <div key={index}>
+          <CustomLink href={"#" + heading.link}>{heading.text}</CustomLink>
+        </div>
+      ))}
+    </div>
+  );
+};
+export default TOC;
+```
+
+마크다운 파일에 #,##,###으로 된 녀석들을 싹다 찾아준 후에
+그 녀석들한테서 #,##,###을 제거하고 대문자로 변환한다. 여기서 toLowerCase을 해주는 이유는 위 스크린샷에서 확인할 수 있듯이, id값이 헤더 값과 동일하게 부여되기는 하는데 모두 소문자로 변환되서 적용됨 => 고로 내가 다시 바꿔준다. ~~그냥 첨부터 변환을 안해주면 좋은거 아니냐~~
+뒤에 특수문자도 지멋대로 삭제 해버리니까 나도 replace('?', '')을 이용해서 똑같이 삭제해준다.
+
+이러면 이제 나도 rehypeSlug가 부여한 id값과 동일한 텍스트를 만들었다!
+해당 텍스트를 앞에 해시태크를 붙여서 링크를 달아주면 해시태그가 알아서 스크롤을 찾아줄 것이다.
+해시태그가 가끔씩 스크롤을 잘못찾는 경우가 있다고 하는데 아직까진 버그를 못만나봐서...발생하면 수정해보겠다.
+![](https://velog.velcdn.com/images/minsang9735/post/225f006b-6482-4f7e-a5a2-3e3eac3bc643/image.png)
+링크를 누르면 해시태그가 생기고 스크롤 위치이동도 잘 작동하는 것 같다.
+이제 여기다가 intercection observer를 사용해서 기능을 좀 더 업그레이드 할 수 있다.
+근데 일단 잘 작동하니까 다음 기능으로 넘어가자...
+
+## 다크모드
+
+뭐 블로그를 구현하기에 중요한 기능은 아니지만 친절한 웹페이지에는 거의 반필수적으로 들어가 있는 기능이다. 사실 한번도 구현을 안해봐서 꼭 넣고 싶었다.
+
+NextJS에선 next-themes 'useTheme'를 사용하면 손쉽게 다크모드를 구현할 수 있다.
+근데 난 상남자답게 바퀴를 새로 재발명 해보았다.
+
+동작 방식은 사실 어려울게 없다.
+
+css 파일에 배경색상을 상수로 작성적용하고 다크모드일 경우, 다크모드 상수를 배경색으로 적용하고 반대로 라이트모드일 경우, 라이트모드 상수를 배경색으로 적용하면 된다.
+
+```css
+body[data-theme="dark"] {
+  // 다크모드일 경우?
+  background: rgb(29, 29, 29); // 다크모드 배경색상
+  --hv-cr: rgb(58, 58, 58); // 다크모드 shoadow 색상
+  color: white; // 다크모드 폰트 색상
+  transition: background-color 0.2s ease; // 배경 스무스하게 바꾸기
+}
+
+body[data-theme="light"] {
+  // 라이트모드일 경우?
+  background: #ffffff; // 라이트모드 배경색상
+  --hv-cr: #d4d4d4; // 라이트모드 shoadow 색상
+  color: black; // 라이트모드 폰트 색상
+  transition: background-color 0.2s ease; // 배경 스무스하게 바꾸기
+}
+```
+
+js 파일에선 document.body.dataset를 통해 해당 body의 데이터에 접근할 수 있다.
+
+근데 새로고침을 하니까 다크모드가 초기화되어버려서 초기값과 모드 상태 데이터를 localstorage에 넣어서 관리했다.
+
+처음에 데이터를 불러올 때, localstorage를 사용하게되면 다크모드를 변경하는데 페이지가 리렌더링되어버릴 수 있기에 document.body.dataset.theme = newTheme;를 사용하여 다크모드를 동작시켰다.
+나중에 더 좋은 방법이 있다면 바꿔보고 싶다. ( next-themes? )
+~~내 머릿속에서 나올 수 있는 방법중에선 이게 최선이다.~~
+
+해당 컴포넌트가 클라이언트 컴포넌트에서 동작하는 방식이였기에 초기 렌더링시 동작할 수 있게끔 초기값을 설정해줘야 했다.
+
+그래서 layout.tsx파일에서 페이지가 렌더링되기 이전에 모드 상태값을 확인하고 배경색을 선택할 수 있게끔 해줬다.
+
+```tsx
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const setThemeMode = `
+    if(!window.localStorage.getItem('theme')){
+      localStorage.theme = 'dark'
+    }
+    document.body.dataset.theme = window.localStorage.getItem('theme')
+  `;
+  return (
+    <html lang="en">
+      <StyledComponentsRegistry>
+        <body className={inter.className}>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: setThemeMode,
+            }}
+          ></script>
+          <Header />
+          {children}
+          <Footer />
+        </body>
+      </StyledComponentsRegistry>
+    </html>
+  );
+}
+```
+
+처음 페이지 렌더링시에 localstorage를 탐색하고,
+localStorage.theme = 'dark'면 다크모드로 렌더링 ㄱㄱ
+localStorage.theme = 'light'면 라이트모드로 렌더링 ㄱㄱ
+
+```tsx
+"use client";
+
+import {
+  MainContainer,
+  HeaderTitle,
+  CustomImage,
+  BlackThemeIcons,
+  LightThemeIcons,
+} from "../styles/components/Header";
+
+const Header = () => {
+  const themeModeHandle = (e: React.MouseEvent<HTMLImageElement>) => {
+    e.preventDefault();
+    const newTheme = localStorage.theme === "dark" ? "light" : "dark";
+    localStorage.theme = newTheme;
+    document.body.dataset.theme = newTheme;
+  };
+
+  return (
+    <MainContainer>
+      <HeaderTitle>minsang.dev</HeaderTitle>
+      <BlackThemeIcons>
+        <CustomImage
+          onClick={themeModeHandle}
+          width={40}
+          height={40}
+          alt="밝은 모드로 변경"
+          src="/sunny.svg"
+        />
+        <CustomImage
+          width={40}
+          height={40}
+          alt="GitHub-White"
+          src="/github-mark-white.svg"
+        />
+      </BlackThemeIcons>
+      <LightThemeIcons>
+        <CustomImage
+          onClick={themeModeHandle}
+          width={40}
+          height={40}
+          alt="어두운 모드로 변경"
+          src="/dark.svg"
+        />
+        <CustomImage
+          width={40}
+          height={40}
+          alt="GitHub-Black"
+          src="/github-mark.svg"
+        />
+      </LightThemeIcons>
+    </MainContainer>
+  );
+};
+export default Header;
+```
+
+![](https://velog.velcdn.com/images/minsang9735/post/a5a017bf-6a36-45fe-b129-270b0e0c3390/image.gif)
+
+다크모드를 변경할 때마다 localstorage가 바뀌면서 새로고침을 해도 초기화되지 않고 잘 동작한다.
+
+## 댓글 기능
+
+utterances 라는 오픈소스를 통해 별도의 백엔드 필요 없이 쉽게 댓글기능을 구현할 수 있다.
+요즘은 giscus라는 utterances 업글 오픈소스라는게 있길래 써봤다.
+utterances에 비해 대댓글 기능까지 구현이 가능하고 커스텀도 손쉽게 가능하다는 장점이 있다.
+
+### giscus
+
+Github Discussion를 통해 댓글을 작성하고 블로그 페이지와 연동하여 댓글을 보여준다.
+[giscus 공식 사이트](https://giscus.app/ko)에서 레포 설정을 하면 script 파일을 뱉어준다.
+뱉어주는 script파일을 잘 가공해서 적용만 하면 된다.
+giscus issue 에 [어떤 형님들이 만들어준 코드](https://github.com/utterance/utterances/issues/161)를 보고 참고했다.
+
+```tsx
+"use client";
+
+import { useEffect, useRef } from "react";
+
+export default function Giscus() {
+  const ref = useRef<HTMLDivElement>(null);
+  const theme = "dark_dimmed";
+
+  useEffect(() => {
+    if (!ref.current || ref.current.hasChildNodes()) return;
+    const scriptElem = document.createElement("script");
+    scriptElem.src = "https://giscus.app/client.js";
+    scriptElem.async = true;
+    scriptElem.crossOrigin = "anonymous";
+    scriptElem.setAttribute("data-repo", "jeongminsang/next-blog");
+    scriptElem.setAttribute("data-repo-id", "NEXT_PUBLIC_REPO_KEY");
+    scriptElem.setAttribute("data-category", "General");
+    scriptElem.setAttribute("data-category-id", "NEXT_PUBLIC_CATE_KEY");
+    scriptElem.setAttribute("data-mapping", "pathname");
+    scriptElem.setAttribute("data-strict", "0");
+    scriptElem.setAttribute("data-reactions-enabled", "1");
+    scriptElem.setAttribute("data-emit-metadata", "0");
+    scriptElem.setAttribute("data-input-position", "bottom");
+    scriptElem.setAttribute("data-theme", theme);
+    scriptElem.setAttribute("data-lang", "ko");
+    ref.current.appendChild(scriptElem);
+  }, []);
+
+  useEffect(() => {
+    const iframe = document.querySelector<HTMLIFrameElement>(
+      "iframe.giscus-frame"
+    );
+    iframe?.contentWindow?.postMessage(
+      { giscus: { setConfig: { theme } } },
+      "https://giscus.app"
+    );
+  }, [theme]);
+
+  return <section ref={ref} />;
+}
+```
+
+![](https://velog.velcdn.com/images/minsang9735/post/00a377b5-4b2f-43c7-911f-e5078a839720/image.png)
+
+영어가 간지난다는 사람의 말을 무시하고 한글을 선택했다.
+
+![](https://velog.velcdn.com/images/minsang9735/post/eef191b7-a066-484b-a977-9bf1843f752e/image.png)
+
+블로그에서 작성한 댓글과 반응은 모두 Github Discussion에 기록된다.
+Github Discussion가 내 블로그의 댓글과 좋아요의 백엔드 역할을 해주는 셈이다.
+
+# 회고
+
+이번에 NextJS 13 App Router 로 진행을 해보았는데, 나온지 얼마 안된 상태이다보니 처음 내 생각보다 레퍼런스가 많이 없었다.
+NextJS 12에 비해 달라진점이 꽤 있어서 말도 안되는 삽질을 많이 한 것 같다.
+덕분에 어느정도 공식문서와 친해진 것 같아서 기분은 좋다.
+
+기본적인 기능들이 포함된 블로그는 완성되었지만, 추가적으로 구현하고 싶은 부분은 많이 남아있다.
+
+- dayjs, reading-time를 활용한 날짜, 읽는데 사용되는 시간 구현
+- SEO ( 설정은 해뒀지만 구글에 노출되는지 확인이 필요 )
+- 채널톡을 활용한 컨택 위젯
+- 이미지 렌더링 최적화
+- google analytics
+- 포트폴리오 페이지 추가 구현
+
+공부의 목적도 있었지만 나름 운영을 할 수 있는 나만의 웹앱이 생긴 것 같아서 매우 기쁘다.
+위 리스트도 틈내서 추가해보겠다.
+
+## 참고한 사이트
+
+https://leo.works/
+https://bepyan.github.io/
+https://miryang.dev/
+https://sojin.dev/
+https://blog.toss.im/
