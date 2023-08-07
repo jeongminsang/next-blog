@@ -9,7 +9,7 @@ const TOC = ({ content }: { content: string }) => {
     if (source.match(regex)) {
       return source.match(regex)?.map((heading: string) => ({
         text: heading.replace('#', '').replace('#', '>').replace('#', '>'),
-        link: heading.replace('# ', '').replace('#', '').replace('#', '').replace(/ /g, '-').toLowerCase().replace('?', ''),
+        link: heading.replace('# ', '').replace(/#+/g, '').replace(/ /g, '-').replace(/[+,?]/g, '').toLowerCase(),
         indent: heading.match(/#/g)?.length
       }));
     }
