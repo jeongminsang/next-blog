@@ -20,4 +20,4 @@ yarn
 yarn dev
 ```
 
-## [블로깅](https://velog.io/@minsang9735/NextJS%EB%A1%9C-%EB%B8%94%EB%A1%9C%EA%B7%B8%EB%A5%BC-%EB%A7%8C%EB%93%A4%EC%96%B4%EB%B3%B4%EC%9E%90)
+## [회고 블로깅](https://velog.io/@minsang9735/NextJS%EB%A1%9C-%EB%B8%94%EB%A1%9C%EA%B7%B8%EB%A5%BC-%EB%A7%8C%EB%93%A4%EC%96%B4%EB%B3%B4%EC%9E%90)
