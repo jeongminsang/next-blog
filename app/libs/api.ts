@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from "fs";
+import fs, { readdirSync, readFileSync } from "fs";
 import matter from "gray-matter";
 import { join } from "path";
 import markdownToHtml from "../libs/markdownToHtml";
@@ -10,7 +10,9 @@ export const getAllPostData = () => {
     const post = readFileSync(`${postsDirectory}/${file}`, "utf-8");
     return matter(post).data;
   });
-  return posts;
+  const slugArr = fs.readdirSync(postsDirectory);
+  const slugs = slugArr.reverse().map((slug) => slug.replace(/\.mdx$/, ""));
+  return { posts, slugs };
 };
 
 export const getPostDetailData = async (postId: number) => {
