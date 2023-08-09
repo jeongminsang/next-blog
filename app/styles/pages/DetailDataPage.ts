@@ -57,6 +57,9 @@ export const PostContents = styled.div`
   a {
     color: #5ba2ff;
   }
+  li {
+    margin-left: 20px;
+  }
 `;
 
 export const TagAside = styled.div`
