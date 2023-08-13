@@ -5,16 +5,16 @@ import Link from "next/link"
 import { MainContainer, Title, SubTitle, PostTitle, PostList, PostBody } from "./styles/pages/Home"
 
 export default function Home() {
-  const posts = getAllPostData();
+  const { posts, slugs } = getAllPostData();
   return (
     <MainContainer>
       <Title>Minsang's Blog</Title>
       <SubTitle>👨‍💻공부하고 경험한 내용을 이곳에 기록합니다.</SubTitle>
       <PostTitle>All Posts({posts.length})</PostTitle>
       <PostList>
-        {posts.map((post: any, i: number) => (
-          <PostBody key={i}>
-            <Link as={`/${post.postId}`} href={`/${post.postId}`}>
+        {posts.reverse().map((post, i) => (
+          <PostBody key={slugs[i]}>
+            <Link href={`/${slugs[i]}`}>
               <div>{post.title}</div>
               <div>{post.description}</div>
               <div>{post.date}</div>

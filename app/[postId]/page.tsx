@@ -5,7 +5,7 @@ import 'dayjs/locale/ko';
 import dayjs from 'dayjs';
 import readingTime from 'reading-time';
 import PostDetailContent from '../components/PostDetailContents';
-import TOC from '../styles/components/TOC';
+import TOC from '../components/TOC';
 import { MainContainer, PostContainer, PostSection, PostTitle, PostInfo, TagAside, TOCAside, GiscusContainer } from "../styles/pages/DetailDataPage"
 import Giscus from '../components/Giscus';
 import ReadingProgressBar from '../components/ReadingProgressBar';
@@ -40,7 +40,7 @@ const DetailDataPage = async ({ params }: Params) => {
       <PostContainer>
         <TagAside></TagAside>
         <PostSection>
-          <title title={meta.title} />
+          <title title={meta.title}>{meta.title}</title>
           <PostTitle>{meta.title}</PostTitle>
           <PostInfo>📅 {dayjs(meta.date).locale("ko").format("YYYY년 M월 D일")}</PostInfo>
           <PostInfo>⌛ 약 {Math.ceil(readingTime(content).minutes)}분</PostInfo>

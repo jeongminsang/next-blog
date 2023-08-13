@@ -5,7 +5,7 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css';
 import { PostContents } from '../styles/pages/DetailDataPage'
 
-const PostDetailContent = ({ content }: any) => {
+const PostDetailContent = ({ content }: { content: string }) => {
   useEffect(() => {
     hljs.highlightAll();
   }, []);

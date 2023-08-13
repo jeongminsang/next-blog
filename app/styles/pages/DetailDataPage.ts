@@ -54,6 +54,12 @@ export const PostContents = styled.div`
     max-height: 500px;
     object-fit: contain;
   }
+  a {
+    color: #5ba2ff;
+  }
+  li {
+    margin-left: 20px;
+  }
 `;
 
 export const TagAside = styled.div`

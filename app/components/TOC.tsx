@@ -1,14 +1,15 @@
 "use client";
 
 import CustomLink from "./CustomLink";
+import styled from "styled-components";
 
-const TOC = ({ content }: any) => {
+const TOC = ({ content }: { content: string }) => {
   const getHeadings = (source: string) => {
     const regex = /^(#|##|###) (.*$)/gim;
     if (source.match(regex)) {
       return source.match(regex)?.map((heading: string) => ({
         text: heading.replace('#', '').replace('#', '>').replace('#', '>'),
-        link: heading.replace('# ', '').replace('#', '').replace('#', '').replace(/ /g, '-').toLowerCase().replace('?', ''),
+        link: heading.replace('# ', '').replace(/#+/g, '').replace(/ /g, '-').replace(/[+,?]/g, '').toLowerCase(),
         indent: heading.match(/#/g)?.length
       }));
     }
@@ -16,11 +17,11 @@ const TOC = ({ content }: any) => {
   };
 
   const HeadingArr = getHeadings(content);
-  console.log(getHeadings(content))
   return (
     <div>
-      {HeadingArr?.map((heading) => (
-        <div>
+      <TocHeader>목차</TocHeader>
+      {HeadingArr?.map((heading, index) => (
+        <div key={index}>
           <CustomLink href={'#' + heading.link}>{heading.text}</CustomLink>
         </div>
       ))}
@@ -29,3 +30,8 @@ const TOC = ({ content }: any) => {
 
 }
 export default TOC;
+
+const TocHeader = styled.div`
+  padding-bottom: 5px;
+  border-bottom: 1px solid grey;
+`;
