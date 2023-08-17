@@ -57,3 +57,8 @@ export const PostBody = styled.li`
     margin: 10px;
   }
 `;
+
+export const PostInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+`;

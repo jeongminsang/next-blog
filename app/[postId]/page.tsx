@@ -43,7 +43,7 @@ const DetailDataPage = async ({ params }: Params) => {
           <title title={meta.title}>{meta.title}</title>
           <PostTitle>{meta.title}</PostTitle>
           <PostInfo>📅 {dayjs(meta.date).locale("ko").format("YYYY년 M월 D일")}</PostInfo>
-          <PostInfo>⌛ 약 {Math.ceil(readingTime(content).minutes)}분</PostInfo>
+          <PostInfo>⌛ 약 {Math.ceil(readingTime(markdowncontent).minutes)}분</PostInfo>
           <PostDetailContent content={content} />
         </PostSection>
         <TOCAside>
