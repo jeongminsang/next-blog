@@ -61,4 +61,9 @@ export const PostBody = styled.li`
 export const PostInfo = styled.div`
   display: flex;
   flex-direction: row;
+  div {
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+  }
 `;
