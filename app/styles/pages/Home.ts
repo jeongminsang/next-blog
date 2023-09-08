@@ -57,3 +57,13 @@ export const PostBody = styled.li`
     margin: 10px;
   }
 `;
+
+export const PostInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  div {
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+  }
+`;

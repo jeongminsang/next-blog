@@ -2,7 +2,8 @@ import Image from 'next/image'
 import styles from './page.module.css'
 import { getAllPostData } from './libs/api';
 import Link from "next/link"
-import { MainContainer, Title, SubTitle, PostTitle, PostList, PostBody } from "./styles/pages/Home"
+import readingTime from 'reading-time';
+import { MainContainer, Title, SubTitle, PostTitle, PostList, PostBody, PostInfo } from "./styles/pages/Home"
 
 export default function Home() {
   const { posts, slugs } = getAllPostData();
@@ -15,9 +16,12 @@ export default function Home() {
         {posts.reverse().map((post, i) => (
           <PostBody key={slugs[i]}>
             <Link href={`/${slugs[i]}`}>
-              <div>{post.title}</div>
-              <div>{post.description}</div>
-              <div>{post.date}</div>
+              <div>{post.data.title}</div>
+              <div>{post.data.description}</div>
+              <PostInfo>
+                <div>{post.data.date}</div>
+                <div>약 {Math.ceil(readingTime(post.content).minutes)}분</div>
+              </PostInfo>
             </Link>
           </PostBody>
         ))}

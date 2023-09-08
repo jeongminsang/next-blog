@@ -8,7 +8,7 @@ const postsDirectory = join(process.cwd(), "app/content/blog");
 export const getAllPostData = () => {
   const posts = readdirSync(postsDirectory).map((file) => {
     const post = readFileSync(`${postsDirectory}/${file}`, "utf-8");
-    return matter(post).data;
+    return matter(post);
   });
   const slugArr = fs.readdirSync(postsDirectory);
   const slugs = slugArr.reverse().map((slug) => slug.replace(/\.mdx$/, ""));
