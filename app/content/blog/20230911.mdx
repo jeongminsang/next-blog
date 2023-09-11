@@ -1,0 +1,316 @@
+---
+title: 우당탕탕 다크모드 적용기
+date: "2023-09-11"
+description: 블로그에 들어가는 간단한 기능인 '다크모드'를 구현하다가 삽질을 경험했다.
+---
+
+![](https://velog.velcdn.com/images/minsang9735/post/fc6cc45b-b813-4cb6-b4fd-f6da13e247ac/image.png)
+
+블로그에 들어가는 간단한 기능인 '다크모드'를 구현하다가 삽질을 경험했다.
+
+# 다크모드?
+
+리액트에서 css 와 state를 활용해 쉽게 구현이 가능하다. 다만 다른 요소를 생각하면 골치아파진다.
+
+예를 들어, state 를 통해 구현했기에 브라우저를 새로고침하면 상태가 초기화 되어버리는 점, 모든 브라우저 호환성, 모든 텍스트와 배경 등 일일이 스타일 적용 등 고려할 부분이 꽤 많다.
+
+구현은 쉽지만 까다로운 부분이 있어서 가능하면 잘 만들어진 라이브러리를 사용하는게 마음이 편하다.
+
+하지만 한번도 구현해본적이 없고 로직이 궁금해서 라이브러리없이 도전해봤다.
+
+그리고 쌔게 맞았다.
+
+# 구현해보자
+
+## 상태와 스타일만
+
+```tsx
+const Header = () => {
+  const [DarkModeToggle, SetdarkModeToggle] = useState<"dark" | "light">(
+    "dark"
+  );
+  const themeModeHandle = (e: any) => {
+    e.preventDefault();
+    SetdarkModeToggle(DarkModeToggle === "dark" ? "light" : "dark");
+  };
+  useEffect(() => {
+    document.body.dataset.theme = DarkModeToggle;
+  }, [DarkModeToggle]);
+  return (
+    <MainContainer>
+      <h4>minsang.dev</h4>
+      {DarkModeToggle === "dark" ? (
+        <HeaderIcons>
+          <CustomImage
+            onClick={themeModeHandle}
+            width={40}
+            height={40}
+            alt="밝은 모드로 변경"
+            src="/sunny.svg"
+          />
+        </HeaderIcons>
+      ) : (
+        <HeaderIcons>
+          <CustomImage
+            onClick={themeModeHandle}
+            width={40}
+            height={40}
+            alt="어두운 모드로 변경"
+            src="/dark.svg"
+          />
+        </HeaderIcons>
+      )}
+    </MainContainer>
+  );
+};
+export default Header;
+```
+
+```scss
+body[data-theme="dark"] {
+  // 다크모드일 경우?
+  background: rgb(29, 29, 29); // 다크모드 배경색상
+  --hv-cr: rgb(58, 58, 58); // 다크모드 shoadow 색상
+  color: white; // 다크모드 폰트 색상
+  transition: background-color 0.2s ease; // 배경 스무스하게 바꾸기
+}
+
+body[data-theme="light"] {
+  // 라이트모드일 경우?
+  background: #ffffff; // 라이트모드 배경색상
+  --hv-cr: #d4d4d4; // 라이트모드 shoadow 색상
+  color: black; // 라이트모드 폰트 색상
+  transition: background-color 0.2s ease; // 배경 스무스하게 바꾸기
+}
+```
+
+state 와 css 에 상수를 선언해서 쉽게 구현이 가능하다.
+
+그런데 여기서 브라우저를 새로고침을 하면 state가 초기화 되어버려서 모드 유지가 안된다.
+
+그래서 상태 대신 localstorage를 활용해 유지시켜줬다.
+
+바꾸는 김에 최대한 effect를 사용하지 않게끔 바꿔보았다.
+
+## 로컬 스토리지 사용
+
+```tsx
+const Header = () => {
+  const router = useRouter();
+  const themeModeHandle = (e: React.MouseEvent<HTMLImageElement>) => {
+    e.preventDefault();
+    const newTheme = localStorage.theme === "dark" ? "light" : "dark";
+    localStorage.theme = newTheme;
+    document.body.dataset.theme = newTheme;
+  };
+  return (
+    <MainContainer>
+      <BlackThemeIcons>
+        <CustomImage
+          onClick={themeModeHandle}
+          width={40}
+          height={40}
+          alt="밝은 모드로 변경"
+          src="/sunny.svg"
+        />
+      </BlackThemeIcons>
+      <LightThemeIcons>
+        <CustomImage
+          onClick={themeModeHandle}
+          width={40}
+          height={40}
+          alt="어두운 모드로 변경"
+          src="/dark.svg"
+        />
+      </LightThemeIcons>
+    </MainContainer>
+  );
+};
+export default Header;
+```
+
+![](https://velog.velcdn.com/images/minsang9735/post/b0c9ccac-b030-4fb6-9224-bffbc982b3b3/image.gif)
+
+오...잘되는 것...응?
+
+새로고침을 하게되면 현재 다크모드 상태 > 깜빡 > 저장된 다크모드 상태 순으로 동작한다.
+
+"깜빡현상" 발생
+
+내가 Next.js를 썼구..서버에서 먼저 렌더링되므로 중간에 서버에서 렌더링된 배경색으로 잠시 바뀌는건가...?
+
+그럼 브라우저를 그리기 전에 배경색을 설정을 해두면 문제가 없겠다!
+
+## 스크립트 태그 위치 설정
+
+Next.js 13 에서는 layout.js 안에 InnerHTML로 설정해두면 브라우저가 렌더링 되기전에 js 파일을 읽을 수 있게 설정을 할 수 있다.
+
+script 태그 위치를 body 내용보다 위에 위치시켜서 먼저 동작하게 만드는 방식이라고 볼 수 있다.
+
+```tsx
+//layout.tsx
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const setThemeMode = `
+    if(!window.localStorage.getItem('theme')){
+      localStorage.theme = 'dark'
+    }
+    document.body.dataset.theme = window.localStorage.getItem('theme')
+  `;
+  return (
+    <html lang="en">
+      <StyledComponentsRegistry>
+        <body className={inter.className}>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: setThemeMode,
+            }}
+          ></script>
+          <Header />
+          {children}
+          <Footer />
+        </body>
+      </StyledComponentsRegistry>
+    </html>
+  );
+}
+```
+
+리턴문을 보면 헤더, children, 풋터 위에 스크립트 태그가 있기 때문에 가장 먼저 읽힌다.
+
+![](https://velog.velcdn.com/images/minsang9735/post/b6699202-09a7-4c9d-8819-8618db31d552/image.gif)
+
+배경색 안바뀌고 문제없이 잘 작동한다. 깜빡이는건 새로고침을 했을때다.
+
+# 왜 되는거지?
+
+그런데...왜 되는거야...?
+
+생각해보니까 layout.tsx 파일에 'use client' 설정을 해두지 않았으니... server components 잖아?
+
+그럼 서버에서 렌더링되는건데....
+
+근데 localstorage는 클라이언트 코드다.
+
+![](https://velog.velcdn.com/images/minsang9735/post/87f5ec0a-8db9-4836-8152-aa7ed7a0b159/image.jpg)
+
+그래서 layout.tsx 에 클라이언트 코드를 설정해두면 뭐...서버에서 클라이언트 코드를 만나면 Next.js 가 자동으로 클라이언트로 넘겨주는건가...?
+
+아니면 서버에서 localstorage에 접근이 가능하게끔 만들어주나?
+
+아닌데?
+
+별의별 생각을 다 해봤다.
+
+하지만 다 틀렸다.
+
+```tsx
+const setThemeMode = `
+    if(!window.localStorage.getItem('theme')){
+      localStorage.theme = 'dark'
+    }
+    document.body.dataset.theme = window.localStorage.getItem('theme')
+  `;
+return (
+  <html lang="en">
+    <StyledComponentsRegistry>
+      <body className={inter.className}>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: setThemeMode,
+          }}
+        ></script>
+        <Header />
+        {children}
+        <Footer />
+      </body>
+    </StyledComponentsRegistry>
+  </html>
+);
+```
+
+localstorage 를 포함한 클라이언트 코드를 변수 setThemeMode에 "문자열"로 넣었다.
+
+그 후 setThemeMode를 dangerouslySetInnerHTML로 script 태그에 넣었다.
+
+즉, 이 말은 server는 localstorage에 접근하지 않고 setThemeMode 안에 담긴 문자열을 클라이언트에 넘겨주기만 한다.
+
+그럼 클라이언트는 script 태그 안에 있는 문자열을 실행한다. body 내용보다 먼저.
+
+server : "음...script 태그에 "문자열"이 저장되어있군 클라이언트에게 넘긴다."
+client : "ㅇㅋ..script 태그 실행 > setThemeMode > localstorage 발견"
+
+그러니까 처음에 생각한 서버에서 렌더링되니까 뭐 배경색이 먼저 설정되고 뭐시기 뭐시기...응 아니야~
+
+# 그럼 깜빡현상은 왜 발생한건데?
+
+아니 그러면 서버에서 발생한 문제가 아니였으면 왜 아까 깜빡현상이 생긴걸까?
+
+알고보니 범인은 나였다.
+
+Create Next App 을 하게되면 자동으로 생성되는 템플릿에 global.css 파일이 포함되어있다.
+
+globals.css 파일에는 해당 코드들이 자동으로 포함되어있다.
+
+```scss
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+
+    --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
+    --secondary-glow: linear-gradient(
+      to bottom right,
+      rgba(1, 65, 255, 0),
+      rgba(1, 65, 255, 0),
+      rgba(1, 65, 255, 0.3)
+    );
+
+    --tile-start-rgb: 2, 13, 46;
+    --tile-end-rgb: 2, 5, 19;
+    --tile-border: conic-gradient(
+      #ffffff80,
+      #ffffff40,
+      #ffffff30,
+      #ffffff20,
+      #ffffff10,
+      #ffffff10,
+      #ffffff80
+    );
+
+    --callout-rgb: 20, 20, 20;
+    --callout-border-rgb: 108, 108, 108;
+    --card-rgb: 100, 100, 100;
+    --card-border-rgb: 200, 200, 200;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+```
+
+나는 이 코드를 삭제하지 않고 아래에다가 그대로 상수를 추가해서 다크모드를 적용했었다.
+
+```scss
+body[data-theme="dark"]
+body[data-theme="light"]
+```
+
+그래서 '@media (prefers-color-scheme: dark)'가 의미하는게 뭔지 찾아봤더니
+운영 체제의 색상 테마를 감지하고 그 테마 상태에 따라서 배경색을 결정하는 코드였다.
+...
+그러니까 난 쓰지도 않는 코드를 지우지도 않고 작업하다가 생긴 문제를 보고 서버의 문제니 뭐니 렌더링의 문제니 뭐니 하면서 삽질했던 것.
+
+![](https://velog.velcdn.com/images/minsang9735/post/2a5cac23-0e2e-45a5-8cb8-e5b6ab08b7a5/image.jpg)
+
+globals.css 의 해당 코드를 삭제하면 해결된다.
+
+눈물나는 시간을 버리고 얻은게 있다면 가능하면 잘 만든 라이브러리를 사용할 것.
+
+그리고...사용하지 않는 코드는 반드시 정리할 것.
