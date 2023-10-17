@@ -1,7 +1,7 @@
 "use client";
 
-import { MainContainer, HeaderTitle, CustomImage, BlackThemeIcons, LightThemeIcons } from '../styles/components/Header';
-import { useRouter } from 'next/navigation'
+import { MainContainer, HeaderTitle, SideButtons, RouterButtons, RouterButton, CustomImage, BlackThemeIcons, LightThemeIcons } from '../styles/components/Header';
+import { useRouter, usePathname } from 'next/navigation';
 
 const Header = () => {
   const router = useRouter()
@@ -11,9 +11,17 @@ const Header = () => {
     localStorage.theme = newTheme;
     document.body.dataset.theme = newTheme;
   };
+  const params = usePathname();
+
 
   const goHomeHandle = () => {
     router.push('/');
+  }
+  const goBlogHandle = () => {
+    router.push('/blog');
+  }
+  const goProjectHandle = () => {
+    router.push('/projects');
   }
 
   const goGitHubHandle = () => {
@@ -23,34 +31,42 @@ const Header = () => {
   return (
     <MainContainer>
       <HeaderTitle onClick={goHomeHandle}>minsang.dev</HeaderTitle>
-      <BlackThemeIcons>
-        <CustomImage onClick={themeModeHandle}
-          width={40}
-          height={40}
-          alt="밝은 모드로 변경"
-          src="/sunny.svg"
-        />
-        <CustomImage onClick={goGitHubHandle}
-          width={40}
-          height={40}
-          alt="GitHub-White"
-          src="/github-mark-white.svg"
-        />
-      </BlackThemeIcons>
-      <LightThemeIcons>
-        <CustomImage onClick={themeModeHandle}
-          width={40}
-          height={40}
-          alt="어두운 모드로 변경"
-          src="/dark.svg"
-        />
-        <CustomImage onClick={goGitHubHandle}
-          width={40}
-          height={40}
-          alt="GitHub-Black"
-          src="/github-mark.svg"
-        />
-      </LightThemeIcons>
+      <SideButtons>
+        <RouterButtons>
+          <RouterButton onClick={goBlogHandle} style={{ color: params === '/blog' ? 'white' : 'grey' }}>blog</RouterButton>
+          <RouterButton onClick={goProjectHandle} style={{ color: params === '/projects' ? 'white' : 'grey' }}>projects</RouterButton>
+        </RouterButtons>
+        <BlackThemeIcons>
+          <CustomImage onClick={themeModeHandle}
+            width={40}
+            height={40}
+            alt="밝은 모드로 변경"
+            src="/sunny.svg"
+          />
+          <CustomImage onClick={goGitHubHandle}
+            width={40}
+            height={40}
+            alt="GitHub-White"
+            src="/github-mark-white.svg"
+          />
+        </BlackThemeIcons>
+        <LightThemeIcons>
+          <CustomImage onClick={themeModeHandle}
+            width={40}
+            height={40}
+            alt="어두운 모드로 변경"
+            src="/dark.svg"
+          />
+          <CustomImage onClick={goGitHubHandle}
+            width={40}
+            height={40}
+            alt="GitHub-Black"
+            src="/github-mark.svg"
+          />
+        </LightThemeIcons>
+      </SideButtons>
+
+
     </MainContainer>
   )
 }
