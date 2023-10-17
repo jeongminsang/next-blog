@@ -15,7 +15,7 @@ export default function Home() {
       <PostList>
         {posts.reverse().map((post, i) => (
           <PostBody key={slugs[i]}>
-            <Link href={`/${slugs[i]}`}>
+            <Link href={`blog/${slugs[i]}`}>
               <div>{post.data.title}</div>
               <div>{post.data.description}</div>
               <PostInfo>

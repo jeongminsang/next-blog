@@ -1,14 +1,14 @@
 
 import { readdirSync } from 'fs';
-import { getPostDetailData } from '../libs/api';
+import { getPostDetailData } from '../../libs/api';
 import 'dayjs/locale/ko';
 import dayjs from 'dayjs';
 import readingTime from 'reading-time';
-import PostDetailContent from '../components/PostDetailContents';
-import TOC from '../components/TOC';
-import { MainContainer, PostContainer, PostSection, PostTitle, PostInfo, TagAside, TOCAside, GiscusContainer } from "../styles/pages/DetailDataPage"
-import Giscus from '../components/Giscus';
-import ReadingProgressBar from '../components/ReadingProgressBar';
+import PostDetailContent from '../../components/PostDetailContents';
+import TOC from '../../components/TOC';
+import { MainContainer, PostContainer, PostSection, PostTitle, PostInfo, TagAside, TOCAside, GiscusContainer } from "../../styles/pages/DetailDataPage"
+import Giscus from '../../components/Giscus';
+import ReadingProgressBar from '../../components/ReadingProgressBar';
 dayjs.locale('ko');
 
 interface Params {
