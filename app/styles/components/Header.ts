@@ -26,6 +26,38 @@ export const HeaderTitle = styled.h4`
   }
 `;
 
+export const SideButtons = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  width: 800px;
+  height: 70px;
+  margin: 0 auto;
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
+`;
+
+export const RouterButtons = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+export const RouterButton = styled.div`
+  font-size: 17px;
+  padding: 8px;
+  margin: 5px;
+  background-color: rgba(0, 0, 0, 0);
+  /* border: none; */
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--hv-cr);
+    transition: background-color 0.2s ease;
+  }
+`;
+
 export const BlackThemeIcons = styled.div`
   display: flex;
   flex-direction: row;
