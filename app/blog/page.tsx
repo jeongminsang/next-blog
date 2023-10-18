@@ -3,7 +3,7 @@ import styles from './page.module.css'
 import { getAllPostData } from '../libs/api';
 import Link from "next/link"
 import readingTime from 'reading-time';
-import { MainContainer, Title, SubTitle, PostTitle, PostList, PostBody, PostInfo } from "../styles/pages/Home"
+import { MainContainer, Title, SubTitle, PostTitle, PostList, PostBody, PostInfo } from "../styles/pages/Blog"
 
 export default function Home() {
   const { posts, slugs } = getAllPostData();
