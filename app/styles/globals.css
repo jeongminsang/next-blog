@@ -34,6 +34,8 @@ body[data-theme="dark"] {
   transition: background-color 0.2s ease;
   --dis--black: none;
   --dis--light: flex;
+  --background--cr: rgb(29, 29, 29);
+  --text--color: white;
 }
 
 body[data-theme="light"] {
@@ -43,6 +45,8 @@ body[data-theme="light"] {
   transition: background-color 0.2s ease;
   --dis--black: flex;
   --dis--light: none;
+  --background--cr: rgb(255, 255, 255);
+  --text--color: black;
 }
 
 h1,

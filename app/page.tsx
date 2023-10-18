@@ -1,31 +1,26 @@
-import Image from 'next/image'
-import styles from './page.module.css'
-import { getAllPostData } from './libs/api';
-import Link from "next/link"
-import readingTime from 'reading-time';
-import { MainContainer, Title, SubTitle, PostTitle, PostList, PostBody, PostInfo } from "./styles/pages/Home"
+import { MainContainer, Title, ResumeImg, SubTitle, Contents } from "./styles/pages/Home"
 
 export default function Home() {
-  const { posts, slugs } = getAllPostData();
   return (
     <MainContainer>
-      <Title>Minsang's Blog</Title>
-      <SubTitle>👨‍💻공부하고 경험한 내용을 이곳에 기록합니다.</SubTitle>
-      <PostTitle>All Posts({posts.length})</PostTitle>
-      <PostList>
-        {posts.reverse().map((post, i) => (
-          <PostBody key={slugs[i]}>
-            <Link href={`/${slugs[i]}`}>
-              <div>{post.data.title}</div>
-              <div>{post.data.description}</div>
-              <PostInfo>
-                <div>{post.data.date}</div>
-                <div>약 {Math.ceil(readingTime(post.content).minutes)}분</div>
-              </PostInfo>
-            </Link>
-          </PostBody>
-        ))}
-      </PostList>
+      <ResumeImg
+        width={1000}
+        height={1000}
+        alt="프로필 사진"
+        src="/me.jpg"
+      />
+      <Title>Minsang Jeong</Title>
+      <SubTitle>프론트엔드 개발자 정민상입니다.</SubTitle>
+      <Contents>
+        저는 TypeScript, React, Next.js 에 관심이 많습니다.
+        <br />
+        문제를 마주하면 항상 깊은 고뇌와 근본적인 원인을 찾으려고 노력합니다.
+        <br />
+        요즘 독서와 운동을 즐겨하고 있습니다.
+        <br />
+        <br />
+        Contact 은 오른쪽 하단 버튼을 이용해 주세요.
+      </Contents>
     </MainContainer>
   )
 }

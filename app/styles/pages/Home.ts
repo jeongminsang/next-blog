@@ -1,6 +1,7 @@
 "use client";
 
 import styled from "styled-components";
+import Image from "next/image";
 
 export const MainContainer = styled.div`
   display: flex;
@@ -11,13 +12,25 @@ export const MainContainer = styled.div`
 `;
 
 export const Title = styled.h1`
+  display: flex;
+  justify-content: center;
   margin-top: 26px;
   margin-bottom: 10px;
   padding-left: 10px;
   padding-right: 10px;
 `;
 
-export const SubTitle = styled.h4`
+export const ResumeImg = styled(Image)`
+  display: flex;
+  align-self: center;
+  border-radius: 1000px;
+  width: 300px;
+  height: 300px;
+`;
+
+export const SubTitle = styled.h3`
+  display: flex;
+  justify-content: center;
   margin-top: 0px;
   margin-bottom: 10px;
   padding-left: 10px;
@@ -25,45 +38,8 @@ export const SubTitle = styled.h4`
   font-weight: 100;
 `;
 
-export const PostTitle = styled.h3`
-  margin-top: 10px;
-  margin-bottom: 0px;
-  padding-left: 10px;
-  padding-right: 10px;
-`;
-
-export const PostList = styled.ul`
+export const Contents = styled.p`
   display: flex;
-  flex-direction: column;
-  height: 580px;
-`;
-
-export const PostBody = styled.li`
-  display: flex;
-  flex-direction: column;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  transition: transform 0.2s ease;
-  &:hover {
-    transform: translateY(-5px);
-    background-color: var(--hv-cr);
-    transition: transform 0.2s ease;
-  }
-  @media screen and (max-width: 800px) {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin: 10px;
-  }
-`;
-
-export const PostInfo = styled.div`
-  display: flex;
-  flex-direction: row;
-  div {
-    display: flex;
-    align-items: center;
-    margin-right: 5px;
-  }
+  justify-content: center;
+  text-align: center;
 `;
