@@ -16,12 +16,10 @@ const TitleMoveDown = keyframes`
 
 const StackMoveDown = keyframes`
   0% {
-    transform: translateY(-200%);
-    opacity: 0;
+    transform: scale(0.5);
   }
   100% {
-    transform: translateY(0%);
-    opacity: 1;
+    transform: scale(1);
   }
 `;
 
@@ -93,7 +91,6 @@ export const CardContents = styled.div`
   top: 24px;
   left: 0;
   background: rgba(0, 0, 0, 0);
-  /* color: white; */
   padding: 5px;
   text-align: center;
   transition: background-color 0.5s ease;
@@ -113,13 +110,29 @@ export const CardContents = styled.div`
 `;
 
 export const CardTitle = styled.div`
+  font-size: 22px;
+  font-weight: 400;
   padding: 30px 10px 0px 10px;
   animation: ${TitleMoveDown} 0.2s linear;
 `;
 
 export const ProjectStack = styled.div`
-  color: #5ba2ff;
+  display: flex;
+  justify-content: center;
+  max-width: 200px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  color: white;
   animation: ${StackMoveDown} 0.2s linear;
+`;
+
+export const StackTag = styled.div`
+  border: 1px #5ba2ff solid;
+  font-size: 12px;
+  padding: 3px 5px 3px 5px;
+  margin: 3px;
+  border-radius: 5px;
+  background-color: #5ba2ff;
 `;
 
 export const ButtonContainer = styled.div`
@@ -135,8 +148,10 @@ export const ButtonContainer = styled.div`
 export const MoreButton = styled.div`
   border: 1px #5ba2ff solid;
   padding: 10px;
+  margin-top: 30px;
   transition: background-color 0.5s ease;
   transition: color 0.5s ease;
+  cursor: pointer;
   &:hover {
     background-color: #5ba2ff;
     color: white;
