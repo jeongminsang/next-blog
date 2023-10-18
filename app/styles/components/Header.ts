@@ -3,6 +3,10 @@
 import styled from "styled-components";
 import Image from "next/image";
 
+interface RouterButtonProps {
+  isParams: boolean;
+}
+
 export const MainContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -44,13 +48,13 @@ export const RouterButtons = styled.div`
   flex-direction: row;
 `;
 
-export const RouterButton = styled.div`
+export const RouterButton = styled.div<RouterButtonProps>`
   font-size: 17px;
   padding: 8px;
   margin: 5px;
   background-color: rgba(0, 0, 0, 0);
-  /* border: none; */
   border-radius: 5px;
+  color: ${(props) => (props.isParams ? "var(--text--color)" : "grey")};
   cursor: pointer;
   &:hover {
     background-color: var(--hv-cr);

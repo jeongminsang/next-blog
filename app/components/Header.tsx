@@ -33,8 +33,8 @@ const Header = () => {
       <HeaderTitle onClick={goHomeHandle}>minsang.dev</HeaderTitle>
       <SideButtons>
         <RouterButtons>
-          <RouterButton onClick={goBlogHandle} style={{ color: params === '/blog' ? 'white' : 'grey' }}>blog</RouterButton>
-          <RouterButton onClick={goProjectHandle} style={{ color: params === '/projects' ? 'white' : 'grey' }}>projects</RouterButton>
+          <RouterButton onClick={goBlogHandle} isParams={params === '/blog'}>blog</RouterButton>
+          <RouterButton onClick={goProjectHandle} isParams={params === '/projects'}>projects</RouterButton>
         </RouterButtons>
         <BlackThemeIcons>
           <CustomImage onClick={themeModeHandle}
