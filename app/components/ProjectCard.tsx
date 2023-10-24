@@ -1,8 +1,11 @@
 "use client"
 
+import { useState } from "react";
 import { CardContainer, CardImg, CardContents, CardTitle, ProjectStack, StackTag, ButtonContainer, MoreButton } from "../styles/pages/Projects"
+import Modal from "./Modal"
 
 const ProjectCard = (projectdata: any) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   console.log(projectdata.projectdata.properties.Tags.multi_select);
 
   const goGitHubHandle = () => {
@@ -30,6 +33,13 @@ const ProjectCard = (projectdata: any) => {
         </ProjectStack>
         <ButtonContainer>
           <MoreButton onClick={goGitHubHandle}>LEARN MORE</MoreButton>
+          <Modal
+            isModalOpen={isModalOpen}
+            onClickCloseModal={() => {
+              setIsModalOpen(false);
+            }}
+          >test</Modal>
+          <div onClick={() => { setIsModalOpen(true) }}>버튼</div>
         </ButtonContainer>
       </CardContents>
     </CardContainer>
