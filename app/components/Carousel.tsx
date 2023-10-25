@@ -1,15 +1,15 @@
 "use client";
 
-import { CarouselContainer, Carouseldiv, PrevArrowBtn, NextArrowBtn, CarouselImage } from '../styles/components/Modal';
+import { CarouselContainer, Carouseldiv, PrevArrowBtn, NextArrowBtn, LeftIcn, RightIcn, CarouselImage } from '../styles/components/Modal';
 
 const PrevArrow = (props: any) => (
   <PrevArrowBtn onClick={props.onClick}>
-    Previous
+    <LeftIcn />
   </PrevArrowBtn>
 );
 const NextArrow = (props: any) => (
   <NextArrowBtn onClick={props.onClick}>
-    Next
+    <RightIcn />
   </NextArrowBtn>
 );
 

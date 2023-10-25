@@ -1,12 +1,13 @@
 import React, { ReactNode, useEffect, useRef } from 'react';
 import useModal from './useModal';
-import { MainContainer, ModalSection, ChildrenContents } from '../styles/components/Modal';
+import { MainContainer, ModalSection, ChildrenContents, CloseModalBtn, CloseIcn } from '../styles/components/Modal';
 
 interface ModalProps {
   isModalOpen: boolean;
   onClickCloseModal: () => void;
   children?: ReactNode;
 }
+
 
 function Modal({
   isModalOpen,
@@ -35,11 +36,11 @@ function Modal({
   if (!isOpen) return null;
   return (
     <MainContainer>
-      <ModalSection ref={modalRef}>
+      <ModalSection isOpen={isModalOpen} ref={modalRef}>
         <ChildrenContents>{children}</ChildrenContents>
-        <button onClick={onClickCloseModal}>
-          &times;
-        </button>
+        <CloseModalBtn onClick={onClickCloseModal}>
+          <CloseIcn />
+        </CloseModalBtn>
       </ModalSection>
     </MainContainer>
   );

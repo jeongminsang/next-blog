@@ -1,6 +1,6 @@
 "use client";
 
-import { ContentsTitle, ContentsSubTitle, ProjectStack, StackTag } from '../styles/components/Modal';
+import { ContentsTitle, ContentsSubTitle, ProjectStack, StackTag, ProjectPeriod, LinkBtns, LinkBtn, GitHubIcn, LinkIcn } from '../styles/components/Modal';
 import Carousel from './Carousel'
 
 const ModalCardContents = (projectdata: any) => {
@@ -29,13 +29,15 @@ const ModalCardContents = (projectdata: any) => {
           <StackTag>{tag.name}</StackTag>
         ))}
       </ProjectStack>
-      <p>
-        {data.WorkPeriod.date.start + "~" + data.WorkPeriod.date.end}
-      </p>
-      <button onClick={() => goGitHubHandle()}>GitHub</button>
-      {data.Deploy.rich_text[0] &&
-        <button onClick={() => goDeployLinkHandle()}>Link</button>
-      }
+      <ProjectPeriod>
+        {data.WorkPeriod.date.start + " ~ " + data.WorkPeriod.date.end}
+      </ProjectPeriod>
+      <LinkBtns>
+        <LinkBtn onClick={() => goGitHubHandle()}><GitHubIcn />GITHUB</LinkBtn>
+        {data.Deploy.rich_text[0] &&
+          <LinkBtn onClick={() => goDeployLinkHandle()}><LinkIcn />LINK</LinkBtn>
+        }
+      </LinkBtns>
     </>
   )
 }
