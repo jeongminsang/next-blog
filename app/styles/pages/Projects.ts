@@ -3,6 +3,10 @@
 import styled, { keyframes } from "styled-components";
 import Image from "next/image";
 
+interface CardContentsProps {
+  modalState: boolean;
+}
+
 const TitleMoveDown = keyframes`
   0% {
     transform: translateY(-100%);
@@ -81,7 +85,7 @@ export const CardImg = styled(Image)`
   }
 `;
 
-export const CardContents = styled.div`
+export const CardContents = styled.div<CardContentsProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -90,12 +94,13 @@ export const CardContents = styled.div`
   height: 250px;
   top: 24px;
   left: 0;
-  background: rgba(0, 0, 0, 0);
+  background: ${(props) =>
+    props.modalState === false ? "rgba(0, 0, 0, 0)" : "var(--background--cr)"};
   padding: 5px;
   text-align: center;
   transition: background-color 0.5s ease;
   > div {
-    display: none;
+    display: ${(props) => (props.modalState ? "flex" : "none")};
   }
   &:hover {
     background: var(--background--cr);
