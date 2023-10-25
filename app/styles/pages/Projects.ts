@@ -18,7 +18,7 @@ const TitleMoveDown = keyframes`
   }
 `;
 
-const StackMoveDown = keyframes`
+const StackMove = keyframes`
   0% {
     transform: scale(0.5);
   }
@@ -128,7 +128,7 @@ export const ProjectStack = styled.div`
   margin-top: 10px;
   flex-wrap: wrap;
   color: white;
-  animation: ${StackMoveDown} 0.2s linear;
+  animation: ${StackMove} 0.2s linear;
 `;
 
 export const StackTag = styled.div`
@@ -154,8 +154,7 @@ export const MoreButton = styled.div`
   border: 1px #5ba2ff solid;
   padding: 10px;
   margin-top: 30px;
-  transition: background-color 0.5s ease;
-  transition: color 0.5s ease;
+  transition: background-color 0.5s ease, color 0.5s ease;
   cursor: pointer;
   &:hover {
     background-color: #5ba2ff;
