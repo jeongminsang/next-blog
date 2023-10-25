@@ -1,15 +1,14 @@
 import React, { ReactNode, useEffect, useRef } from 'react';
 import useModal from './useModal';
+import { MainContainer, ModalSection, ChildrenContents } from '../styles/components/Modal';
 
 interface ModalProps {
-  headerText?: string;
   isModalOpen: boolean;
   onClickCloseModal: () => void;
   children?: ReactNode;
 }
 
 function Modal({
-  headerText,
   isModalOpen,
   onClickCloseModal,
   children,
@@ -35,17 +34,14 @@ function Modal({
   const isOpen = useModal(isModalOpen, 100);
   if (!isOpen) return null;
   return (
-    <div>
-      <section ref={modalRef}>
-        <header>
-          {headerText}
-          <button onClick={onClickCloseModal}>
-            &times;
-          </button>
-        </header>
-        <main>{children}</main>
-      </section>
-    </div>
+    <MainContainer>
+      <ModalSection ref={modalRef}>
+        <ChildrenContents>{children}</ChildrenContents>
+        <button onClick={onClickCloseModal}>
+          &times;
+        </button>
+      </ModalSection>
+    </MainContainer>
   );
 }
 
