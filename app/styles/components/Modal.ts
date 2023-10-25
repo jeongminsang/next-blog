@@ -48,12 +48,18 @@ export const MainContainer = styled.div`
 export const ModalSection = styled.section<any>`
   position: fixed;
   top: 100px;
-  width: 454.55px;
+  width: 500px;
   height: 500px;
   border: 1px none solid;
   background-color: var(--background--cr);
   animation: ${(props) => (props.isOpen ? ModalOpenMove : ModalCloseMove)} 0.3s
     ease-in-out;
+  @media screen and (max-width: 800px) {
+    width: 454.55px;
+  }
+  @media screen and (max-width: 500px) {
+    width: 412px;
+  }
 `;
 
 export const ChildrenContents = styled.div`
@@ -159,8 +165,14 @@ export const Carouseldiv = styled(Slider)`
   display: flex;
   flex-direction: row;
   position: sticky;
-  width: 454.55px;
+  width: 500px;
   height: 300px;
+  @media screen and (max-width: 800px) {
+    width: 454.55px;
+  }
+  @media screen and (max-width: 500px) {
+    width: 412px;
+  }
 `;
 
 export const PrevArrowBtn = styled.div`
