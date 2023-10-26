@@ -5,17 +5,35 @@ import { CardContainer, CardImg, CardContents, CardTitle, ProjectStack, StackTag
 import Modal from "./Modal"
 import ModalCardContents from "./ModalCardContents";
 
-const ProjectCard = (projectdata: any) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  // console.log(projectdata.projectdata.properties.Stack.multi_select);
+interface ProjectData {
+  cover: {
+    file: {
+      url: string;
+    };
+  };
+  properties: {
+    Name: {
+      title: {
+        plain_text: string
+      }[];
+    };
+    Stack: {
+      multi_select: {
+        name: string
+      }[];
+    };
+  };
+}
 
-  const goGitHubHandle = () => {
-    window.open(`${projectdata.projectdata.properties.GitHub.rich_text[0].text.content}`)
-  }
+interface ProjectCardProps {
+  projectdata: ProjectData;
+}
+
+const ProjectCard = (projectdata: ProjectCardProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <CardContainer>
-      {/* <div>{projectdata.projectdata.properties.Name.title[0].plain_text}</div> */}
       <CardImg
         src={projectdata.projectdata.cover.file.url}
         alt="cover image"
@@ -23,13 +41,13 @@ const ProjectCard = (projectdata: any) => {
         height={1000}
         draggable={false}
       />
-      <CardContents modalState={isModalOpen}>
+      <CardContents modalstate={`${isModalOpen}`}>
         <CardTitle>
           {projectdata.projectdata.properties.Name.title[0].plain_text}
         </CardTitle>
         <ProjectStack>
-          {projectdata.projectdata.properties.Stack.multi_select.map((tag: any) => (
-            <StackTag>{tag.name}</StackTag>
+          {projectdata.projectdata.properties.Stack.multi_select.map((tag, index: number) => (
+            <StackTag key={index}>{tag.name}</StackTag>
           ))}
         </ProjectStack>
         <ButtonContainer>

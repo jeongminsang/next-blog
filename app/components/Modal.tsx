@@ -36,7 +36,7 @@ function Modal({
   if (!isOpen) return null;
   return (
     <MainContainer>
-      <ModalSection isOpen={isModalOpen} ref={modalRef}>
+      <ModalSection ismodalopen={`${isModalOpen}`} ref={modalRef}>
         <ChildrenContents>{children}</ChildrenContents>
         <CloseModalBtn onClick={onClickCloseModal}>
           <CloseIcn />

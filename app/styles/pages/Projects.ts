@@ -4,7 +4,7 @@ import styled, { keyframes } from "styled-components";
 import Image from "next/image";
 
 interface CardContentsProps {
-  modalState: boolean;
+  modalstate: string;
 }
 
 const TitleMoveDown = keyframes`
@@ -95,12 +95,14 @@ export const CardContents = styled.div<CardContentsProps>`
   top: 24px;
   left: 0;
   background: ${(props) =>
-    props.modalState === false ? "rgba(0, 0, 0, 0)" : "var(--background--cr)"};
+    props.modalstate === "false"
+      ? "rgba(0, 0, 0, 0)"
+      : "var(--background--cr)"};
   padding: 5px;
   text-align: center;
   transition: background-color 0.5s ease;
   > div {
-    display: ${(props) => (props.modalState ? "flex" : "none")};
+    display: ${(props) => (props.modalstate === "true" ? "flex" : "none")};
   }
   &:hover {
     background: var(--background--cr);
