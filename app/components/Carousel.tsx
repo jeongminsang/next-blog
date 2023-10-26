@@ -2,19 +2,33 @@
 
 import { CarouselContainer, Carouseldiv, PrevArrowBtn, NextArrowBtn, LeftIcn, RightIcn, CarouselImage } from '../styles/components/Modal';
 
-const PrevArrow = (props: any) => (
+interface ImageFile {
+  file: {
+    url: string;
+  };
+}
+
+interface CarouselImgProps {
+  images: ImageFile[];
+}
+
+interface ArrowProps {
+  onClick?: () => void;
+}
+
+
+const PrevArrow = (props: ArrowProps) => (
   <PrevArrowBtn onClick={props.onClick}>
     <LeftIcn />
   </PrevArrowBtn>
 );
-const NextArrow = (props: any) => (
+const NextArrow = (props: ArrowProps) => (
   <NextArrowBtn onClick={props.onClick}>
     <RightIcn />
   </NextArrowBtn>
 );
 
-const Carousel = (images: any) => {
-  console.log(images)
+const Carousel = (images: CarouselImgProps) => {
   const settings = {
     dots: false,
     infinite: true,
@@ -27,8 +41,9 @@ const Carousel = (images: any) => {
   return (
     <CarouselContainer>
       <Carouseldiv {...settings}>
-        {images.images.map((image: any) => (
+        {images.images.map((image, index: number) => (
           <CarouselImage
+            key={index}
             src={image.file.url}
             alt="cover image"
             width={1000}

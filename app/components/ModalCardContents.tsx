@@ -25,8 +25,8 @@ const ModalCardContents = (projectdata: any) => {
         {data.Description.rich_text[0].plain_text}
       </ContentsSubTitle>
       <ProjectStack>
-        {data.Stack.multi_select.map((tag: any) => (
-          <StackTag>{tag.name}</StackTag>
+        {data.Stack.multi_select.map((tag: any, index: number) => (
+          <StackTag key={index}>{tag.name}</StackTag>
         ))}
       </ProjectStack>
       <ProjectPeriod>

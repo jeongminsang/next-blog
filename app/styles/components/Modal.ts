@@ -8,6 +8,10 @@ import { IoCloseSharp } from "react-icons/io5";
 import { AiFillGithub } from "react-icons/ai";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
 
+interface ModalSectionProps {
+  ismodalopen: string;
+}
+
 const ModalOpenMove = keyframes`
   0% {
     transform: scale(0.95);
@@ -45,15 +49,16 @@ export const MainContainer = styled.div`
   transition: background-color 0.2s ease;
 `;
 
-export const ModalSection = styled.section<any>`
+export const ModalSection = styled.section<ModalSectionProps>`
   position: fixed;
   top: 100px;
   width: 500px;
   height: 500px;
   border: 1px none solid;
   background-color: var(--background--cr);
-  animation: ${(props) => (props.isOpen ? ModalOpenMove : ModalCloseMove)} 0.3s
-    ease-in-out;
+  animation: ${(props) =>
+      props.ismodalopen === "true" ? ModalOpenMove : ModalCloseMove}
+    0.3s ease-in-out;
   @media screen and (max-width: 800px) {
     width: 454.55px;
   }
