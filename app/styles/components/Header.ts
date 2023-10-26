@@ -67,7 +67,7 @@ export const BlackThemeIcons = styled.div`
   flex-direction: row;
   align-items: center;
   padding-left: 10px;
-  margin: 10px;
+  margin: 10px 0px 10px 0px;
   display: var(--dis--light);
 `;
 
@@ -76,7 +76,7 @@ export const LightThemeIcons = styled.div`
   flex-direction: row;
   align-items: center;
   padding-left: 10px;
-  margin: 10px;
+  margin: 10px 0px 10px 0px;
   display: var(--dis--black);
 `;
 
