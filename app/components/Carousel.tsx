@@ -45,9 +45,9 @@ const Carousel = (images: CarouselImgProps) => {
           <CarouselImage
             key={index}
             src={image.file.url}
-            alt="cover image"
-            width={1000}
-            height={1000}
+            alt="Carousel Image"
+            width={500}
+            height={500}
             draggable={false}
           />
         ))}
