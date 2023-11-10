@@ -1,15 +1,10 @@
 "use client";
 
 import { CarouselContainer, Carouseldiv, PrevArrowBtn, NextArrowBtn, LeftIcn, RightIcn, CarouselImage } from '../styles/components/Modal';
+import { projectImgs } from "../libs/ProjectImgs"
 
-interface ImageFile {
-  file: {
-    url: string;
-  };
-}
-
-interface CarouselImgProps {
-  images: ImageFile[];
+interface ProjectNameProps {
+  projectname: string;
 }
 
 interface ArrowProps {
@@ -28,7 +23,7 @@ const NextArrow = (props: ArrowProps) => (
   </NextArrowBtn>
 );
 
-const Carousel = (images: CarouselImgProps) => {
+const Carousel = (projectname: ProjectNameProps) => {
   const settings = {
     dots: false,
     infinite: true,
@@ -38,16 +33,26 @@ const Carousel = (images: CarouselImgProps) => {
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
   };
+
+  const findProjectIndex = (projectName: string) => {
+    for (let i = 0; i < projectImgs.length; i++) {
+      if (projectImgs[i].projectName === projectName) {
+        return i;
+      }
+    }
+    return projectImgs.length;
+  }
+
   return (
     <CarouselContainer>
       <Carouseldiv {...settings}>
-        {images.images.map((image, index: number) => (
+        {projectImgs[findProjectIndex(projectname.projectname)].carouselimage.map((image, index: number) => (
           <CarouselImage
             key={index}
-            src={image.file.url}
+            src={image}
             alt="Carousel Image"
-            width={500}
-            height={500}
+            width={1000}
+            height={1000}
             draggable={false}
           />
         ))}

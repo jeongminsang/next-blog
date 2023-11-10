@@ -5,7 +5,6 @@ import Carousel from './Carousel'
 
 const ModalCardContents = (projectdata: any) => {
   const data = projectdata.projectdata.properties;
-  console.log(data.Files.files)
 
   const goGitHubHandle = () => {
     window.open(`${data.GitHub.rich_text[0].plain_text}`)
@@ -17,7 +16,7 @@ const ModalCardContents = (projectdata: any) => {
 
   return (
     <>
-      <Carousel images={data.Files.files} />
+      <Carousel projectname={data.Name.title[0].plain_text} />
       <ContentsTitle>
         {data.Name.title[0].plain_text}
       </ContentsTitle>
