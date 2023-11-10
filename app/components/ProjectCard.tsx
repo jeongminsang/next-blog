@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CardContainer, CardImg, CardContents, CardTitle, ProjectStack, StackTag, ButtonContainer, MoreButton } from "../styles/pages/Projects"
 import Modal from "./Modal"
 import ModalCardContents from "./ModalCardContents";
+import { projectImgs } from "../libs/ProjectImgs"
 
 interface ProjectData {
   cover: {
@@ -32,10 +33,19 @@ interface ProjectCardProps {
 const ProjectCard = (projectdata: ProjectCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const findProjectIndex = (projectName: any) => {
+    for (let i = 0; i < projectImgs.length; i++) {
+      if (projectImgs[i].projectName === projectName) {
+        return i;
+      }
+    }
+    return projectImgs.length;
+  }
+
   return (
     <CardContainer>
       <CardImg
-        src={projectdata.projectdata.cover.file.url}
+        src={projectImgs[findProjectIndex(projectdata.projectdata.properties.Name.title[0].plain_text)].coverimage}
         alt="cover image"
         width={1000}
         height={1000}
