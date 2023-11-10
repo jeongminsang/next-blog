@@ -33,7 +33,7 @@ interface ProjectCardProps {
 const ProjectCard = (projectdata: ProjectCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const findProjectIndex = (projectName: any) => {
+  const findProjectIndex = (projectName: string) => {
     for (let i = 0; i < projectImgs.length; i++) {
       if (projectImgs[i].projectName === projectName) {
         return i;
