@@ -17,6 +17,11 @@ interface ProjectData {
         href: string
       }[];
     };
+    CoverImg: {
+      rich_text: {
+        href: string
+      }[];
+    };
     Name: {
       title: {
         plain_text: string
@@ -37,10 +42,12 @@ interface ProjectCardProps {
 const ProjectCard = (projectdata: ProjectCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  console.log(projectdata.projectdata.properties.CoverImg.rich_text[0].href)
+
   return (
     <CardContainer>
       <CardImg
-        src={projectdata.projectdata.properties.Images.rich_text[0].href}
+        src={projectdata.projectdata.properties.CoverImg.rich_text[0].href}
         alt="cover image"
         width={1000}
         height={1000}
