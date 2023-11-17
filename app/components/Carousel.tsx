@@ -4,7 +4,9 @@ import { CarouselContainer, Carouseldiv, PrevArrowBtn, NextArrowBtn, LeftIcn, Ri
 import { projectImgs } from "../libs/ProjectImgs"
 
 interface ProjectNameProps {
-  projectname: string;
+  projectname: {
+    href: string;
+  }[];
 }
 
 interface ArrowProps {
@@ -34,22 +36,13 @@ const Carousel = (projectname: ProjectNameProps) => {
     nextArrow: <NextArrow />,
   };
 
-  const findProjectIndex = (projectName: string) => {
-    for (let i = 0; i < projectImgs.length; i++) {
-      if (projectImgs[i].projectName === projectName) {
-        return i;
-      }
-    }
-    return projectImgs.length;
-  }
-
   return (
     <CarouselContainer>
       <Carouseldiv {...settings}>
-        {projectImgs[findProjectIndex(projectname.projectname)].carouselimage.map((image, index: number) => (
+        {projectname.projectname.map((image: any, index: number) => (
           <CarouselImage
             key={index}
-            src={image}
+            src={image.href}
             alt="Carousel Image"
             width={1000}
             height={1000}
