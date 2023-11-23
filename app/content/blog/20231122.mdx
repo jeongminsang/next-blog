@@ -1,0 +1,303 @@
+---
+title: Notion API에 한 대 맞은 후기
+date: "2023-11-22"
+description: 노션으로 API 를 사용하다 문제를 발견했다.
+---
+
+![](https://velog.velcdn.com/images/minsang9735/post/ed0bb849-693b-483b-b2c8-e0743b78f2bc/image.jpeg)
+
+약 2년전 노션에서 API를 공개했다.
+노션에 데이터를 넣고 API를 통해 데이터를 주고 받을 수 있는 방식이다.
+프로젝트나 포폴에 사용할 백엔드가 반드시 필요한 프론트엔드 개발자에겐 좋은 선택지가 더 생긴 셈이다.
+NotionAPI를 활용한 포트폴리오 관련 영상도 많이 나오고 있어서 흥미가 생겼다.
+
+일단 노션은 협업에서도 사용되고 개인 필기용으로도 많이 사용되는 서비스인데, NotionAPI는 DB 필요없이 노션 자체가 DB 역할을 하며 그 DB를 공개할 수 있다는 점에 있어서 굉장히 이점이 있다. 이론상 Firebase 상위호환이라 할 수 있겠다.
+
+# 뭘 만들까?
+
+그럼 이론상 엄청난 서비스이니 안써볼 수 없겠다.
+
+[노마드 코더 notionAPI 사용방법](https://www.youtube.com/watch?app=desktop&v=XCAwSBdeejU)
+
+[개발하는 정대리 포폴 만들기](https://www.youtube.com/watch?v=KvoFvmu5eRo)
+
+[노션 API docs](https://developers.notion.com/)
+
+위 자료를 참고하여 학습했다.
+
+개인 블로그에 프로젝트 관련 탭을 하나 만들고 싶었는데, MD 파일을 로컬에 넣고 보여주는 방식을 이미 블로그로 쓰고 있는 상황이라 다른 방식으로 구현을 해보고 싶었는데 마침 잘 됐다.
+
+## 포트폴리오 탭을 만들자
+
+![](https://velog.velcdn.com/images/minsang9735/post/d95e3dd4-b14b-475e-81b2-5747c0e9a8f4/image.png)
+블로그 옆에 포트폴리오 탭을 하나 만들고 탭 안에 데이터는 모두 Notion API를 통해 데이터를 가져올 생각이다.
+
+# 구현
+
+## 데이터 추가
+
+우선 노션에 데이터를 추가해줘야 한다.
+
+![](https://velog.velcdn.com/images/minsang9735/post/014bfd28-f810-4155-a381-0e17188303b4/image.png)
+노션에 카드를 만들고 하나씩 데이터를 넣어준다
+![](https://velog.velcdn.com/images/minsang9735/post/47a20fdb-2379-4f4f-97f1-17f4c4cdacee/image.png)
+데이터로 갖고 오고 싶은 부분은 프로퍼티를 추가해서 데이터를 넣어줄 수 있다.
+
+난 커버 이미지, 스택, 프로젝트 소개, 이미지 등을 넣었다.
+
+## Notion API 연결 등록
+
+데이터를 데이터베이스에 추가했으니 이제 API로 사용할 수 있도록 등록을 해야한다.
+
+https://www.notion.so/ 에서 'View documentation'을 클릭해서 integration을 하나 만들자
+
+![](https://velog.velcdn.com/images/minsang9735/post/851dfb31-6aec-4a3c-abcc-5bdd1aca7906/image.png)
+
+Name 작명을 하고 넘어가면
+![](https://velog.velcdn.com/images/minsang9735/post/bf6ec3b4-0c2c-4f2a-b339-92c2e5ccc99c/image.png)
+
+Secret 키가 발급이 된다. 요건 나중에 잘 쓸거니 보관해두고 다음 내용은 기본값으로 만들어도 크게 상관없다.
+
+다음 단계는 데이터를 읽기, 업데이트 등 어떻게 쓸지 기능 관련 탭과 public으로 할지 private 으로 할지 정하는 단계이다.
+
+![](https://velog.velcdn.com/images/minsang9735/post/4bba06ce-51a9-42e8-897c-5dc67ad32776/image.png)
+다 만들었으니 연결하러 가자
+
+노션과 연결은 했지만 데이터베이스에 접근 하려면 ID가 또 필요하다.
+![](https://velog.velcdn.com/images/minsang9735/post/b9b59919-997d-4988-9a96-040b12209341/image.png)
+
+아까 만든 데이터베이스를 새탭에서 열기를 클릭하면 새 탭이 열리는데
+이 탭의 query가 곧 database ID 이다
+
+URL에서
+
+> https://www.notion.so/???
+
+www.notion.so/ 뒤에 ???가 DatabaseID 이다.
+
+## 데이터 불러오기
+
+![](https://velog.velcdn.com/images/minsang9735/post/b2df4278-dc2e-4246-8edc-77e083eaefa6/image.png)
+노션 공식문서 API Reference에 예시가 다 나와있으니 참고할 것.
+
+일단 postman 에서 테스트를 해보자면
+![](https://velog.velcdn.com/images/minsang9735/post/9c472b0d-4a23-4bed-9ce0-50667a93981a/image.png)
+
+??? 는 아까 URL에서 찾은 데이터베이스 키이고 아래 토큰은 integration만들때 발급한 시크릿 키이다.
+
+![](https://velog.velcdn.com/images/minsang9735/post/a3fbcb3b-df47-4ef2-9a1d-e215c267d8a7/image.png)
+그리고 공식문서처럼 Notion-Version 을 꼭 넣어줘야 한다. ~~안하면 에러남~~
+
+![](https://velog.velcdn.com/images/minsang9735/post/53491215-a1c0-43d2-8ae8-6fa415ebd660/image.png)
+
+데이터 잘 나오는 것 확인.
+
+## 코드에 적용하기
+
+그대로 내 블로그 코드에 적용해보자
+
+```tsx
+export async function getProjectData() {
+  try {
+    const response = await axios.post(
+      `https://api.notion.com/v1/databases/${DATABASE_ID}/query`,
+      {
+        sorts: [
+          {
+            property: "Name",
+            direction: "ascending",
+          },
+        ],
+        page_size: 100,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Notion-Version": "2022-06-28",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      }
+    );
+    console.log(response);
+    return { props: { data: response.data } };
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+```tsx
+export default async function Projects() {
+  const data = await getProjectData();
+
+  return (
+    <MainContainer>
+      <Title>Projects</Title>
+      <ProjectContainer>
+        {data &&
+          data.props.data.results.map((projectdata: any, index: number) => (
+            <ProjectCard key={index} projectdata={projectdata} />
+          ))}
+      </ProjectContainer>
+    </MainContainer>
+  );
+}
+```
+
+```tsx
+const ProjectCard = (projectdata: ProjectCardProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  console.log(projectdata.projectdata.properties.CoverImg.rich_text[0].href);
+
+  return (
+    <CardContainer>
+      <CardImg
+        src={projectdata.projectdata.properties.CoverImg.rich_text[0].href}
+        alt="cover image"
+        width={1000}
+        height={1000}
+        draggable={false}
+      />
+      <CardContents modalstate={`${isModalOpen}`}>
+        <CardTitle>
+          {projectdata.projectdata.properties.Name.title[0].plain_text}
+        </CardTitle>
+        <ProjectStack>
+          {projectdata.projectdata.properties.Stack.multi_select.map(
+            (tag, index: number) => (
+              <StackTag key={index}>{tag.name}</StackTag>
+            )
+          )}
+        </ProjectStack>
+        <ButtonContainer>
+          <MoreButton onClick={() => setIsModalOpen(true)}>
+            LEARN MORE
+          </MoreButton>
+          <Modal
+            isModalOpen={isModalOpen}
+            onClickCloseModal={() => {
+              setIsModalOpen(false);
+            }}
+          >
+            <ModalCardContents
+              projectdata={projectdata.projectdata}
+            ></ModalCardContents>
+          </Modal>
+        </ButtonContainer>
+      </CardContents>
+    </CardContainer>
+  );
+};
+export default ProjectCard;
+```
+
+데이터를 가져온 후에 조합해서 페이지를 꾸며보았다.
+![](https://velog.velcdn.com/images/minsang9735/post/5d5660f8-56be-4705-8274-e8452c943042/image.png)
+
+# 후기
+
+생각보다 사용하기 편리하고 노션 데이터 get 요청 말고도 생성, 수정, 삭제 등 모두 가능하다고 하니 활용도가 어마무시할 것 같다. ~~역시 노션...?~~
+
+# 뒷통수 한대
+
+역시 이렇게 쉽게 끝날리가 없지
+
+개발 환경에선 별문제 없이 잘 동작하지만 문제는 배포환경에서 발생한다.
+
+![](https://velog.velcdn.com/images/minsang9735/post/2d81db18-fc87-40be-a32b-0d874dca2eaa/image.png)
+
+![](https://velog.velcdn.com/images/minsang9735/post/55dfd895-bb68-44d5-ac34-5cf00063d42a/image.png)
+
+![](https://velog.velcdn.com/images/minsang9735/post/b62811c2-6849-4eb2-a021-de5b9942e671/image.png)
+
+ㅋㅋㅋ...
+
+배포한 후 어느정도 시간이 지나면 이미지들이 502 Bad Request를 응답하면서 로드되지 않는다.
+
+심지어 왜 발생하는지 찾기도 어렵게 랜덤으로 발생하고 있다.
+
+![](https://velog.velcdn.com/images/minsang9735/post/8b4622e7-4349-4802-be8b-e3c5319622b8/image.png)
+
+Vercel 배포 로그를 보면 이미지들이 어떤건 200 으로 잘 나오고 있고 다른 이미지는 502인 것을 확인할 수 있다.
+
+이런 경우는 대체 뭐지...?
+
+그래서 내가 생각한 원인들을 정리해 본다면
+
+1. [**Notion API 요청 제한이 있다?**](https://eightify.app/ko/summary/artificial-intelligence-and-design/unlock-the-hidden-potential-of-notion-api-a-versatile-cms-and-database-for-web-apps)
+
+- 링크에 의하면, **초당 3건의 요청 제한이 있다고 한다. 근데 난 요청을 한번밖에 보내지 않는다**
+
+2. **Notion API 서버, 이미지 서버의 문제**
+
+- 가장 유력
+
+3. **next/Image 태그의 이미지 용량 크기로 인한 에러일 수 있다.**
+
+- Postman 으로 확인해본 결과 이미지 URL은 문제없이 나오는 것을 확인함
+
+노션이 이미지 서버를 관리하는데 있어서 용량 문제 때문에 일방적으로 정리는 하는건지 공개를 하지 않아서 도무지 감 잡기가 어렵다.
+
+![](https://velog.velcdn.com/images/minsang9735/post/7a7c3c58-9655-4156-bdf2-20a7aa137326/image.png)
+
+[개발하는 정대리 포폴 만들기](https://www.youtube.com/watch?v=KvoFvmu5eRo) 유툽 포폴만들기 강의에서 직접 만든 배포파일도 502 에러가 발생하는건 물론이고
+
+![](https://velog.velcdn.com/images/minsang9735/post/b6f4d6ed-e579-4026-ab9d-4095cb7d44ac/image.png)
+
+수강생이 만든 페이지까지 모조리 다 502 Bad Request 가 발생하고 있다... ~~다들 알고는 있을라나...?~~
+
+https://github.com/makenotion/notion-sdk-js/issues/172
+해당 이슈에 의하면, notion API 서버의 문제가 맞는 듯 하다. 예전에도 이런 일이 있었는데 해결되었다가 다시 발생한 듯? 하다.
+
+https://www.reddit.com/r/Notion/comments/16opf3a/notion_api_502_error_not_in_the_documentation/
+레딧에서도 다들 안된다고 짜증내는 중ㅋㅋㅋ
+
+![](https://velog.velcdn.com/images/minsang9735/post/c1e9c7f1-6019-43b3-9e62-be19e6a7cdb6/image.png)
+
+나와 똑같이 무작위로 문제가 발생하는 사람도 찾았다. 말은 안했을 뿐이지 다들 비슷한 문제일 것으로 추정된다.
+
+스택오버플로우에 해결법이 몇개 올라와 있는데 모두 시도해봤지만 소용 없었다.
+https://stackoverflow.com/questions/73292256/images-return-502-error-after-deploy-project-in-vercel
+
+https://stackoverflow.com/questions/68879010/nextjs-image-component-502-error-in-server
+
+https://community.make.com/t/notion-api-bad-gateway/16455
+
+## 그래서 어떻게 해결하냐?
+
+일단 문제가 notion API 사용시 이미지 서버가 말썽을 피우는 상황이니, 노션 인프라에 적용된 이미지 서버를 안쓰면 그만이잖아...?
+![](https://velog.velcdn.com/images/minsang9735/post/d3fe9440-b4b4-431f-9fbc-5fa8bacdcce1/image.png)
+
+이미지 URL을 잘 살펴보면
+어차피 노션도 S3 Bucket을 통해서 이미지를 호스팅하는 것 같은데 이놈들 이미지 서버만 피해보자
+
+1. 이미지만 로컬에 따로 올려서 사용한다.
+2. 별도로 이미지 서버를 따로 호스팅해서 데이터베이스에 저장한다.
+
+이미지를 로컬에 올리는건 안될 이유가 없으니 2번을 도전해보는게 좋지 않을까...?
+
+## 별도 이미지 서버 운영하기
+
+https://imgbb.com/ 같은 이미지만 호스팅할 수 있는 서비스에서 이미지만 올리고
+호스팅된 URL 을 노션 데이터베이스에 이미지 파일 대신 올릴 것이다.
+
+로그인 후에 이미지를 올리면 바로 사용이 가능하다.
+![](https://velog.velcdn.com/images/minsang9735/post/3a399318-ffe3-41d3-8920-c5c7be9c3b58/image.png)
+
+노션에 파일을 삭제하고 링크만 올리고 API를 통해 클라이언트에선 문자열로 받으면 됨![](https://velog.velcdn.com/images/minsang9735/post/84f99f52-cddb-4a6f-af4a-9397307ed536/image.png)
+
+![](https://velog.velcdn.com/images/minsang9735/post/804a62e4-0cb8-4a91-aac4-077f08e7490c/image.png)
+
+성공!
+
+뭔가 이미지 로그 속도가 더 빨라진 것 같기도 하고...?
+
+# 한대 맞은 후기
+
+Notion API 가 굉장히 좋은 서비스라는건 달라지지 않는 것 같다. 결국 이미지만 호스팅하지 않는다면 충분히 활용한 용도가 많다는 뜻이니까.
+
+그래도 인프라에 대한 이해와 서버로그 보기, 코드 정적 분석 등 문제를 해결하기 위한 다양한 시도를 해봤다는 점에 있어서 재밌는 경험이였다고 생각한다.
+
+그래도 가능하면 검증된 Firebase를 쓰는게 더 좋을 듯..ㅋㅋ

@@ -16,7 +16,7 @@ const ModalCardContents = (projectdata: any) => {
 
   return (
     <>
-      <Carousel projectname={data.Name.title[0].plain_text} />
+      <Carousel projectname={data.Images.rich_text} />
       <ContentsTitle>
         {data.Name.title[0].plain_text}
       </ContentsTitle>
