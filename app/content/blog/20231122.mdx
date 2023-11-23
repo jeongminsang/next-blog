@@ -7,20 +7,21 @@ description: 노션으로 API 를 사용하다 문제를 발견했다.
 ![](https://velog.velcdn.com/images/minsang9735/post/ed0bb849-693b-483b-b2c8-e0743b78f2bc/image.jpeg)
 
 약 2년전 노션에서 API를 공개했다.
+
 노션에 데이터를 넣고 API를 통해 데이터를 주고 받을 수 있는 방식이다.
+
 프로젝트나 포폴에 사용할 백엔드가 반드시 필요한 프론트엔드 개발자에겐 좋은 선택지가 더 생긴 셈이다.
+
 NotionAPI를 활용한 포트폴리오 관련 영상도 많이 나오고 있어서 흥미가 생겼다.
 
-일단 노션은 협업에서도 사용되고 개인 필기용으로도 많이 사용되는 서비스인데, NotionAPI는 DB 필요없이 노션 자체가 DB 역할을 하며 그 DB를 공개할 수 있다는 점에 있어서 굉장히 이점이 있다. 이론상 Firebase 상위호환이라 할 수 있겠다.
+일단 노션은 협업에서도 사용되고 개인 필기용으로도 많이 사용되는 서비스인데, NotionAPI는 DB 필요없이 노션 자체가 DB 역할을 하며 그 DB를 공개할 수 있다는 점에 있어서 굉장한 이점이 있다. 이론상 Firebase 상위호환이라 할 수 있겠다.
 
 # 뭘 만들까?
 
 그럼 이론상 엄청난 서비스이니 안써볼 수 없겠다.
 
 [노마드 코더 notionAPI 사용방법](https://www.youtube.com/watch?app=desktop&v=XCAwSBdeejU)
-
 [개발하는 정대리 포폴 만들기](https://www.youtube.com/watch?v=KvoFvmu5eRo)
-
 [노션 API docs](https://developers.notion.com/)
 
 위 자료를 참고하여 학습했다.
@@ -42,7 +43,6 @@ NotionAPI를 활용한 포트폴리오 관련 영상도 많이 나오고 있어�
 노션에 카드를 만들고 하나씩 데이터를 넣어준다
 ![](https://velog.velcdn.com/images/minsang9735/post/47a20fdb-2379-4f4f-97f1-17f4c4cdacee/image.png)
 데이터로 갖고 오고 싶은 부분은 프로퍼티를 추가해서 데이터를 넣어줄 수 있다.
-
 난 커버 이미지, 스택, 프로젝트 소개, 이미지 등을 넣었다.
 
 ## Notion API 연결 등록
@@ -50,7 +50,6 @@ NotionAPI를 활용한 포트폴리오 관련 영상도 많이 나오고 있어�
 데이터를 데이터베이스에 추가했으니 이제 API로 사용할 수 있도록 등록을 해야한다.
 
 https://www.notion.so/ 에서 'View documentation'을 클릭해서 integration을 하나 만들자
-
 ![](https://velog.velcdn.com/images/minsang9735/post/851dfb31-6aec-4a3c-abcc-5bdd1aca7906/image.png)
 
 Name 작명을 하고 넘어가면
@@ -66,7 +65,7 @@ Secret 키가 발급이 된다. 요건 나중에 잘 쓸거니 보관해두고 �
 노션과 연결은 했지만 데이터베이스에 접근 하려면 ID가 또 필요하다.
 ![](https://velog.velcdn.com/images/minsang9735/post/b9b59919-997d-4988-9a96-040b12209341/image.png)
 
-아까 만든 데이터베이스를 새탭에서 열기를 클릭하면 새 탭이 열리는데
+아까 만든 데이터베이스를 새탭에서 열기를 클릭하면 새 탭이 열리는데,
 이 탭의 query가 곧 database ID 이다
 
 URL에서
@@ -77,18 +76,20 @@ www.notion.so/ 뒤에 ???가 DatabaseID 이다.
 
 ## 데이터 불러오기
 
-![](https://velog.velcdn.com/images/minsang9735/post/b2df4278-dc2e-4246-8edc-77e083eaefa6/image.png)
+![](https://velog.velcdn.com/images/minsang9735/post/094561e5-d10c-41d3-ad16-de4f555f9a6f/image.png)
+
 노션 공식문서 API Reference에 예시가 다 나와있으니 참고할 것.
 
 일단 postman 에서 테스트를 해보자면
-![](https://velog.velcdn.com/images/minsang9735/post/9c472b0d-4a23-4bed-9ce0-50667a93981a/image.png)
+![](https://velog.velcdn.com/images/minsang9735/post/47587160-1cda-4fc5-81b0-f9501ac7cfd2/image.png)
 
 ??? 는 아까 URL에서 찾은 데이터베이스 키이고 아래 토큰은 integration만들때 발급한 시크릿 키이다.
 
-![](https://velog.velcdn.com/images/minsang9735/post/a3fbcb3b-df47-4ef2-9a1d-e215c267d8a7/image.png)
+![](https://velog.velcdn.com/images/minsang9735/post/a26b9de5-fb89-438e-bad6-9f8e194adc64/image.png)
+
 그리고 공식문서처럼 Notion-Version 을 꼭 넣어줘야 한다. ~~안하면 에러남~~
 
-![](https://velog.velcdn.com/images/minsang9735/post/53491215-a1c0-43d2-8ae8-6fa415ebd660/image.png)
+![](https://velog.velcdn.com/images/minsang9735/post/5157154b-2505-49ed-99ba-df4a2cd99256/image.png)
 
 데이터 잘 나오는 것 확인.
 
@@ -194,13 +195,13 @@ export default ProjectCard;
 ```
 
 데이터를 가져온 후에 조합해서 페이지를 꾸며보았다.
-![](https://velog.velcdn.com/images/minsang9735/post/5d5660f8-56be-4705-8274-e8452c943042/image.png)
+![](https://velog.velcdn.com/images/minsang9735/post/b3a56e5a-e485-44b8-b0b3-e5fdb391888c/image.png)
 
 # 후기
 
 생각보다 사용하기 편리하고 노션 데이터 get 요청 말고도 생성, 수정, 삭제 등 모두 가능하다고 하니 활용도가 어마무시할 것 같다. ~~역시 노션...?~~
 
-# 뒷통수 한대
+# 뒷통수 한 대
 
 역시 이렇게 쉽게 끝날리가 없지
 
