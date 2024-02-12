@@ -32,6 +32,8 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "@stylexjs/nextjs-plugin": "^0.5.1",
+    "@stylexjs/stylex": "^0.5.1",
     "@types/glob": "^8.1.0",
     "@types/react-slick": "^0.23.11",
     "glob": "^10.3.3",

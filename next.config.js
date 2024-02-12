@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+const stylexPlugin = require("@stylexjs/nextjs-plugin");
 const nextConfig = {
   reactStrictMode: true,
   compiler: {
@@ -15,5 +16,8 @@ const nextConfig = {
     format: ["image/png", "image/webp", "image/jpeg", "image/gif"],
   },
 };
+module.exports = stylexPlugin({
+  rootDir: __dirname,
+})(nextConfig);
 
-module.exports = nextConfig;
+// module.exports = nextConfig;
