@@ -1,11 +1,8 @@
 import './styles/globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import StyledComponentsRegistry from './registry'
 import Header from './components/Header'
 import Footer from './components/Footer'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://minsang-blog.vercel.app/'),
@@ -53,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <StyledComponentsRegistry>
-        <body className={inter.className}>
+        <body>
           <script
             dangerouslySetInnerHTML={{
               __html: setThemeMode,
