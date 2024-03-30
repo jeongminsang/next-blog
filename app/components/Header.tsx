@@ -12,8 +12,6 @@ const Header = () => {
     document.body.dataset.theme = newTheme;
   };
   const params = usePathname();
-  console.log(params.includes("projects"))
-
 
   const goHomeHandle = () => {
     router.push('/');
