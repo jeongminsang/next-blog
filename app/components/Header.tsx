@@ -12,6 +12,7 @@ const Header = () => {
     document.body.dataset.theme = newTheme;
   };
   const params = usePathname();
+  console.log(params.includes("projects"))
 
 
   const goHomeHandle = () => {
@@ -33,8 +34,8 @@ const Header = () => {
       <HeaderTitle onClick={goHomeHandle}>minsang.dev</HeaderTitle>
       <SideButtons>
         <RouterButtons>
-          <RouterButton onClick={goBlogHandle} params={params === '/blog' ? 'true' : 'false'}>blog</RouterButton>
-          <RouterButton onClick={goProjectHandle} params={params === '/projects' ? 'true' : 'false'}>projects</RouterButton>
+          <RouterButton onClick={goBlogHandle} params={params.includes("blog") ? 'true' : 'false'}>blog</RouterButton>
+          <RouterButton onClick={goProjectHandle} params={params.includes("projects") ? 'true' : 'false'}>projects</RouterButton>
         </RouterButtons>
         <BlackThemeIcons>
           <CustomImage onClick={themeModeHandle}
