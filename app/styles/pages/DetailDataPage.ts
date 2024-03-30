@@ -10,7 +10,15 @@ export const MainContainer = styled.div`
   margin: 0 auto;
 `;
 
-export const PostContainer = styled.div`
+export const Section = styled.div`
+  /* display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto; */
+`;
+
+export const MainSection = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;

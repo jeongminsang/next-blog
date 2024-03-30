@@ -6,10 +6,11 @@ import dayjs from 'dayjs';
 import readingTime from 'reading-time';
 import PostDetailContent from '../../components/PostDetailContents';
 import TOC from '../../components/TOC';
-import { MainContainer, PostContainer, PostSection, PostTitle, PostInfo, TagAside, TOCAside, GiscusContainer } from "../../styles/pages/DetailDataPage"
+import { MainContainer, Section, PostSection, PostTitle, PostInfo, TagAside, TOCAside, GiscusContainer } from "../../styles/pages/DetailDataPage"
 import Giscus from '../../components/Giscus';
 import ReadingProgressBar from '../../components/ReadingProgressBar';
 dayjs.locale('ko');
+import PostContainer from '../../components/PostContainer';
 
 interface Params {
   params: {
@@ -37,8 +38,8 @@ const DetailDataPage = async ({ params }: Params) => {
   return (
     <MainContainer>
       <ReadingProgressBar />
-      <PostContainer>
-        <TagAside></TagAside>
+      <Section>
+        {/* <TagAside></TagAside>
         <PostSection>
           <title title={meta.title}>{meta.title}</title>
           <PostTitle>{meta.title}</PostTitle>
@@ -48,8 +49,9 @@ const DetailDataPage = async ({ params }: Params) => {
         </PostSection>
         <TOCAside>
           <TOC content={markdowncontent} />
-        </TOCAside>
-      </PostContainer>
+        </TOCAside> */}
+        <PostContainer meta={meta} content={content} markdowncontent={markdowncontent} />
+      </Section>
       <GiscusContainer><Giscus /></GiscusContainer>
     </MainContainer>
   )

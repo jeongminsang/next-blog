@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useRef } from 'react';
-import useModal from './useModal';
+import useModal from '../hooks/useModal';
 import { MainContainer, ModalSection, ChildrenContents, CloseModalBtn, CloseIcn } from '../styles/components/Modal';
 
 interface ModalProps {
