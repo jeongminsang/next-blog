@@ -1,9 +1,6 @@
-import Image from 'next/image'
-import styles from './page.module.css'
 import { getAllPostData } from '../libs/api';
-import Link from "next/link"
 import readingTime from 'reading-time';
-import { MainContainer, Title, SubTitle, PostTitle, PostList, PostBody, PostInfo } from "../styles/pages/Blog"
+import { MainContainer, Title, SubTitle, BlogTitle, PostList, PostBody, PostContents, PostTitle, PostSubTitle, PostInfo, ThumbnailImg } from "../styles/pages/Blog"
 
 export default function Home() {
   const { posts, slugs } = getAllPostData();
@@ -11,18 +8,25 @@ export default function Home() {
     <MainContainer>
       <Title>Minsang's Blog</Title>
       <SubTitle>👨‍💻공부하고 경험한 내용을 이곳에 기록합니다.</SubTitle>
-      <PostTitle>All Posts({posts.length})</PostTitle>
+      <BlogTitle>All Posts({posts.length})</BlogTitle>
       <PostList>
         {posts.reverse().map((post, i) => (
-          <PostBody key={slugs[i]}>
-            <Link href={`blog/${slugs[i]}`}>
-              <div>{post.data.title}</div>
-              <div>{post.data.description}</div>
+          <PostBody href={`blog/${slugs[i]}`} key={slugs[i]}>
+            <PostContents>
+              <PostTitle>{post.data.title}</PostTitle>
+              <PostSubTitle>{post.data.description}</PostSubTitle>
               <PostInfo>
                 <div>{post.data.date}</div>
                 <div>약 {Math.ceil(readingTime(post.content).minutes)}분</div>
               </PostInfo>
-            </Link>
+            </PostContents>
+            <ThumbnailImg
+              src={post.data.thumbnail}
+              alt='thumbnail'
+              width={1000}
+              height={1000}
+              draggable={false}
+            />
           </PostBody>
         ))}
       </PostList>

@@ -13,7 +13,6 @@ const Header = () => {
   };
   const params = usePathname();
 
-
   const goHomeHandle = () => {
     router.push('/');
   }
@@ -33,8 +32,8 @@ const Header = () => {
       <HeaderTitle onClick={goHomeHandle}>minsang.dev</HeaderTitle>
       <SideButtons>
         <RouterButtons>
-          <RouterButton onClick={goBlogHandle} params={params === '/blog' ? 'true' : 'false'}>blog</RouterButton>
-          <RouterButton onClick={goProjectHandle} params={params === '/projects' ? 'true' : 'false'}>projects</RouterButton>
+          <RouterButton onClick={goBlogHandle} params={params.includes("blog") ? 'true' : 'false'}>blog</RouterButton>
+          <RouterButton onClick={goProjectHandle} params={params.includes("projects") ? 'true' : 'false'}>projects</RouterButton>
         </RouterButtons>
         <BlackThemeIcons>
           <CustomImage onClick={themeModeHandle}

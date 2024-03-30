@@ -1,0 +1,216 @@
+---
+title: StyleX 써보기
+date: "2024-02-24"
+description: New CSS-in-JS Solution
+thumbnail: "https://velog.velcdn.com/images/minsang9735/post/a06c18f7-45bc-4b88-9eee-973e7b87a80f/image.png"
+---
+
+![](https://velog.velcdn.com/images/minsang9735/post/a06c18f7-45bc-4b88-9eee-973e7b87a80f/image.png)
+
+# StyleX 는 무엇인가?
+
+2023.12 메타에서 스타일 라이브러리를 공개했다.
+CSS-in-JS 솔루션이다.
+
+CSS-in-JS 를 선호하는 나에겐 매우 흥미로운 소식이다.
+styled-components 와 비슷하면서도 서로 다른 장단점을 갖고 있다길래 더 공부하고 싶어졌다.
+
+StyleX 는 단순한 CSS-in-JS 라이브러리가 아닌 대규모 애플리케이션과 재사용 컴포넌트 라이브러리, 정적 타입 코드베이스의 요구사항을 충족시키기 위해 설계되었다고 한다.
+
+# 장단점
+
+장점
+
+- 빠른 속도
+  바벨 변환으로 인해 속도가 빠름
+- 성능 최적화
+  컴파일 단계에서 스타일 코드가 CSS 로 변환되므로, 런타임에 스타일을 주입하는 다른 CSS-in-JS에 비해서 장점이라 볼 수 있다.
+- 확장성
+  StyleX는 스타일을 ‘아토믹(atomic)’ CSS 클래스 이름으로 변환, 구성 및 최적화한다. 유틸리티 클래스 이름의 별도 라이브러리를 학습하거나 관리할 필요가 없다.
+  파일과 컴포넌트의 경계를 넘어 스타일 병합이 가능
+- 예측 가능성
+  스타일 충돌 우려 없이 클래스 이름을 명확하게 사용할 수 있다.
+- TypeScript와 함께 사용 시 스타일 정의, 테마 등에 높은 타입 안정성
+- [서버 컴포넌트에서 스타일 작성이 가능하다.](https://jherr2020.medium.com/stylex-metas-solution-to-scalable-css-0e06972d9bc4) ( styled-components 의 경우, 클라이언트 컴포넌트에서만 작성이 가능했지만 stylex는 컴파일단계에서 변환되므로 서버 컴포넌트에서 작성이 가능하다. )
+
+단점
+
+- 스타일을 적용할 때,동적 스타일링에 제한적인 문제가 있다.
+  StyleX는 컴파일과정에서 스타일을 최적화하여 클래스 이름을 자동으로 생성하는데, 이 과정에서 클래스 이름이 충돌할 가능성이 있다.
+  props에 따라 동적으로 스타일을 생성할 때도 마찬가지이다.
+  그래서 StyleX는 고유한 클래스 이름 생성 알고리즘을 사용하지만, 완벽하게 충돌을 방지할 수는 없다고 한다.
+- StyleX는 컴파일 과정을 통해 스타일을 최적화하기 때문에, 동적 스타일링을 사용할 때 컴파일 과정이 반복될(?) 수 있다.
+
+# 설치
+
+StyleX 런타임 패키지 설치
+
+> npm install --save @stylexjs/stylex
+> yarn add --dev @stylexjs/stylex
+
+StyleX 설치 후에 스타일이 컴파일 타임에 처리되도록 Babel 플러그인을 추가로 설정해줘야 한다.
+공식 문서에서 이런 빌드 타임 컴파일러 방식을 권장하고 있다.
+
+> npm install --save-dev @stylexjs/babel-plugin
+> yarn add --dev @stylexjs/nextjs-plugin
+
+설치를 완료하고 .babelrc.js,next.config.js 파일을 만들어서 코드를 추가하자
+
+```js
+// .babelrc.js
+const path = require("path");
+module.exports = {
+  presets: ["next/babel"],
+  plugins: [
+    [
+      "@stylexjs/babel-plugin",
+      {
+        dev: process.env.NODE_ENV === "development",
+        genConditionalClasses: true,
+        treeshakeCompensation: true,
+        aliases: {
+          "@/*": [path.join(__dirname, "*")],
+        },
+        unstable_moduleResolution: {
+          type: "commonJS",
+          rootDir: path.join(__dirname, "../.."),
+        },
+      },
+    ],
+  ],
+};
+```
+
+```js
+// next.config.js
+/** @type {import('next').NextConfig} */
+const stylexPlugin = require("@stylexjs/nextjs-plugin");
+
+const nextConfig = {
+  reactStrictMode: true,
+};
+
+module.exports = stylexPlugin({
+  rootDir: __dirname,
+})(nextConfig);
+
+module.exports = nextConfig;
+```
+
+여기서 만약 create-next-app 을 한 후에 StyleX를 설치한 상태라면 layout.tsx에서 에러가 날 것이다.
+
+그 이유는 layout.tsx 에서 next/font를 사용하고 있기 때문인데, Babel을 사용하는 프로젝트에서는 next/font가 지원되지 않기 때문에 문제가 발생한다.
+
+layout.tsx 에서 next/font를 싹 다 지워주고 다시 실행하면 해결된다.
+
+[설치법1](https://stylexjs.com/docs/learn/installation/)
+[설치법2](https://stackoverflow.com/questions/77728522/how-to-install-stylex-in-a-new-react-project)
+
+# 튜토리얼
+
+[공식 깃헙 코드](https://github.com/facebook/stylex/tree/main/apps/nextjs-example)에 Next.js 에서 적용한 예시가 있다.
+이 자료를 보고 쉽게 사용할 수 있다.
+
+![](https://velog.velcdn.com/images/minsang9735/post/0effb1dd-8e6c-4120-a2b6-12da2437648c/image.png)
+
+# 사용 방식
+
+```tsx
+import * as stylex from "stylex";
+const styles = stylex.create({
+  red: { color: "red" },
+});
+let a = stylex.props(styles.red);
+```
+
+가장 많이 사용되는 문법인 create 와 props 이다.
+
+create 에 스타일 객체를 넣으면 키를 클래스 이름으로 매핑하여 컴파일된 스타일을 반환한다.
+반환한 스타일은 props 를 사용해서 스타일을 주입한다.
+
+props 에 반환된 스타일을 넣으면 props 는 className을 반환한다.
+
+그래서 실제로 props 가 반환한 값을 콘솔로 찍어보면
+
+```
+{
+  className: 'page__style.MainContainer x78zum5 xdt5ytf x1ap80js xh8yej3 x19bbpc0'
+}
+```
+
+이런식으로 출력된다.
+Tailwind css 처럼 사용된는 것 같다.
+
+## 스타일 병합
+
+StyleX 의 장점 중 하나인 스타일 병합은 말 그대로 create로 생성된 스타일을 여러개 병합해서 사용할 수 있는 방식이다.
+
+```tsx
+import * as stylex from "@stylexjs/stylex";
+
+const styles = stylex.create({
+  base: {
+    fontSize: 16,
+    lineHeight: 1.5,
+    color: "grey",
+  },
+  highlighted: {
+    color: "rebeccapurple",
+  },
+});
+
+<div {...stylex.props(styles.base, styles.highlighted)} />;
+```
+
+base, highlighted 두개를 위처럼 함께 병합해서 사용할 수 있다.
+
+## 조건부 스타일링
+
+```tsx
+import * as stylex from "stylex";
+const styles = stylex.create({
+  RouterButton: (params) => ({
+    backgroundColor: {
+      default: "rgba(0, 0, 0, 0)",
+      ":hover": "var(--hv-cr);",
+    },
+    color: params === "true" ? "var(--text--color)" : "grey",
+  }),
+});
+let a = stylex.props(style.RouterButton(params === "/app" ? "true" : "false"));
+```
+
+css in js 답게 조건부 스타일링도 가능하다.
+
+# 버그
+
+왜 인지는 모르겠는데, 자꾸 스타일이 안먹힌다.
+예를 들어서 에디터에 분명 flex-Direction: column 을 적용해 놨는데
+개발 환경에서 먹히지 않는다.
+그래서 row 로 바꿨다가 다시 column 으로 바꿨더니 다시 된다.
+
+그리고 저번에 한 컴포넌트를 스타일 적용해놓고 다시 이어서 작업할려고 켰더니 스타일이 다 망가져있다.
+그래서 다시 위와 동일하게 다른 스타일을 먹였다가 다시 돌아와서 저장했더니 돌아왔다.
+알 수 없는 오류인데, 이게 지금 내 컴터에서만 이러는건지 (vscode) 아니면 다 이러는건지 모르겠다.
+
+# 평가
+
+기대치 만큼 만족스럽지는 않은 기술인 것 같다.
+메타에서 운영하는 서비스는 대부분 StyleX 로 스타일링 하고 있다길래 많은 기대가 있었던 것 같다.
+역시나 역시..공개된지 얼마 안된 기술이다보니 문제가 많다.
+[깃헙이슈](https://github.com/facebook/stylex/issues)에 일주일에 2~3개 꼴로 문제가 올라오고 있다.
+
+외에도 지인도 사용해본 결과 Tailwind css 와 충돌하는 문제가 있다고 한다.
+아마도 props 스타일 자체를 className으로 반환하는 방식이 Tailwind 와 문제를 발생시키는 것 같다.
+
+그리고 스타일 작성시, 죄다 따옴표를 붙여줘야함
+예를들어
+
+```
+display: 'flex'
+```
+
+이게 별건 아니지만 은근히 거슬림
+다른 스타일 방식은 이렇지 않아서 작성하는데 조금 거슬렸다.
+
+일단 쓰던 styled-components 이어서 계속 써야겠다.
