@@ -42,8 +42,6 @@ interface ProjectCardProps {
 const ProjectCard = (projectdata: ProjectCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  console.log(projectdata.projectdata.properties.CoverImg.rich_text[0].href)
-
   return (
     <CardContainer>
       <CardImg
