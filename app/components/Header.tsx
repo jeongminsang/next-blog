@@ -11,6 +11,7 @@ import {
   LightThemeIcons,
 } from "../styles/components/Header";
 import { useRouter, usePathname } from "next/navigation";
+import ThemeToggleButton from "./ThemeChanger";
 
 const Header = () => {
   const router = useRouter();
@@ -54,7 +55,15 @@ const Header = () => {
             projects
           </RouterButton>
         </RouterButtons>
-        <BlackThemeIcons>
+        <ThemeToggleButton />
+        <CustomImage
+          onClick={goGitHubHandle}
+          width={40}
+          height={40}
+          alt='GitHub-Black'
+          src='/github-mark.svg'
+        />
+        {/* <BlackThemeIcons>
           <CustomImage
             onClick={themeModeHandle}
             width={40}
@@ -85,7 +94,7 @@ const Header = () => {
             alt='GitHub-Black'
             src='/github-mark.svg'
           />
-        </LightThemeIcons>
+        </LightThemeIcons> */}
       </SideButtons>
     </MainContainer>
   );

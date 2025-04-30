@@ -1,5 +1,6 @@
 import "./styles/globals.css";
 import type { Metadata } from "next";
+import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
 import StyledComponentsRegistry from "./registry";
 import Header from "./components/Header";
@@ -44,17 +45,19 @@ export default function RootLayout({
   `;
 
   return (
-    <html lang='en'>
+    <html lang='en' suppressHydrationWarning>
       <StyledComponentsRegistry>
         <body className={inter.className}>
-          <script
+          {/* <script
             dangerouslySetInnerHTML={{
               __html: setThemeMode,
             }}
-          ></script>
-          <Header />
-          {children}
-          <Footer />
+          ></script> */}
+          <ThemeProvider>
+            <Header />
+            {children}
+            <Footer />
+          </ThemeProvider>
         </body>
       </StyledComponentsRegistry>
     </html>

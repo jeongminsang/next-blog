@@ -30,6 +30,18 @@ body::-webkit-scrollbar {
     rgb(var(--background-start-rgb));
 } */
 
+
+body {
+  color: #000;
+  background: rgb(255, 255, 255);
+  transition: background-color 0.3s ease;
+}
+
+[data-theme='dark'] body {
+  color: #fff;
+  background: rgb(29, 29, 29);
+}
+
 body[data-theme="dark"] {
   background: rgb(29, 29, 29);
   --hv-cr: rgb(58, 58, 58);

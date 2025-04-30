@@ -23,10 +23,9 @@ export default function Home() {
         <br />
         문제를 마주하면 항상 깊은 고뇌와 근본적인 원인을 찾으려고 노력합니다.
         <br />
-        요즘 독서와 운동을 즐겨하고 있습니다.
+        독서와 운동을 좋아합니다.
         <br />
         <br />
-        Contact 은 오른쪽 하단 버튼을 이용해 주세요.
       </Contents>
     </MainContainer>
   );
