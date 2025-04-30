@@ -1,4 +1,4 @@
-import ProjectCard from "../components/ProjectCard";
+import ProjectCard from "./components/ProjectCard";
 import { getProjectData } from "../libs/api";
 import {
   MainContainer,

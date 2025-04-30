@@ -8,7 +8,7 @@ import {
   LeftIcn,
   RightIcn,
   CarouselImage,
-} from "../styles/components/Modal";
+} from "../../styles/components/Modal";
 
 interface ProjectNameProps {
   projectname: {

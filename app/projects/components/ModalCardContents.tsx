@@ -10,7 +10,7 @@ import {
   LinkBtn,
   GitHubIcn,
   LinkIcn,
-} from "../styles/components/Modal";
+} from "../../styles/components/Modal";
 import Carousel from "./Carousel";
 
 const ModalCardContents = (projectdata: any) => {
