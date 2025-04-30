@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import { HTMLProps } from 'react';
+import Link from "next/link";
+import { HTMLProps } from "react";
 
 type LinkProps = {
   href: string;
@@ -11,11 +11,7 @@ type LinkProps = {
 };
 
 const CustomLink = ({ href, children }: LinkProps) => {
-  return (
-    <Link href={href}>
-      {children}
-    </Link>
-  );
+  return <Link href={href}>{children}</Link>;
 };
 
 export default CustomLink;

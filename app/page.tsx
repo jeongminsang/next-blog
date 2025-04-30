@@ -1,4 +1,10 @@
-import { MainContainer, Title, ResumeImg, SubTitle, Contents } from "./styles/pages/Home"
+import {
+  MainContainer,
+  Title,
+  ResumeImg,
+  SubTitle,
+  Contents,
+} from "./styles/pages/Home";
 
 export default function Home() {
   return (
@@ -6,8 +12,8 @@ export default function Home() {
       <ResumeImg
         width={1000}
         height={1000}
-        alt="프로필 사진"
-        src="/me.jpg"
+        alt='프로필 사진'
+        src='/me.jpg'
         draggable={false}
       />
       <Title>Minsang Jeong</Title>
@@ -23,5 +29,5 @@ export default function Home() {
         Contact 은 오른쪽 하단 버튼을 이용해 주세요.
       </Contents>
     </MainContainer>
-  )
+  );
 }

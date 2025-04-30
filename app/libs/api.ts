@@ -4,23 +4,22 @@ import { join } from "path";
 import markdownToHtml from "../libs/markdownToHtml";
 import axios from "axios";
 
-const postsDirectory = join(process.cwd(), "app/content/blog");
-
+const POSTDIRECOTRY = join(process.cwd(), "app/contents");
 const TOKEN = process.env.NEXT_PUBLIC_NOTION_TOKEN;
 const DATABASE_ID = process.env.NEXT_PUBLIC_NOTION_DATABASE_ID;
 
 export const getAllPostData = () => {
-  const posts = readdirSync(postsDirectory).map((file) => {
-    const post = readFileSync(`${postsDirectory}/${file}`, "utf-8");
+  const posts = readdirSync(POSTDIRECOTRY).map((file) => {
+    const post = readFileSync(`${POSTDIRECOTRY}/${file}`, "utf-8");
     return matter(post);
   });
-  const slugArr = fs.readdirSync(postsDirectory);
+  const slugArr = fs.readdirSync(POSTDIRECOTRY);
   const slugs = slugArr.reverse().map((slug) => slug.replace(/\.mdx$/, ""));
   return { posts, slugs };
 };
 
 export const getPostDetailData = async (postId: number) => {
-  const post = readFileSync(`app/content/blog/${postId}.mdx`, "utf-8");
+  const post = readFileSync(`app/contents/${postId}.mdx`, "utf-8");
   const { data, content } = matter(post);
 
   return {

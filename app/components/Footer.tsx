@@ -7,6 +7,6 @@ const Footer = () => {
         Copyright © {new Date().getFullYear()} Minsang Jeong
       </FooterText>
     </MainContainer>
-  )
-}
+  );
+};
 export default Footer;
