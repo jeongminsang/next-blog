@@ -35,7 +35,8 @@ export const generateStaticParams = async () => {
 };
 
 export const generateMetadata = async ({ params }: Params) => {
-  const { meta } = await getPostDetailData(params.postId);
+  const { postId } = await params;
+  const { meta } = await getPostDetailData(postId);
   return {
     title: meta.title,
     description: meta.description,
@@ -44,15 +45,14 @@ export const generateMetadata = async ({ params }: Params) => {
 };
 
 const DetailDataPage = async ({ params }: Params) => {
-  const { meta, content, markdowncontent } = await getPostDetailData(
-    params.postId
-  );
+  const { postId } = await params;
+  const { meta, content, markdowncontent } = await getPostDetailData(postId);
 
   return (
     <MainContainer>
       <ReadingProgressBar />
       <PostContainer>
-        <TagAside></TagAside>
+        <TagAside />
         <PostSection>
           <title title={meta.title}>{meta.title}</title>
           <PostTitle>{meta.title}</PostTitle>

@@ -1,10 +1,9 @@
 "use client";
 
 import styled from "styled-components";
-import Image from "next/image";
 
 interface RouterButtonProps {
-  params: string;
+  $params: string;
 }
 
 export const MainContainer = styled.div`
@@ -55,7 +54,7 @@ export const RouterButton = styled.div<RouterButtonProps>`
   background-color: rgba(0, 0, 0, 0);
   border-radius: 5px;
   color: ${(props) =>
-    props.params === "true" ? "var(--text--color)" : "grey"};
+    props.$params === "true" ? "var(--text--color)" : "grey"};
   cursor: pointer;
   &:hover {
     background-color: var(--hv-cr);

@@ -4,7 +4,7 @@ import styled, { keyframes } from "styled-components";
 import Image from "next/image";
 
 interface CardContentsProps {
-  modalstate: string;
+  $modalstate: string;
 }
 
 const TitleMoveDown = keyframes`
@@ -95,14 +95,14 @@ export const CardContents = styled.div<CardContentsProps>`
   top: 24px;
   left: 0;
   background: ${(props) =>
-    props.modalstate === "false"
+    props.$modalstate === "false"
       ? "rgba(0, 0, 0, 0)"
       : "var(--background--cr)"};
   padding: 5px;
   text-align: center;
   transition: background-color 0.5s ease;
   > div {
-    display: ${(props) => (props.modalstate === "true" ? "flex" : "none")};
+    display: ${(props) => (props.$modalstate === "true" ? "flex" : "none")};
   }
   &:hover {
     background: var(--background--cr);
@@ -133,13 +133,15 @@ export const ProjectStack = styled.div`
   animation: ${StackMove} 0.2s linear;
 `;
 
-export const StackTag = styled.div`
-  border: 1px #5ba2ff solid;
+export const StackTag = styled.div<{ color: string }>`
+  /* border: 1px #5ba2ff solid; */
+  border: 1px ${(props) => props.color} solid;
   font-size: 12px;
   padding: 3px 5px 3px 5px;
   margin: 3px;
   border-radius: 5px;
-  background-color: #5ba2ff;
+  /* background-color: #5ba2ff; */
+  background-color: ${(props) => props.color};
 `;
 
 export const ButtonContainer = styled.div`

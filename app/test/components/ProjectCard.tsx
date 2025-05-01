@@ -44,12 +44,15 @@ const ProjectCard = ({ projectdata }: ProjectCardProps) => {
         width={1000}
         height={1000}
         draggable={false}
+        priority
       />
-      <CardContents modalstate={`${isModalOpen}`}>
+      <CardContents $modalstate={`${isModalOpen}`}>
         <CardTitle>{projectdata.title}</CardTitle>
         <ProjectStack>
-          {projectdata.tags.map((tag: any, index: number) => (
-            <StackTag key={index}>{tag.name}</StackTag>
+          {projectdata.tags.map((tag, index: number) => (
+            <StackTag key={index} color={tag.color}>
+              {tag.name}
+            </StackTag>
           ))}
         </ProjectStack>
         <ButtonContainer>

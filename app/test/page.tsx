@@ -26,9 +26,11 @@ export default async function Projects() {
       <Title>Projects</Title>
       <ProjectContainer>
         {projects &&
-          projects.map((project, index: number) => (
-            <ProjectCard key={index} projectdata={project} />
-          ))}
+          projects
+            .reverse()
+            .map((project, index: number) => (
+              <ProjectCard key={index} projectdata={project} />
+            ))}
       </ProjectContainer>
     </MainContainer>
   );

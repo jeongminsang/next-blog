@@ -54,6 +54,7 @@ const Carousel = ({ projectImages }: ProjectImages) => {
             width={1000}
             height={1000}
             draggable={false}
+            priority
           />
         ))}
       </Carouseldiv>

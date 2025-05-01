@@ -3,7 +3,6 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
-import Image from "next/image";
 
 const rotateUp = keyframes`
   from { transform: rotate(180deg); }
@@ -33,7 +32,7 @@ export default function ThemeToggleButton() {
 
   return (
     <ToggleButton onClick={toggleTheme} aria-hidden='true'>
-      <ThemeIcons icontype='sun' thememode={theme}>
+      <ThemeIcons $icontype={"sun"} $thememode={theme}>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           height='24px'
@@ -44,7 +43,7 @@ export default function ThemeToggleButton() {
           <path d='M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z' />
         </svg>
       </ThemeIcons>
-      <ThemeIcons icontype='moon' thememode={theme}>
+      <ThemeIcons $icontype={"moon"} $thememode={theme}>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           height='24px'
@@ -75,8 +74,8 @@ const ToggleButton = styled.button`
 `;
 
 export const ThemeIcons = styled.div<{
-  icontype: "sun" | "moon";
-  thememode: string;
+  $icontype: "sun" | "moon";
+  $thememode: string;
 }>`
   display: flex;
   justify-content: center;
@@ -89,34 +88,16 @@ export const ThemeIcons = styled.div<{
     transition: fill 0.5s, transform 0.5s ease;
   }
   &:hover svg {
-    fill: ${({ thememode }) => (thememode === "light" ? `#FFA500;` : `gold;`)};
+    fill: ${({ $thememode }) =>
+      $thememode === "light" ? `#FFA500;` : `gold;`};
     transform: scale(1.2);
   }
-  animation: ${({ icontype, thememode }) => {
-      if (thememode === "light") {
-        return icontype === "sun" ? rotateUp : rotateDown;
+  animation: ${({ $icontype, $thememode }) => {
+      if ($thememode === "light") {
+        return $icontype === "sun" ? rotateUp : rotateDown;
       } else {
-        return icontype === "sun" ? rotateDown : rotateUp;
+        return $icontype === "sun" ? rotateDown : rotateUp;
       }
     }}
     1s forwards;
-`;
-
-export const CustomImage = styled(Image)`
-  margin-top: 0px;
-  margin-bottom: 0px;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  &:hover {
-    background-color: var(--hv-cr);
-    transition: background-color 0.2s ease;
-  }
-  .img {
-    &:hover {
-      background-color: var(--hv-cr);
-      transition: background-color 0.2s ease;
-      color: red;
-    }
-  }
 `;

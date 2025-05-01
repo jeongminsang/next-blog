@@ -50,7 +50,9 @@ const ModalCardContents = ({ projectdata }: ProjectCardProps) => {
       <ContentsSubTitle>{projectdata.sub_title}</ContentsSubTitle>
       <ProjectStack>
         {projectdata.tags.map((tag, index: number) => (
-          <StackTag key={index}>{tag.name}</StackTag>
+          <StackTag key={index} color={tag.color}>
+            {tag.name}
+          </StackTag>
         ))}
       </ProjectStack>
       <ProjectPeriod>

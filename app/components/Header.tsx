@@ -36,13 +36,13 @@ const Header = () => {
         <RouterButtons>
           <RouterButton
             onClick={goBlogHandle}
-            params={params.includes("blog") ? "true" : "false"}
+            $params={params.includes("blog") ? "true" : "false"}
           >
             blog
           </RouterButton>
           <RouterButton
             onClick={goProjectHandle}
-            params={params.includes("projects") ? "true" : "false"}
+            $params={params.includes("projects") ? "true" : "false"}
           >
             projects
           </RouterButton>

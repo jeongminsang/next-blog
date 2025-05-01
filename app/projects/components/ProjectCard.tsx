@@ -59,15 +59,18 @@ const ProjectCard = (projectdata: ProjectCardProps) => {
         width={1000}
         height={1000}
         draggable={false}
+        priority
       />
-      <CardContents modalstate={`${isModalOpen}`}>
+      <CardContents $modalstate={`${isModalOpen}`}>
         <CardTitle>
           {projectdata.projectdata.properties.Name.title[0].plain_text}
         </CardTitle>
         <ProjectStack>
           {projectdata.projectdata.properties.Stack.multi_select.map(
             (tag, index: number) => (
-              <StackTag key={index}>{tag.name}</StackTag>
+              <StackTag key={index} color={"#5ba2ff"}>
+                {tag.name}
+              </StackTag>
             )
           )}
         </ProjectStack>
