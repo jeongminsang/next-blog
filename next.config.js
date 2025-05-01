@@ -12,7 +12,13 @@ const nextConfig = {
       "prod-files-secure.s3.us-west-2.amazonaws.com",
       "i.ibb.co",
       "velog.velcdn.com",
-    ]
+    ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+      },
+    ],
   },
 };
 

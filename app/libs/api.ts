@@ -51,7 +51,6 @@ export async function getProjectData() {
         },
       }
     );
-    console.log(response);
     return { props: { data: response.data } };
   } catch (error) {
     console.error(error);
