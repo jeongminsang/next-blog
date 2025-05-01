@@ -35,33 +35,21 @@ body {
   color: #000;
   background: rgb(255, 255, 255);
   transition: background-color 0.3s ease;
+  /* --hv-cr: #d4d4d4; */
+  --text--color: black;
+  --github--cr: rgb(20, 113, 156);
+  --github--first--cr: #5A189A;
+  --github--last--cr: #0077FF;
 }
 
 [data-theme='dark'] body {
   color: #fff;
   background: rgb(29, 29, 29);
-}
-
-body[data-theme="dark"] {
-  background: rgb(29, 29, 29);
   --hv-cr: rgb(58, 58, 58);
-  color: white;
-  transition: background-color 0.2s ease;
-  --dis--black: none;
-  --dis--light: flex;
-  --background--cr: rgb(29, 29, 29);
   --text--color: white;
-}
-
-body[data-theme="light"] {
-  background: #ffffff;
-  --hv-cr: #d4d4d4;
-  color: black;
-  transition: background-color 0.2s ease;
-  --dis--black: flex;
-  --dis--light: none;
-  --background--cr: rgb(255, 255, 255);
-  --text--color: black;
+  --github--cr: #f69d3c;
+  --github--first--cr: lime;
+  --github--last--cr: #f69d3c;
 }
 
 h1,

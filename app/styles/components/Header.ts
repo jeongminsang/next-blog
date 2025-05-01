@@ -63,31 +63,43 @@ export const RouterButton = styled.div<RouterButtonProps>`
   }
 `;
 
-export const BlackThemeIcons = styled.div`
+export const GitHubButton = styled.div`
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+  border-radius: 10px;
+  background-color: var(--hv-cr);
   display: flex;
-  flex-direction: row;
   align-items: center;
-  padding-left: 10px;
-  margin: 10px 0px 10px 0px;
-  display: var(--dis--light);
-`;
-
-export const LightThemeIcons = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding-left: 10px;
-  margin: 10px 0px 10px 0px;
-  display: var(--dis--black);
-`;
-
-export const CustomImage = styled(Image)`
-  margin: 10px;
-  padding: 5px;
-  border-radius: 5px;
+  justify-content: center;
+  overflow: hidden;
   cursor: pointer;
-  &:hover {
-    background-color: var(--hv-cr);
-    transition: background-color 0.2s ease;
+
+  .github-icon {
+    position: relative;
+    width: 33px;
+    height: 32px;
+    background-color: var(--text--color);
+    mask: url(#gh-mask);
+    -webkit-mask: url(#gh-mask);
+  }
+
+  .github-icon::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--github--first--cr), var(--github--last--cr));
+    background-size: 200%;
+    background-position: left;
+    transition: background-position 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0;
+    mask: url(#gh-mask);
+    -webkit-mask: url(#gh-mask);
+    z-index: 1;
+  }
+
+  &:hover .github-icon::before {
+    opacity: 1;
+    background-position: right;
   }
 `;

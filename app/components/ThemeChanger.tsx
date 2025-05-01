@@ -66,6 +66,7 @@ const ToggleButton = styled.button`
   position: relative;
   width: 50px;
   height: 50px;
+  margin-left: 5px;
   background-color: rgba(255, 255, 255, 0.1);
   border: none;
   border-radius: 10px;
@@ -91,28 +92,6 @@ export const ThemeIcons = styled.div<{
     fill: ${({ thememode }) => (thememode === "light" ? `#FFA500;` : `gold;`)};
     transform: scale(1.2);
   }
-  animation: ${({ icontype, thememode }) => {
-      if (thememode === "light") {
-        return icontype === "sun" ? rotateUp : rotateDown;
-      } else {
-        return icontype === "sun" ? rotateDown : rotateUp;
-      }
-    }}
-    1s forwards;
-`;
-
-export const LightThemeIcons = styled.div<{
-  icontype: "sun" | "moon";
-  thememode: string;
-}>`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 30px;
-  height: 30px;
-  display: var(--dis--black);
-  transform-origin: 50% 200%;
-  position: absolute;
   animation: ${({ icontype, thememode }) => {
       if (thememode === "light") {
         return icontype === "sun" ? rotateUp : rotateDown;
