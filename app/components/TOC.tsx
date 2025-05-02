@@ -8,9 +8,14 @@ const TOC = ({ content }: { content: string }) => {
     const regex = /^(#|##|###) (.*$)/gim;
     if (source.match(regex)) {
       return source.match(regex)?.map((heading: string) => ({
-        text: heading.replace('#', '').replace('#', '>').replace('#', '>'),
-        link: heading.replace('# ', '').replace(/#+/g, '').replace(/ /g, '-').replace(/[+,?]/g, '').toLowerCase(),
-        indent: heading.match(/#/g)?.length
+        text: heading.replace("#", "").replace("#", ">").replace("#", ">"),
+        link: heading
+          .replace("# ", "")
+          .replace(/#+/g, "")
+          .replace(/ /g, "-")
+          .replace(/[+,?]/g, "")
+          .toLowerCase(),
+        indent: heading.match(/#/g)?.length,
       }));
     }
     return [];
@@ -22,13 +27,12 @@ const TOC = ({ content }: { content: string }) => {
       <TocHeader>목차</TocHeader>
       {HeadingArr?.map((heading, index) => (
         <div key={index}>
-          <CustomLink href={'#' + heading.link}>{heading.text}</CustomLink>
+          <CustomLink href={"#" + heading.link}>{heading.text}</CustomLink>
         </div>
       ))}
     </div>
-  )
-
-}
+  );
+};
 export default TOC;
 
 const TocHeader = styled.div`

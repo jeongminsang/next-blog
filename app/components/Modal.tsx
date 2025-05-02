@@ -1,6 +1,12 @@
-import React, { ReactNode, useEffect, useRef } from 'react';
-import useModal from './useModal';
-import { MainContainer, ModalSection, ChildrenContents, CloseModalBtn, CloseIcn } from '../styles/components/Modal';
+import React, { ReactNode, useEffect, useRef } from "react";
+import useModal from "./useModal";
+import {
+  MainContainer,
+  ModalSection,
+  ChildrenContents,
+  CloseModalBtn,
+  CloseIcn,
+} from "../styles/components/Modal";
 
 interface ModalProps {
   isModalOpen: boolean;
@@ -8,12 +14,7 @@ interface ModalProps {
   children?: ReactNode;
 }
 
-
-function Modal({
-  isModalOpen,
-  onClickCloseModal,
-  children,
-}: ModalProps) {
+function Modal({ isModalOpen, onClickCloseModal, children }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,9 +27,9 @@ function Modal({
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [onClickCloseModal]);
 
@@ -36,7 +37,7 @@ function Modal({
   if (!isOpen) return null;
   return (
     <MainContainer>
-      <ModalSection ismodalopen={`${isModalOpen}`} ref={modalRef}>
+      <ModalSection $ismodalopen={`${isModalOpen}`} ref={modalRef}>
         <ChildrenContents>{children}</ChildrenContents>
         <CloseModalBtn onClick={onClickCloseModal}>
           <CloseIcn />

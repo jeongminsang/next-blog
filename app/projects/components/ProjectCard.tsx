@@ -1,8 +1,17 @@
-"use client"
+"use client";
 
 import { useState } from "react";
-import { CardContainer, CardImg, CardContents, CardTitle, ProjectStack, StackTag, ButtonContainer, MoreButton } from "../styles/pages/Projects"
-import Modal from "./Modal"
+import {
+  CardContainer,
+  CardImg,
+  CardContents,
+  CardTitle,
+  ProjectStack,
+  StackTag,
+  ButtonContainer,
+  MoreButton,
+} from "../../styles/pages/Projects";
+import Modal from "../../components/Modal";
 import ModalCardContents from "./ModalCardContents";
 
 interface ProjectData {
@@ -14,22 +23,22 @@ interface ProjectData {
   properties: {
     Images: {
       rich_text: {
-        href: string
+        href: string;
       }[];
     };
     CoverImg: {
       rich_text: {
-        href: string
+        href: string;
       }[];
     };
     Name: {
       title: {
-        plain_text: string
+        plain_text: string;
       }[];
     };
     Stack: {
       multi_select: {
-        name: string
+        name: string;
       }[];
     };
   };
@@ -46,33 +55,42 @@ const ProjectCard = (projectdata: ProjectCardProps) => {
     <CardContainer>
       <CardImg
         src={projectdata.projectdata.properties.CoverImg.rich_text[0].href}
-        alt="cover image"
+        alt='cover image'
         width={1000}
         height={1000}
         draggable={false}
+        priority
       />
-      <CardContents modalstate={`${isModalOpen}`}>
+      <CardContents $modalstate={`${isModalOpen}`}>
         <CardTitle>
           {projectdata.projectdata.properties.Name.title[0].plain_text}
         </CardTitle>
         <ProjectStack>
-          {projectdata.projectdata.properties.Stack.multi_select.map((tag, index: number) => (
-            <StackTag key={index}>{tag.name}</StackTag>
-          ))}
+          {projectdata.projectdata.properties.Stack.multi_select.map(
+            (tag, index: number) => (
+              <StackTag key={index} color={"#5ba2ff"}>
+                {tag.name}
+              </StackTag>
+            )
+          )}
         </ProjectStack>
         <ButtonContainer>
-          <MoreButton onClick={() => setIsModalOpen(true)}>LEARN MORE</MoreButton>
+          <MoreButton onClick={() => setIsModalOpen(true)}>
+            LEARN MORE
+          </MoreButton>
           <Modal
             isModalOpen={isModalOpen}
             onClickCloseModal={() => {
               setIsModalOpen(false);
             }}
           >
-            <ModalCardContents projectdata={projectdata.projectdata}></ModalCardContents>
+            <ModalCardContents
+              projectdata={projectdata.projectdata}
+            ></ModalCardContents>
           </Modal>
         </ButtonContainer>
       </CardContents>
     </CardContainer>
-  )
-}
+  );
+};
 export default ProjectCard;

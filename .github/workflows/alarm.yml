@@ -1,0 +1,15 @@
+name: It's time to wake up!
+on:
+  schedule:
+    - cron: "0 0 */5 * *"
+  workflow_dispatch:
+jobs:
+  send_request:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Send request
+        run: |
+          curl --request GET --url "https://ihvlweakjvqmlibssjcu.supabase.co/rest/v1/projects?apikey=${{ secrets.SUPABASE_API_KEY }}"
+        env:
+          SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}

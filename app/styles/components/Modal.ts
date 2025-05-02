@@ -9,7 +9,7 @@ import { AiFillGithub } from "react-icons/ai";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
 
 interface ModalSectionProps {
-  ismodalopen: string;
+  $ismodalopen: string;
 }
 
 const ModalOpenMove = keyframes`
@@ -57,7 +57,7 @@ export const ModalSection = styled.section<ModalSectionProps>`
   border: 1px none solid;
   background-color: var(--background--cr);
   animation: ${(props) =>
-      props.ismodalopen === "true" ? ModalOpenMove : ModalCloseMove}
+      props.$ismodalopen === "true" ? ModalOpenMove : ModalCloseMove}
     0.3s ease-in-out;
   @media screen and (max-width: 800px) {
     width: 454.55px;
@@ -151,14 +151,16 @@ export const LinkIcn = styled(LiaExternalLinkAltSolid)`
   margin-right: 8px;
 `;
 
-export const StackTag = styled.div`
-  border: 1px #5ba2ff solid;
+export const StackTag = styled.div<{ color: string }>`
+  /* border: 1px #5ba2ff solid; */
+  border: 1px ${(props) => props.color} solid;
   font-size: 12px;
   padding: 3px 5px 3px 5px;
   margin: 3px;
   border-radius: 5px;
   color: white;
-  background-color: #5ba2ff;
+  /* background-color: #5ba2ff; */
+  background-color: ${(props) => props.color};
 `;
 
 export const CarouselContainer = styled.div`

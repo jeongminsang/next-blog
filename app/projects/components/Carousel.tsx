@@ -1,7 +1,14 @@
 "use client";
 
-import { CarouselContainer, Carouseldiv, PrevArrowBtn, NextArrowBtn, LeftIcn, RightIcn, CarouselImage } from '../styles/components/Modal';
-import { projectImgs } from "../libs/ProjectImgs"
+import {
+  CarouselContainer,
+  Carouseldiv,
+  PrevArrowBtn,
+  NextArrowBtn,
+  LeftIcn,
+  RightIcn,
+  CarouselImage,
+} from "../../styles/components/Modal";
 
 interface ProjectNameProps {
   projectname: {
@@ -12,7 +19,6 @@ interface ProjectNameProps {
 interface ArrowProps {
   onClick?: () => void;
 }
-
 
 const PrevArrow = (props: ArrowProps) => (
   <PrevArrowBtn onClick={props.onClick}>
@@ -43,15 +49,16 @@ const Carousel = (projectname: ProjectNameProps) => {
           <CarouselImage
             key={index}
             src={image.href}
-            alt="Carousel Image"
+            alt='Carousel Image'
             width={1000}
             height={1000}
             draggable={false}
+            priority
           />
         ))}
       </Carouseldiv>
     </CarouselContainer>
   );
-}
+};
 
 export default Carousel;

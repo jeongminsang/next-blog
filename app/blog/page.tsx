@@ -1,6 +1,18 @@
-import { getAllPostData } from '../libs/api';
-import readingTime from 'reading-time';
-import { MainContainer, Title, SubTitle, BlogTitle, PostList, PostBody, PostContents, PostTitle, PostSubTitle, PostInfo, ThumbnailImg } from "../styles/pages/Blog"
+import { getAllPostData } from "../libs/api";
+import readingTime from "reading-time";
+import {
+  MainContainer,
+  Title,
+  SubTitle,
+  BlogTitle,
+  PostList,
+  PostBody,
+  PostContents,
+  PostTitle,
+  PostSubTitle,
+  PostInfo,
+  ThumbnailImg,
+} from "../styles/pages/Blog";
 
 export default function Home() {
   const { posts, slugs } = getAllPostData();
@@ -26,10 +38,11 @@ export default function Home() {
               width={1000}
               height={1000}
               draggable={false}
+              priority
             />
           </PostBody>
         ))}
       </PostList>
     </MainContainer>
-  )
+  );
 }
