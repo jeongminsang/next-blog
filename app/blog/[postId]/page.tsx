@@ -20,9 +20,7 @@ import ReadingProgressBar from "../../components/ReadingProgressBar";
 dayjs.locale("ko");
 
 interface Params {
-  params: {
-    postId: number;
-  };
+  params: Promise<{ postId: number }>;
 }
 
 // export const generateStaticParams = async () => {

@@ -53,6 +53,7 @@ const Carousel = (projectname: ProjectNameProps) => {
             width={1000}
             height={1000}
             draggable={false}
+            priority
           />
         ))}
       </Carouseldiv>
