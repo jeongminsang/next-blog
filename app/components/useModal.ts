@@ -4,7 +4,7 @@ function useModal(isModalOpen: boolean, delay: number) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    let timer: any;
+    let timer: NodeJS.Timeout;
     if (isModalOpen) {
       setIsOpen(true);
     } else {

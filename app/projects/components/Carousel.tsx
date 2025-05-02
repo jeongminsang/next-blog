@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  CarouselContainer,
   Carouseldiv,
   PrevArrowBtn,
   NextArrowBtn,
@@ -43,21 +42,19 @@ const Carousel = (projectname: ProjectNameProps) => {
   };
 
   return (
-    <CarouselContainer>
-      <Carouseldiv {...settings}>
-        {projectname.projectname.map((image: any, index: number) => (
-          <CarouselImage
-            key={index}
-            src={image.href}
-            alt='Carousel Image'
-            width={1000}
-            height={1000}
-            draggable={false}
-            priority
-          />
-        ))}
-      </Carouseldiv>
-    </CarouselContainer>
+    <Carouseldiv {...settings}>
+      {projectname.projectname.map((image: any, index: number) => (
+        <CarouselImage
+          key={index}
+          src={image.href}
+          alt='Carousel Image'
+          width={1000}
+          height={1000}
+          draggable={false}
+          priority
+        />
+      ))}
+    </Carouseldiv>
   );
 };
 

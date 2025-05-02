@@ -67,7 +67,7 @@ export const GitHubButton = styled.div`
   height: 50px;
   margin-left: 10px;
   border-radius: 10px;
-  background-color: var(--hv-cr);
+  background-color: var(--github--bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,6 +76,7 @@ export const GitHubButton = styled.div`
 
   .github-icon {
     position: relative;
+    margin-left: 2px;
     width: 33px;
     height: 32px;
     background-color: var(--text--color);
