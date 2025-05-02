@@ -37,22 +37,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const setThemeMode = `
-    if(!window.localStorage.getItem('theme')){
-      localStorage.theme = 'dark'
-    }
-    document.body.dataset.theme = window.localStorage.getItem('theme')
-  `;
-
   return (
     <html lang='en' suppressHydrationWarning>
       <StyledComponentsRegistry>
         <body className={inter.className}>
-          {/* <script
-            dangerouslySetInnerHTML={{
-              __html: setThemeMode,
-            }}
-          ></script> */}
           <ThemeProvider>
             <Header />
             {children}

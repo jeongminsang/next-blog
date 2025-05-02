@@ -56,7 +56,9 @@ const ModalCardContents = ({ projectdata }: ProjectCardProps) => {
         ))}
       </ProjectStack>
       <ProjectPeriod>
-        {projectdata.start_date + " ~ " + projectdata.end_date}
+        {projectdata.start_date +
+          " ~ " +
+          (projectdata.end_date === null ? "ing" : projectdata.end_date)}
       </ProjectPeriod>
       <LinkBtns>
         <LinkBtn onClick={() => goGitHubHandle()}>
