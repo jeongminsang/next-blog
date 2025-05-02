@@ -35,7 +35,7 @@ body {
   color: #000;
   background: rgb(255, 255, 255);
   transition: background-color 0.3s ease;
-  /* --hv-cr: #d4d4d4; */
+  --hv-cr: #d4d4d4;
   --text--color: black;
   --github--cr: rgb(20, 113, 156);
   --github--first--cr: #5A189A;
@@ -49,6 +49,7 @@ body {
   --hv-cr: rgb(58, 58, 58);
   --text--color: white;
   --github--cr: #f69d3c;
+  --github--bg: rgb(58, 58, 58);
   --github--first--cr: lime;
   --github--last--cr: #f69d3c;
   --background--cr: rgb(29, 29, 29);
