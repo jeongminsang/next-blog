@@ -11,7 +11,7 @@ import {
   ButtonContainer,
   MoreButton,
 } from "../../styles/pages/Projects";
-import Modal from "../../components/Modal";
+import Modal from "../components/Modal";
 import ModalCardContents from "./ModalCardContents";
 
 interface ProjectCardProps {

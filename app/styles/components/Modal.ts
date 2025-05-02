@@ -34,20 +34,43 @@ const ModalCloseMove = keyframes`
   }
 `;
 
-export const MainContainer = styled.div`
+const OverlayFadeIn = keyframes`
+  0% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+`;
+
+const OverlayFadeOut = keyframes`
+  0% {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  100% {
+    background-color: transparent;
+  }
+`;
+
+export const MainContainer = styled.div<{ $ismodalopen?: boolean }>`
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   z-index: 99;
-  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   align-content: center;
-  transition: background-color 0.2s ease;
+  background-color: transparent;
+  animation: ${(props) => (props.$ismodalopen ? OverlayFadeIn : OverlayFadeOut)}
+    0.2s ease-in-out forwards;
+  &.closing {
+    animation: ${OverlayFadeOut} 0.3s ease-in-out forwards;
+  }
 `;
+
 
 export const ModalSection = styled.section<ModalSectionProps>`
   position: fixed;
@@ -59,6 +82,15 @@ export const ModalSection = styled.section<ModalSectionProps>`
   animation: ${(props) =>
       props.$ismodalopen === "true" ? ModalOpenMove : ModalCloseMove}
     0.3s ease-in-out;
+  /* supabase 적용 끝나면 아래로 바꿀 것 */
+  /* animation: ${ModalOpenMove}0.3s ease-in-out; */
+  opacity: ${(props) => (props.$ismodalopen === "true" ? 1 : 0)};
+  transform: scale(${(props) => (props.$ismodalopen === "true" ? 1 : 0.95)});
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+  &.closing {
+    animation: ${ModalCloseMove} 0.3s ease-in-out forwards;
+  }
   @media screen and (max-width: 800px) {
     width: 454.55px;
   }
@@ -152,6 +184,7 @@ export const LinkIcn = styled(LiaExternalLinkAltSolid)`
 `;
 
 export const StackTag = styled.div<{ color: string }>`
+  /* supabase 적용 끝나면 아래 주석 지울 것 */
   /* border: 1px #5ba2ff solid; */
   border: 1px ${(props) => props.color} solid;
   font-size: 12px;
@@ -161,11 +194,6 @@ export const StackTag = styled.div<{ color: string }>`
   color: white;
   /* background-color: #5ba2ff; */
   background-color: ${(props) => props.color};
-`;
-
-export const CarouselContainer = styled.div`
-  /* display: flex;
-  flex-direction: row; */
 `;
 
 export const Carouseldiv = styled(Slider)`
