@@ -27,7 +27,7 @@ export default function ThemeToggleButton() {
   }
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };
 
   return (
@@ -93,7 +93,7 @@ export const ThemeIcons = styled.div<{
     transform: scale(1.2);
   }
   animation: ${({ $icontype, $thememode }) => {
-      if ($thememode === "light") {
+      if ($thememode === "light" || $thememode === "system") {
         return $icontype === "sun" ? rotateUp : rotateDown;
       } else {
         return $icontype === "sun" ? rotateDown : rotateUp;
