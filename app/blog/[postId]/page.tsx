@@ -48,7 +48,7 @@ const DetailDataPage = async ({ params }: Params) => {
 
   return (
     <MainContainer>
-      <ReadingProgressBar />
+      {/* <ReadingProgressBar /> */}
       <PostContainer>
         <TagAside />
         <PostSection>

@@ -80,6 +80,7 @@ export const TOCAside = styled.aside`
   border-bottom: 1px solid gray;
   div {
     margin-bottom: 5px;
+    white-space: normal;
   }
   @media screen and (max-width: 1200px) {
     display: none;

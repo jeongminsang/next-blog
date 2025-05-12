@@ -36,24 +36,27 @@ body {
   background: rgb(255, 255, 255);
   transition: background-color 0.3s ease;
   --hv-cr: #d4d4d4;
+  --hv-cr: rgba(200, 200, 200, 0.3);
   --text--color: black;
   --github--cr: rgb(20, 113, 156);
   --github--first--cr: #5A189A;
   --github--last--cr: #0077FF;
   --background--cr: rgb(255, 255, 255);
+  --bg--color-rgb: 255, 255, 255;
   --toc--cr: #676767;
 }
 
 [data-theme='dark'] body {
   color: #fff;
   background: rgb(29, 29, 29);
-  --hv-cr: rgb(58, 58, 58);
+  --hv-cr: rgba(100, 100, 100, 0.3);
   --text--color: white;
   --github--cr: #f69d3c;
   --github--bg: rgb(58, 58, 58);
   --github--first--cr: lime;
   --github--last--cr: #f69d3c;
   --background--cr: rgb(29, 29, 29);
+  --bg--color-rgb: 29, 29, 29;
   --toc--cr: #a5a5a5;
 }
 
