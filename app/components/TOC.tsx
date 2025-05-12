@@ -2,20 +2,44 @@
 
 import CustomLink from "./CustomLink";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 
 const TOC = ({ content }: { content: string }) => {
+  const [activeId, setActiveId] = useState<string>("");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id);
+          }
+        });
+      },
+      {
+        rootMargin: "-80px 0px -80% 0px",
+      }
+    );
+    const headings = document.querySelectorAll("h1, h2, h3");
+    headings.forEach((heading) => observer.observe(heading));
+    return () => {
+      headings.forEach((heading) => observer.unobserve(heading));
+    };
+  }, []);
+
   const getHeadings = (source: string) => {
     const regex = /^(#|##|###) (.*$)/gim;
     if (source.match(regex)) {
       return source.match(regex)?.map((heading: string) => ({
-        text: heading.replace("#", "").replace("#", ">").replace("#", ">"),
+        text: heading.replace(/#/g, ""),
         link: heading
+          .replace(/@/g, "")
           .replace("# ", "")
           .replace(/#+/g, "")
           .replace(/ /g, "-")
           .replace(/[+,?]/g, "")
           .toLowerCase(),
-        indent: heading.match(/#/g)?.length,
+        indent: heading.replace("#", "").match(/#/g)?.length,
       }));
     }
     return [];
@@ -24,18 +48,18 @@ const TOC = ({ content }: { content: string }) => {
   const HeadingArr = getHeadings(content);
   return (
     <div>
-      <TocHeader>목차</TocHeader>
       {HeadingArr?.map((heading, index) => (
         <div key={index}>
-          <CustomLink href={"#" + heading.link}>{heading.text}</CustomLink>
+          <CustomLink
+            href={"#" + heading.link}
+            $isactive={activeId === heading.link}
+            $hashcount={heading.indent}
+          >
+            {heading.text}
+          </CustomLink>
         </div>
       ))}
     </div>
   );
 };
 export default TOC;
-
-const TocHeader = styled.div`
-  padding-bottom: 5px;
-  border-bottom: 1px solid grey;
-`;

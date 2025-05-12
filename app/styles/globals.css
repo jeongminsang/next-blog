@@ -41,6 +41,7 @@ body {
   --github--first--cr: #5A189A;
   --github--last--cr: #0077FF;
   --background--cr: rgb(255, 255, 255);
+  --toc--cr: #676767;
 }
 
 [data-theme='dark'] body {
@@ -53,6 +54,7 @@ body {
   --github--first--cr: lime;
   --github--last--cr: #f69d3c;
   --background--cr: rgb(29, 29, 29);
+  --toc--cr: #a5a5a5;
 }
 
 h1,

@@ -76,17 +76,10 @@ export const TOCAside = styled.aside`
   height: 100%;
   margin: 10px;
   padding: 10px;
-  border: 1px solid grey;
-  border-radius: 10px;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
   div {
     margin-bottom: 5px;
-    a {
-      border-radius: 5px;
-      padding: 3px;
-      &:hover {
-        background-color: var(--hv-cr);
-      }
-    }
   }
   @media screen and (max-width: 1200px) {
     display: none;
