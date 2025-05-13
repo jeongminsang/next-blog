@@ -67,8 +67,8 @@ export const PostContents = styled(motion.div)`
 `;
 
 export const TagAside = styled(motion.aside)`
-  width: 280px;
-  @media screen and (max-width: 1200px) {
+  width: 240px;
+  @media screen and (max-width: 1440px) {
     display: none;
   }
 `;
@@ -76,9 +76,8 @@ export const TagAside = styled(motion.aside)`
 export const TOCAside = styled(motion.aside)`
   position: sticky;
   top: 230px;
-  width: 240px;
+  max-width: 240px;
   height: 100%;
-  margin: 10px;
   padding: 10px;
   border-top: 1px solid gray;
   border-bottom: 1px solid gray;
@@ -86,7 +85,7 @@ export const TOCAside = styled(motion.aside)`
     margin-bottom: 5px;
     white-space: normal;
   }
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 1440px) {
     display: none;
   }
 `;
