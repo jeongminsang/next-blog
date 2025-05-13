@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export const MainContainer = styled.div`
   display: flex;
@@ -9,15 +10,7 @@ export const MainContainer = styled.div`
   max-width: 800px;
   width: 100%;
   margin: 0 auto;
-`;
-
-export const Title = styled.h1`
-  display: flex;
-  justify-content: center;
-  margin-top: 26px;
-  margin-bottom: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-top: 70px;
 `;
 
 export const ResumeImg = styled(Image)`
@@ -28,17 +21,25 @@ export const ResumeImg = styled(Image)`
   height: 300px;
 `;
 
-export const SubTitle = styled.h3`
+export const ResumeText = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+`;
+
+export const SubTitle = styled(motion.h3)`
   display: flex;
   justify-content: center;
-  margin-top: 0px;
+  margin-top: 20px;
   margin-bottom: 10px;
   padding-left: 10px;
   padding-right: 10px;
-  font-weight: 100;
+  font-weight: 200;
+  font-size: 22px;
 `;
 
-export const Contents = styled.p`
+export const Contents = styled(motion.p)`
   display: flex;
   justify-content: center;
   text-align: center;

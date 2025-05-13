@@ -7,6 +7,15 @@ interface RouterButtonProps {
 }
 
 export const MainContainer = styled.div`
+  position: fixed;
+  width: 100%;
+  background-color: rgba(var(--bg--color-rgb), 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+`;
+
+export const FixedContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;

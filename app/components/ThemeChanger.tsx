@@ -20,6 +20,14 @@ export default function ThemeToggleButton() {
 
   useEffect(() => {
     setMounted(true);
+    if (
+      theme === "sysytem" &&
+      window.matchMedia("(prefers-color-scheme: light)").matches
+    ) {
+      setTheme("light");
+    } else {
+      setTheme("dark");
+    }
   }, []);
 
   if (!mounted || theme === undefined) {
