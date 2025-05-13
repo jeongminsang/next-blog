@@ -5,6 +5,8 @@ import dayjs from "dayjs";
 import readingTime from "reading-time";
 import PostDetailContent from "../../components/PostDetailContents";
 import TOC from "../../components/TOC";
+import Giscus from "../../components/Giscus";
+import ReadingProgressBar from "../../components/ReadingProgressBar";
 import {
   MainContainer,
   PostContainer,
@@ -15,8 +17,7 @@ import {
   TOCAside,
   GiscusContainer,
 } from "../../styles/pages/DetailDataPage";
-import Giscus from "../../components/Giscus";
-import ReadingProgressBar from "../../components/ReadingProgressBar";
+import { fadeInSlideToRight, staggerHalf } from "@/app/utils/motions";
 dayjs.locale("ko");
 
 interface Params {
@@ -47,12 +48,15 @@ const DetailDataPage = async ({ params }: Params) => {
   const { meta, content, markdowncontent } = await getPostDetailData(postId);
 
   return (
-    <MainContainer>
+    <MainContainer
+      variants={fadeInSlideToRight}
+      initial='hidden'
+      animate='animate'
+    >
       {/* <ReadingProgressBar /> */}
-      <PostContainer>
-        <TagAside />
-        <PostSection>
-          <title title={meta.title}>{meta.title}</title>
+      <PostContainer variants={staggerHalf}>
+        <TagAside variants={fadeInSlideToRight} />
+        <PostSection variants={fadeInSlideToRight}>
           <PostTitle>{meta.title}</PostTitle>
           <PostInfo>
             📅 {dayjs(meta.date).locale("ko").format("YYYY년 M월 D일")}
@@ -62,11 +66,11 @@ const DetailDataPage = async ({ params }: Params) => {
           </PostInfo>
           <PostDetailContent content={content} />
         </PostSection>
-        <TOCAside>
+        <TOCAside variants={fadeInSlideToRight}>
           <TOC content={markdowncontent} />
         </TOCAside>
       </PostContainer>
-      <GiscusContainer>
+      <GiscusContainer variants={fadeInSlideToRight}>
         <Giscus />
       </GiscusContainer>
     </MainContainer>

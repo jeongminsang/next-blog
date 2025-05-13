@@ -42,12 +42,12 @@ const Header = () => {
             >
               blog
             </RouterButton>
-            <RouterButton
+            {/* <RouterButton
               onClick={goProjectHandle}
               $params={params.includes("projects") ? "true" : "false"}
             >
               projects
-            </RouterButton>
+            </RouterButton> */}
           </RouterButtons>
           <ThemeToggleButton />
           <svg

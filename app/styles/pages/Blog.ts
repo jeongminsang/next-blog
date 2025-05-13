@@ -3,6 +3,7 @@
 import styled from "styled-components";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export const MainContainer = styled.div`
   display: flex;
@@ -34,31 +35,20 @@ export const BlogTitle = styled.h3`
   padding-right: 10px;
 `;
 
-export const PostList = styled.ul`
-  display: flex;
+export const PostList = styled(motion.div)`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(384px, 1fr));
   flex-direction: column;
 `;
 
-export const PostBody = styled(Link)`
+export const PostBody = styled(motion(Link))`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px;
   padding: 10px;
   border-radius: 10px;
   transition: transform 0.2s ease;
-  &:hover {
-    transform: translateY(-5px);
-    background-color: var(--hv-cr);
-    transition: transform 0.2s ease;
-  }
-  @media screen and (max-width: 500px) {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin: 10px;
-    flex-direction: column-reverse;
-  }
 `;
 
 export const PostContents = styled.div`
@@ -75,6 +65,7 @@ export const PostTitle = styled.div`
 `;
 
 export const PostSubTitle = styled.div`
+  color: #fff;
   font-size: 14px;
 `;
 
@@ -91,12 +82,65 @@ export const PostInfo = styled.div`
 
 export const ThumbnailImg = styled(Image)`
   object-fit: cover;
-  width: 130px;
-  height: 63px;
-  margin: 0;
-  @media screen and (max-width: 500px) {
+  width: 100%;
+  height: 230px;
+  border-radius: 20px;
+  transition: transform 0.2s ease;
+  &:hover {
+    background-color: var(--hv-cr);
+  }
+  @media screen and (max-width: 768px) {
     width: 100%;
-    height: 100%;
-    max-height: 250px;
+    height: 300px;
+  }
+  @media screen and (max-width: 500px) {
+    height: 230px;
+  }
+`;
+
+export const ImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+`;
+
+export const ImageCover = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: absolute;
+  width: 100%;
+  margin: 0 auto;
+  height: 230px;
+  border-radius: 19px;
+  top: 24px;
+  left: 00px;
+  padding: 20px;
+  text-align: center;
+  background-color: transparent;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+  opacity: 1;
+  > div {
+    display: flex;
+    justify-content: space-between;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    color: #fff;
+    > svg {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  &:hover {
+    background: rgba(0, 0, 0, 0.7);
+    > div {
+      opacity: 1;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    height: 300px;
+  }
+  @media screen and (max-width: 500px) {
+    height: 230px;
   }
 `;

@@ -2,6 +2,8 @@
 
 import CustomLink from "./CustomLink";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { fadeInStagger, fadeInSlideToRight } from "../utils/motions";
 
 const TOC = ({ content }: { content: string }) => {
   const [activeId, setActiveId] = useState<string>("");
@@ -46,9 +48,9 @@ const TOC = ({ content }: { content: string }) => {
 
   const HeadingArr = getHeadings(content);
   return (
-    <div>
+    <motion.div variants={fadeInStagger} initial='hidden' animate='animate'>
       {HeadingArr?.map((heading, index) => (
-        <div key={index}>
+        <motion.div key={index} variants={fadeInSlideToRight}>
           <CustomLink
             href={"#" + heading.link}
             $isactive={activeId === heading.link}
@@ -56,9 +58,9 @@ const TOC = ({ content }: { content: string }) => {
           >
             {heading.text}
           </CustomLink>
-        </div>
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 };
 export default TOC;
