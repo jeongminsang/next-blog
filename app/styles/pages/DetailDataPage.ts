@@ -76,7 +76,7 @@ export const TagAside = styled(motion.aside)`
 export const TOCAside = styled(motion.aside)`
   position: sticky;
   top: 230px;
-  max-width: 240px;
+  width: 240px;
   height: 100%;
   padding: 10px;
   border-top: 1px solid gray;
