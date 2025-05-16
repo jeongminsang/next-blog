@@ -1,7 +1,8 @@
 name: It's time to wake up!
 on:
-  schedule:
-    - cron: "0 0 */2 * *"
+  push:
+    branches:
+      - main
   workflow_dispatch:
 jobs:
   send_request:
@@ -11,7 +12,7 @@ jobs:
       - name: Send request
         run: |
           curl --request PATCH \
-            --url "https://ihvlweakjvqmlibssjcu.supabase.co/rest/v1/projects?apikey=${{ secrets.SUPABASE_API_KEY }}&id=eq.1" \
+            --url "https://ihvlweakjvqmlibssjcu.supabase.co/rest/v1/isSleep?apikey=${{ secrets.SUPABASE_API_KEY }}&id=eq.1" \
             -H "Content-Type: application/json" \
             --data '{"id": "1"}'
         env:

@@ -10,7 +10,7 @@ import EmptyDiv from "./components/EmptyDiv";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://minsang-blog.vercel.app/"),
+  metadataBase: new URL("https://minsang.dev/"),
   title: "Minsang.dev",
   generator: "Next.js",
   applicationName: "Minsang.dev",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Minsang.dev",
     description: "Minsang's Tech Blog",
-    url: "https://minsang-blog.vercel.app/",
+    url: "https://minsang.dev/",
     siteName: "Next.js",
     images: [
       {
