@@ -36,10 +36,26 @@ export const generateStaticParams = async () => {
 export const generateMetadata = async ({ params }: Params) => {
   const { postId } = await params;
   const { meta } = await getPostDetailData(postId);
+  console.log("meta:", meta);
   return {
     title: meta.title,
     description: meta.description,
     date: meta.date,
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      type: "article",
+      publishedTime: meta.date,
+      authors: ["Minsang"],
+      images: [
+        {
+          url: meta.thumbnail || "/blogSc.png",
+          width: 1200,
+          height: 630,
+          alt: meta.title,
+        },
+      ],
+    },
   };
 };
 
