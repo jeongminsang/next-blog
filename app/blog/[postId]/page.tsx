@@ -36,7 +36,6 @@ export const generateStaticParams = async () => {
 export const generateMetadata = async ({ params }: Params) => {
   const { postId } = await params;
   const { meta } = await getPostDetailData(postId);
-  console.log("meta:", meta);
   return {
     title: meta.title,
     description: meta.description,
