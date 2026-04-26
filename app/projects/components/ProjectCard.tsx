@@ -43,45 +43,47 @@ const ProjectCard = ({ projectdata }: ProjectCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="flex m-auto relative">
-      <Image
-        src={projectdata.properties.CoverImg.rich_text[0].href}
-        alt="cover image"
-        width={250}
-        height={250}
-        draggable={false}
-        priority
-        className="object-cover w-[250px] h-[250px] flex-1 sm:w-[300px] sm:h-[300px]"
-      />
-      <div
-        className={`flex flex-col items-center absolute w-[250px] h-[250px] top-0 left-0 p-[5px] text-center transition-colors duration-500 sm:w-[300px] sm:h-[300px] group ${
-          isModalOpen ? "bg-background-cr" : "bg-transparent hover:bg-background-cr"
-        }`}
-      >
-        <div className={`flex-col items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${isModalOpen ? "flex opacity-100" : "flex"}`}>
-          <div className="text-[22px] font-[400] pt-[30px] px-[10px] pb-0 animate-title-move-down">
-            {projectdata.properties.Name.title[0].plain_text}
-          </div>
-          <div className="flex justify-center max-w-[200px] mt-[10px] flex-wrap text-white animate-stack-move">
-            {projectdata.properties.Stack.multi_select.map((tag, index: number) => (
-              <div
-                key={index}
-                className="text-[12px] px-[5px] py-[3px] m-[3px] rounded-[5px] border border-[#5ba2ff] bg-[#5ba2ff]"
-              >
-                {tag.name}
-              </div>
-            ))}
-          </div>
-          <div className="flex items-center relative bottom-[-10px] text-[#5ba2ff] h-full animate-text-move-up">
-            <div
-              onClick={() => setIsModalOpen(true)}
-              className="border border-[#5ba2ff] p-[10px] mt-[30px] transition-colors duration-500 cursor-pointer hover:bg-[#5ba2ff] hover:text-white"
-            >
-              LEARN MORE
-            </div>
-          </div>
+    <div className="flex flex-col border border-border-default group transition-all duration-300">
+      <div className="relative aspect-square overflow-hidden border-b border-border-default">
+        <Image
+          src={projectdata.properties.CoverImg.rich_text[0].href}
+          alt="cover image"
+          width={600}
+          height={600}
+          draggable={false}
+          priority
+          className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-500"
+        />
+        <div className="absolute inset-0 bg-bg-base/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="btn-primary"
+          >
+            VIEW_LOG
+          </button>
         </div>
       </div>
+      
+      <div className="p-6 space-y-4">
+        <div className="flex justify-between items-start">
+          <h3 className="text-xl font-sans tracking-tight">
+            {projectdata.properties.Name.title[0].plain_text}
+          </h3>
+          <span className="font-mono text-xs text-text-muted opacity-60">PRJ_0{projectdata.properties.Name.title[0].plain_text.length}</span>
+        </div>
+        
+        <div className="flex flex-wrap gap-2">
+          {projectdata.properties.Stack.multi_select.map((tag, index: number) => (
+            <span
+              key={index}
+              className="font-mono text-[10px] uppercase tracking-wider px-2 py-1 border border-border-default text-text-muted"
+            >
+              {tag.name}
+            </span>
+          ))}
+        </div>
+      </div>
+
       <Modal
         isModalOpen={isModalOpen}
         onClickCloseModal={() => {
@@ -93,4 +95,5 @@ const ProjectCard = ({ projectdata }: ProjectCardProps) => {
     </div>
   );
 };
+
 export default ProjectCard;

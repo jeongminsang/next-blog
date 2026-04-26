@@ -1,12 +1,19 @@
 import "./styles/globals.css";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
-import { Inter } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import EmptyDiv from "./components/EmptyDiv";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ 
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://minsang.dev/"),
@@ -38,12 +45,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en' suppressHydrationWarning>
-      <body className={inter.className}>
-        <ThemeProvider>
+    <html lang='en' suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
+      <body className="bg-bg-base text-primary font-sans">
+        <ThemeProvider attribute="class" defaultTheme="dark">
           <Header />
-          <EmptyDiv />
-          <main className="flex-1">
+          <main className="flex-1 min-h-screen">
             {children}
           </main>
           <Footer />

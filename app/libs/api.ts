@@ -1,21 +1,32 @@
-import fs, { readdirSync, readFileSync } from "fs";
+import { readdirSync, readFileSync } from "fs";
 import matter from "gray-matter";
 import { join } from "path";
 import markdownToHtml from "../libs/markdownToHtml";
 import axios from "axios";
+import dayjs from "dayjs";
 
 const POSTDIRECOTRY = join(process.cwd(), "app/contents");
 const TOKEN = process.env.NEXT_PUBLIC_NOTION_TOKEN;
 const DATABASE_ID = process.env.NEXT_PUBLIC_NOTION_DATABASE_ID;
 
 export const getAllPostData = () => {
-  const posts = readdirSync(POSTDIRECOTRY).map((file) => {
+  const files = readdirSync(POSTDIRECOTRY);
+  
+  const allData = files.map((file) => {
     const post = readFileSync(`${POSTDIRECOTRY}/${file}`, "utf-8");
-    const { data, content, excerpt, isEmpty } = matter(post);
-    return { data, content, excerpt, isEmpty };
+    const { data, content } = matter(post);
+    const slug = file.replace(/\.mdx$/, "");
+    return { data, content, slug };
   });
-  const slugArr = fs.readdirSync(POSTDIRECOTRY);
-  const slugs = slugArr.reverse().map((slug) => slug.replace(/\.mdx$/, ""));
+
+  // Sort by date descending
+  allData.sort((a, b) => {
+    return dayjs(b.data.date).unix() - dayjs(a.data.date).unix();
+  });
+
+  const posts = allData.map(({ data, content }) => ({ data, content }));
+  const slugs = allData.map(({ slug }) => slug);
+
   return { posts, slugs };
 };
 
