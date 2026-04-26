@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  Carouseldiv,
-  PrevArrowBtn,
-  NextArrowBtn,
-  LeftIcn,
-  RightIcn,
-  CarouselImage,
-} from "../../styles/components/Modal";
+import Slider from "react-slick";
+import Image from "next/image";
+import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 
 interface ProjectImages {
   projectImages: {
@@ -21,14 +16,20 @@ interface ArrowProps {
 }
 
 const PrevArrow = (props: ArrowProps) => (
-  <PrevArrowBtn onClick={props.onClick}>
-    <LeftIcn />
-  </PrevArrowBtn>
+  <div
+    onClick={props.onClick}
+    className="absolute bottom-0 left-0 z-[99] text-white bg-gray-500/50 px-[10px] py-[8px] cursor-pointer"
+  >
+    <BiLeftArrow className="w-[25px] h-[25px]" />
+  </div>
 );
 const NextArrow = (props: ArrowProps) => (
-  <NextArrowBtn onClick={props.onClick}>
-    <RightIcn />
-  </NextArrowBtn>
+  <div
+    onClick={props.onClick}
+    className="absolute bottom-0 right-0 z-[99] text-white bg-gray-500/50 px-[10px] py-[8px] cursor-pointer"
+  >
+    <BiRightArrow className="w-[25px] h-[25px]" />
+  </div>
 );
 
 const Carousel = ({ projectImages }: ProjectImages) => {
@@ -43,19 +44,23 @@ const Carousel = ({ projectImages }: ProjectImages) => {
   };
 
   return (
-    <Carouseldiv {...settings}>
+    <Slider
+      {...settings}
+      className="flex flex-row sticky w-[500px] h-[300px] md:w-[454.55px] sm:w-[412px]"
+    >
       {projectImages.map((image, index: number) => (
-        <CarouselImage
+        <Image
           key={index}
           src={image.image}
-          alt='Carousel Image'
+          alt="Carousel Image"
           width={1000}
           height={1000}
           draggable={false}
           priority
+          className="object-cover m-0 w-[500px] h-[300px]"
         />
       ))}
-    </Carouseldiv>
+    </Slider>
   );
 };
 

@@ -1,14 +1,5 @@
 "use client";
 
-import {
-  MainContainer,
-  FixedContainer,
-  HeaderTitle,
-  SideButtons,
-  RouterButtons,
-  RouterButton,
-  GitHubButton,
-} from "../styles/components/Header";
 import { useRouter, usePathname } from "next/navigation";
 import ThemeToggleButton from "./ThemeChanger";
 
@@ -22,45 +13,38 @@ const Header = () => {
   const goBlogHandle = () => {
     router.push("/blog");
   };
-  const goProjectHandle = () => {
-    router.push("/projects");
-  };
 
   const goGitHubHandle = () => {
     window.open("https://github.com/jeongminsang");
   };
 
   return (
-    <MainContainer>
-      <FixedContainer>
-        <HeaderTitle onClick={goHomeHandle}>minsang.dev</HeaderTitle>
-        <SideButtons>
-          <RouterButtons>
-            <RouterButton
+    <header className="fixed w-full bg-background-cr/10 backdrop-blur-[5px] z-[1000]">
+      <div className="flex flex-row items-center justify-between w-full max-w-[800px] h-[70px] mx-auto px-4">
+        <h4
+          onClick={goHomeHandle}
+          className="p-[10px] rounded-[5px] cursor-pointer hover:bg-hv-cr transition-colors duration-200"
+        >
+          minsang.dev
+        </h4>
+        <div className="flex flex-row items-center justify-end">
+          <div className="flex flex-row">
+            <div
               onClick={goBlogHandle}
-              $params={params.includes("blog") ? "true" : "false"}
+              className={`text-[17px] p-[8px] m-[5px] bg-transparent rounded-[5px] cursor-pointer hover:bg-hv-cr transition-colors duration-200 ${
+                params.includes("blog") ? "text-text-color" : "text-gray-500"
+              }`}
             >
               blog
-            </RouterButton>
-            {/* <RouterButton
-              onClick={goProjectHandle}
-              $params={params.includes("projects") ? "true" : "false"}
-            >
-              projects
-            </RouterButton> */}
-          </RouterButtons>
+            </div>
+          </div>
           <ThemeToggleButton />
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='32'
             height='30'
             viewBox='0 0 96 96'
-            style={{
-              position: "absolute",
-              width: 0,
-              height: 0,
-              overflow: "hidden",
-            }}
+            className="absolute w-0 h-0 overflow-hidden"
           >
             <mask
               id='gh-mask'
@@ -77,12 +61,29 @@ const Header = () => {
               />
             </mask>
           </svg>
-          <GitHubButton onClick={goGitHubHandle}>
-            <div className='github-icon' />
-          </GitHubButton>
-        </SideButtons>
-      </FixedContainer>
-    </MainContainer>
+          <div
+            onClick={goGitHubHandle}
+            className="group relative w-[50px] h-[50px] ml-[10px] border-none rounded-[10px] bg-github-bg flex items-center justify-center overflow-hidden cursor-pointer"
+          >
+            <div
+              className="github-icon relative ml-[2px] w-[33px] h-[32px] bg-text-color"
+              style={{
+                mask: "url(#gh-mask)",
+                WebkitMask: "url(#gh-mask)",
+              }}
+            >
+              <div
+                className="absolute inset-0 bg-gradient-to-r from-github-first-cr to-github-last-cr bg-[length:200%] bg-left opacity-0 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:bg-right"
+                style={{
+                  mask: "url(#gh-mask)",
+                  WebkitMask: "url(#gh-mask)",
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
   );
 };
 export default Header;

@@ -12,16 +12,17 @@ const TOC = ({ content }: { content: string }) => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
             setActiveId(entry.target.id);
           }
         });
       },
       {
-        rootMargin: "-80px 0px -80% 0px",
+        rootMargin: "0px 0px -80% 0px",
+        threshold: [0, 0.5, 1.0],
       }
     );
-    const headings = document.querySelectorAll("h1, h2, h3");
+    const headings = document.querySelectorAll(".markdown-body h1, .markdown-body h2, .markdown-body h3");
     headings.forEach((heading) => observer.observe(heading));
     return () => {
       headings.forEach((heading) => observer.unobserve(heading));

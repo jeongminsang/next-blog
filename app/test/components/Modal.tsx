@@ -1,13 +1,7 @@
 "use client";
 
-import React, { ReactNode, useCallback, useEffect, useRef } from "react";
-import {
-  MainContainer,
-  ModalSection,
-  ChildrenContents,
-  CloseModalBtn,
-  CloseIcn,
-} from "../../styles/components/Modal";
+import React, { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { IoCloseSharp } from "react-icons/io5";
 
 interface ModalProps {
   isModalOpen: boolean;
@@ -16,9 +10,16 @@ interface ModalProps {
 }
 
 function Modal({ isModalOpen, onClickCloseModal, children }: ModalProps) {
-  const modalContainerRef = useRef<HTMLDivElement>(null);
   const modalSectionRef = useRef<HTMLDivElement>(null);
-  const isClosing = useRef(false);
+  const [shouldRender, setShouldRender] = useState(isModalOpen);
+
+  useEffect(() => {
+    if (isModalOpen) setShouldRender(true);
+  }, [isModalOpen]);
+
+  const handleAnimationEnd = () => {
+    if (!isModalOpen) setShouldRender(false);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -27,7 +28,7 @@ function Modal({ isModalOpen, onClickCloseModal, children }: ModalProps) {
         modalSectionRef.current &&
         !modalSectionRef.current.contains(event.target as Node | null)
       ) {
-        startCloseAnimation();
+        onClickCloseModal();
       }
     };
 
@@ -37,45 +38,30 @@ function Modal({ isModalOpen, onClickCloseModal, children }: ModalProps) {
     };
   }, [isModalOpen, onClickCloseModal]);
 
-  const startCloseAnimation = useCallback(() => {
-    if (isClosing.current) return;
-    isClosing.current = true;
-    const modalContainerElement = modalContainerRef.current;
-    const modalElement = modalSectionRef.current;
-    if (modalElement && modalContainerElement) {
-      modalContainerElement.classList.add("closing");
-      modalElement.classList.add("closing");
-      setTimeout(() => {
-        onClickCloseModal();
-        modalContainerElement.classList.remove("closing");
-        modalElement.classList.remove("closing");
-        isClosing.current = false;
-      }, 300);
-    } else {
-      onClickCloseModal();
-      isClosing.current = false;
-    }
-  }, [onClickCloseModal]);
-
-  if (!isModalOpen && !isClosing.current) return null;
+  if (!shouldRender && !isModalOpen) return null;
 
   return (
-    <MainContainer
-      $ismodalopen={isModalOpen}
-      ref={modalContainerRef}
-      className={isClosing.current ? "closing" : ""}
+    <div
+      className={`fixed inset-0 z-[99] flex justify-center items-center ${
+        isModalOpen ? "animate-overlay-fade-in" : "animate-overlay-fade-out"
+      }`}
+      onAnimationEnd={handleAnimationEnd}
     >
-      <ModalSection
-        $ismodalopen={`${isModalOpen}`}
+      <section
         ref={modalSectionRef}
-        className={isClosing.current ? "closing" : ""}
+        className={`fixed top-[100px] w-[500px] h-[500px] bg-background-cr md:w-[454.55px] sm:w-[412px] ${
+          isModalOpen ? "animate-modal-open-move" : "animate-modal-close-move"
+        }`}
       >
-        <ChildrenContents>{children}</ChildrenContents>
-        <CloseModalBtn onClick={startCloseAnimation}>
-          <CloseIcn />
-        </CloseModalBtn>
-      </ModalSection>
-    </MainContainer>
+        <div className="flex flex-col justify-center items-center">{children}</div>
+        <button
+          onClick={onClickCloseModal}
+          className="absolute bottom-0 right-0 text-white p-[5px] pb-[2px] m-[3px] border-none rounded-[10px] bg-gray-500/50 cursor-pointer"
+        >
+          <IoCloseSharp className="w-[25px] h-[25px]" />
+        </button>
+      </section>
+    </div>
   );
 }
 

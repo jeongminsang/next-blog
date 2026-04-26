@@ -11,14 +11,15 @@ const DATABASE_ID = process.env.NEXT_PUBLIC_NOTION_DATABASE_ID;
 export const getAllPostData = () => {
   const posts = readdirSync(POSTDIRECOTRY).map((file) => {
     const post = readFileSync(`${POSTDIRECOTRY}/${file}`, "utf-8");
-    return matter(post);
+    const { data, content, excerpt, isEmpty } = matter(post);
+    return { data, content, excerpt, isEmpty };
   });
   const slugArr = fs.readdirSync(POSTDIRECOTRY);
   const slugs = slugArr.reverse().map((slug) => slug.replace(/\.mdx$/, ""));
   return { posts, slugs };
 };
 
-export const getPostDetailData = async (postId: number) => {
+export const getPostDetailData = async (postId: string | number) => {
   const post = readFileSync(`app/contents/${postId}.mdx`, "utf-8");
   const { data, content } = matter(post);
 

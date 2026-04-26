@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import hljs from "highlight.js";
 import "highlight.js/styles/github-dark.css";
-import { PostContents } from "../styles/pages/DetailDataPage";
+import { motion } from "framer-motion";
 
 const PostDetailContent = ({ content }: { content: string }) => {
   useEffect(() => {
@@ -11,7 +11,10 @@ const PostDetailContent = ({ content }: { content: string }) => {
   }, []);
 
   return (
-    <PostContents dangerouslySetInnerHTML={{ __html: content }}></PostContents>
+    <motion.div
+      className="markdown-body p-[10px] w-full mx-auto"
+      dangerouslySetInnerHTML={{ __html: content }}
+    />
   );
 };
 

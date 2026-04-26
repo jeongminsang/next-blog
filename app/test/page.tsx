@@ -1,8 +1,3 @@
-import {
-  MainContainer,
-  Title,
-  ProjectContainer,
-} from "../styles/pages/Projects";
 import { createClient } from "../utils/supabase/server";
 import ProjectCard from "./components/ProjectCard";
 
@@ -22,16 +17,16 @@ export default async function Projects() {
   `);
 
   return (
-    <MainContainer>
-      <Title>Projects</Title>
-      <ProjectContainer>
+    <div className="flex flex-col max-w-[800px] w-full mx-auto px-4">
+      <h1 className="mt-[26px] mb-[10px]">Projects (Test)</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px] w-full mt-[20px]">
         {projects &&
           projects
             .reverse()
             .map((project, index: number) => (
               <ProjectCard key={index} projectdata={project} />
             ))}
-      </ProjectContainer>
-    </MainContainer>
+      </div>
+    </div>
   );
 }

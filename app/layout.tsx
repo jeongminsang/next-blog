@@ -2,7 +2,6 @@ import "./styles/globals.css";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
-import StyledComponentsRegistry from "./registry";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import EmptyDiv from "./components/EmptyDiv";
@@ -40,16 +39,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <StyledComponentsRegistry>
-        <body className={inter.className}>
-          <ThemeProvider>
-            <Header />
-            <EmptyDiv />
+      <body className={inter.className}>
+        <ThemeProvider>
+          <Header />
+          <EmptyDiv />
+          <main className="flex-1">
             {children}
-            <Footer />
-          </ThemeProvider>
-        </body>
-      </StyledComponentsRegistry>
+          </main>
+          <Footer />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
