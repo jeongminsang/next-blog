@@ -1,52 +1,53 @@
 # Minsang.dev - Next.js Tech Blog
 
 ## Project Overview
-이 프로젝트는 Next.js (App Router) 기반의 개인 기술 블로그입니다. 로컬 MDX 파일을 이용한 블로그 포스팅 관리와 Notion API 및 Supabase를 연동한 프로젝트 전시 기능을 제공합니다. 최근 `styled-components`에서 `Tailwind CSS v4`로 스타일 엔진을 전면 마이그레이션하였습니다.
+This project is a personal tech blog built with Next.js (App Router). It features blog post management using local MDX files and a project showcase integrated with Notion API and Supabase.
 
-### 주요 기술 스택
+### Core Technology Stack
 - **Framework**: Next.js 15+ (App Router)
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS v4 (PostCSS 기반)
+- **Styling**: Tailwind CSS v4 (PostCSS-based)
 - **Animations**: Framer Motion
 - **Database/Auth**: Supabase
-- **CMS**: Notion API (Projects), Local MDX (Blog)
+- **CMS**: Notion API (for Projects), Local MDX (for Blog)
+- **Edge Functions**: Next.js Dynamic Icon Generation (`app/icon.tsx`)
 - **Deployment**: Vercel
 
 ## Building and Running
-### 개발 서버 실행
+### Start Development Server
 ```bash
 yarn dev
 ```
-### 프로덕션 빌드 및 실행
+### Production Build and Start
 ```bash
 yarn build
 yarn start
 ```
-### 린트 체크
-```bash
-yarn lint
-```
 
 ## Project Structure
-- `app/`: Next.js App Router 핵심 디렉토리
-  - `blog/`: 블로그 포스트 리스트 및 상세 페이지 (MDX 기반)
-  - `projects/`: Notion API 연동 프로젝트 페이지
-  - `test/`: Supabase 연동 테스트 페이지
-  - `components/`: 전역 공용 컴포넌트
-  - `libs/`: 데이터 페칭 및 마크다운 변환 로직 (`api.ts`, `markdownToHtml.ts`)
-  - `styles/`: Tailwind CSS 전역 스타일 및 테마 설정 (`globals.css`)
-  - `utils/`: Framer Motion 애니메이션 정의 및 Supabase 클라이언트
-- `app/contents/`: 블로그 포스트 데이터 (`.mdx` 파일)
-- `public/`: 정적 에셋 (이미지 등)
+- `app/`: Core Next.js App Router directory
+  - `blog/`: Blog post list and detail pages (MDX-based)
+  - `projects/`: Project showcase pages integrated with Notion API
+  - `test/`: Supabase integration test pages
+  - `components/`: Global reusable UI components
+  - `libs/`: Data fetching and Markdown conversion logic (`api.ts`, `markdownToHtml.ts`)
+  - `styles/`: Global styles and Tailwind configuration (`globals.css`)
+  - `utils/`: Framer Motion animation definitions and Supabase client
+  - `icon.tsx`: Dynamic favicon generation logic using Edge Runtime
+- `app/contents/`: Blog post data source (`.mdx` files)
+- `public/`: Static assets (images, icons, etc.)
 
 ## Development Conventions
-1. **Styling**: 모든 스타일은 Tailwind CSS 클래스를 사용합니다. 전역 테마 변수나 애니메이션 설정은 `app/styles/globals.css`의 `@theme` 블록에서 관리합니다.
-2. **Components**: UI 구성 시 `framer-motion`을 적극 활용하여 인터랙티브한 경험을 제공합니다. 애니메이션 프리셋은 `app/utils/motions.ts`를 참조하십시오.
+1. **Styling**: Use **Tailwind CSS v4** utility classes for all styling. Global theme variables, custom `@keyframes`, and complex CSS selectors should be managed centrally in the `@theme` block within `app/styles/globals.css`.
+2. **Components**:
+   - Utilize `framer-motion` for UI interactions and transitions.
+   - Separate complex client-side logic or animations into dedicated client components (e.g., `DetailClient.tsx`).
 3. **Data Fetching**: 
-   - 블로그 데이터는 `app/libs/api.ts`를 통해 로컬 파일 시스템에서 직접 읽어옵니다 (SSG).
-   - 프로젝트 데이터는 Notion API 또는 Supabase를 통해 가져옵니다.
-4. **Client/Server Boundary**: 데이터 페칭 및 서버 전용 모듈(`fs` 등)을 사용하는 로직은 반드시 서버 컴포넌트에서 처리하고, 애니메이션이나 상태 관리가 필요한 부분만 클라이언트 컴포넌트로 분리합니다.
+   - Blog content must be fetched on the server side using the `fs` module (`getAllPostData`, `getPostDetailData`).
+   - Keep components as Server Components by default to minimize browser bundle size; only use Client Components when necessary for interactivity.
+4. **Metadata & Icons**: Leverage Next.js dynamic metadata features (like `app/icon.tsx`). Ensure these functions run on the `edge` runtime for optimal performance.
 
-## Future Plans
-- `app/test/`의 Supabase 연동 로직을 메인 `projects/` 페이지로 통합 예정
-- 블로그 포스트의 태그 필터링 기능 강화
+## Recent Changes (Migration)
+- **Styled-Components Removal**: Completely replaced CSS-in-JS logic with Tailwind CSS v4 utility classes.
+- **Build Optimization**: Refined Server/Client component boundaries to fix build errors and improve performance.
+- **Path Aliases**: Removed `~` prefix from imports to comply with standard package resolution and Tailwind v4 requirements.

@@ -5,7 +5,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
 });
@@ -18,15 +18,16 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://minsang.dev/"),
   title: "Minsang.dev",
+  description: "Architecting the Future of Engineering.",
   generator: "Next.js",
   applicationName: "Minsang.dev",
   keywords: ["Next.js", "React", "TypeScript"],
   authors: [{ name: "Minsang" }],
   openGraph: {
     title: "Minsang.dev",
-    description: "Minsang's Tech Blog",
+    description: "Architecting the Future of Engineering.",
     url: "https://minsang.dev/",
-    siteName: "Next.js",
+    siteName: "Minsang.dev",
     images: [
       {
         url: "/blogSc.png",
@@ -45,13 +46,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en' suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="bg-bg-base text-primary font-sans">
-        <ThemeProvider attribute="class" defaultTheme="dark">
+    <html
+      lang='en'
+      suppressHydrationWarning
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
+    >
+      <body className='bg-bg-base text-primary font-sans'>
+        <ThemeProvider attribute='class' defaultTheme='dark'>
           <Header />
-          <main className="flex-1 min-h-screen">
-            {children}
-          </main>
+          <main className='flex-1 min-h-screen'>{children}</main>
           <Footer />
         </ThemeProvider>
       </body>
