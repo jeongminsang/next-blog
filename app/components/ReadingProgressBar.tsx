@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 
 export default function ReadingProgressBar() {
   const [width, setWidth] = useState(0);
@@ -19,16 +18,10 @@ export default function ReadingProgressBar() {
     return () => window.removeEventListener("scroll", scrollHeight);
   }, []);
 
-  return <ProgressBar width={width} />;
+  return (
+    <div
+      className="fixed z-50 top-0 left-0 h-[3px] rounded-tr-[2px] bg-linear-to-r from-[#b8d7ff] to-[#5ba2ff]"
+      style={{ width: `${width}%` }}
+    />
+  );
 }
-
-const ProgressBar = styled.div<{ width: number }>`
-  position: fixed;
-  z-index: 50;
-  top: 0px;
-  left: 0px;
-  height: 3px;
-  border-radius: 0px 2px 0px 0px;
-  background: linear-gradient(90deg, #b8d7ff, #5ba2ff);
-  width: ${(props) => props.width}%;
-`;
