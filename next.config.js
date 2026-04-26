@@ -11,12 +11,7 @@ const nextConfig = {
       "i.ibb.co",
       "velog.velcdn.com",
     ],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '*.supabase.co',
-      },
-    ],
+    remotePatterns: [],
   },
 };
 
