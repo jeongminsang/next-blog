@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  compiler: {
-    styledComponents: true,
-  },
+
   images: {
     domains: [
       "www.notion.so",
@@ -13,12 +11,7 @@ const nextConfig = {
       "i.ibb.co",
       "velog.velcdn.com",
     ],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '*.supabase.co',
-      },
-    ],
+    remotePatterns: [],
   },
 };
 
