@@ -4,21 +4,20 @@ Tech Blog made by Minsang Jeong
 
 ## Key Features
 
-- **Performance First**: Built with Next.js 15 (App Router) for superior speed and SEO.
+- **Performance First**: Built with Next.js 16 (App Router) and Turbopack for superior speed and SEO with complete SSG.
 - **Brutalist Design**: A custom design system inspired by xAI and terminal interfaces, utilizing Tailwind CSS v4.
-- **Content Management**:
-  - **Blog**: Managed via local MDX files for full control and versioning.
-  - **Projects**: Integrated with Notion API for dynamic project tracking.
-- **Animations**: Fluid, architectural transitions powered by Framer Motion.
+- **Content Management**: Managed via local MDX files for full control, versioning, and zero runtime CMS dependencies.
+- **Animations**: Fluid, architectural transitions powered by Motion (`motion/react`).
 - **Archival Feed**: Monospaced typography and high-contrast visuals for a technical reading experience.
 
 ## Tech Stack
 
-- **Framework**: Next.js 15 (App Router)
+- **Framework**: Next.js 16 (App Router, Turbopack)
+- **Package Manager**: pnpm
 - **Styling**: Tailwind CSS v4 (PostCSS)
 - **Typography**: Inter & JetBrains Mono
-- **Animations**: Framer Motion
-- **CMS**: Notion API (Projects) & Local MDX (Blog)
+- **Animations**: Motion
+- **Markdown**: Unified, Remark, Rehype
 - **Deployment**: Vercel
 
 ## Development
@@ -26,18 +25,18 @@ Tech Blog made by Minsang Jeong
 ### Setup
 
 ```bash
-yarn install
+pnpm install
 ```
 
 ### Run Local Server
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
 ### Build for Production
 
 ```bash
-yarn build
-yarn start
+pnpm build
+pnpm start
 ```
