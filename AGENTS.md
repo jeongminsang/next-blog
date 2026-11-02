@@ -51,3 +51,4 @@ pnpm start
 5. **Data Fetching**: 
    - Blog content is read statically on the server using Node `fs` (`getAllPostData`, `getPostDetailData`).
    - Dynamic routes use `generateStaticParams` for complete static site generation (SSG).
+
