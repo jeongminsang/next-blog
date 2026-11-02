@@ -1,6 +1,6 @@
-import { Variants } from "framer-motion";
+import { Variants } from "motion/react";
 
-const defaultEasing = [0.6, -0.05, 0.01, 0.99];
+const defaultEasing = [0.6, -0.05, 0.01, 0.99] as const;
 
 export const staggerHalf: Variants = {
   animate: { transition: { staggerChildren: 0.05 } },

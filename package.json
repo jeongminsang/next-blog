@@ -24,14 +24,14 @@
     "react-dom": "^19.1.0",
     "react-icons": "^4.11.0",
     "reading-time": "^1.5.0",
-    "rehype": "^12.0.1",
     "rehype-slug": "^5.1.0",
-    "remark": "^14.0.3",
+    "rehype-stringify": "^9.0.3",
     "remark-gfm": "^3.0.1",
-    "remark-html": "^15.0.2",
+    "remark-parse": "^10.0.2",
     "remark-rehype": "^10.1.0",
     "tailwindcss": "^4.2.4",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "unified": "^10.1.2"
   },
-  "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72"
+  "packageManager": "pnpm@12.16.1"
 }

@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import hljs from "highlight.js";
 import "highlight.js/styles/github-dark.css";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 const PostDetailContent = ({ content }: { content: string }) => {
   useEffect(() => {

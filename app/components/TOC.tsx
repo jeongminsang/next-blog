@@ -2,7 +2,7 @@
 
 import CustomLink from "./CustomLink";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { fadeInStagger, fadeInSlideToRight } from "../utils/motions";
 
 const TOC = ({ content }: { content: string }) => {

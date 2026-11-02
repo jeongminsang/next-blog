@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { fadeInSlideToRight, staggerHalf } from "@/app/utils/motions";
 import dayjs from "dayjs";
 import readingTime from "reading-time";
