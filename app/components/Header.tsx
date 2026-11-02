@@ -15,19 +15,13 @@ const Header = () => {
         >
           MINSANG_DEV
         </Link>
-        <div className='hidden md:flex gap-8'>
+        <div className='flex gap-8'>
           <Link
             href='/blog'
             className={`transition-opacity duration-200 hover:opacity-50 ${pathname.includes("/blog") ? "opacity-100" : "opacity-70"}`}
           >
             POSTS
           </Link>
-          {/* <Link 
-            href="/projects" 
-            className={`transition-opacity duration-200 hover:opacity-50 ${pathname.includes('/projects') ? 'opacity-100' : 'opacity-70'}`}
-          >
-            PROJECTS
-          </Link> */}
         </div>
       </div>
     </nav>

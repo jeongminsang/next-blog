@@ -13,7 +13,6 @@
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
-    "axios": "^1.5.1",
     "dayjs": "^1.11.9",
     "gray-matter": "^4.0.3",
     "highlight.js": "^11.8.0",
@@ -24,7 +23,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-icons": "^4.11.0",
-    "react-slick": "^0.29.0",
+    "reading-time": "^1.5.0",
     "rehype": "^12.0.1",
     "rehype-slug": "^5.1.0",
     "remark": "^14.0.3",
@@ -33,13 +32,6 @@
     "remark-rehype": "^10.1.0",
     "tailwindcss": "^4.2.4",
     "typescript": "5.1.6"
-  },
-  "devDependencies": {
-    "@types/glob": "^8.1.0",
-    "@types/react-slick": "^0.23.11",
-    "glob": "^10.3.3",
-    "reading-time": "^1.5.0",
-    "slick-carousel": "^1.8.1"
   },
   "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72"
 }
